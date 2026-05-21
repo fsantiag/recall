@@ -5,6 +5,7 @@ import { SerwistRegister } from '@/components/organisms/serwist-register'
 import { TabNav } from '@/components/organisms/tab-nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
 import { ThemeProvider } from '@/components/organisms/theme-provider'
+import { InstallBanner } from '@/components/organisms/install-banner'
 
 export const metadata: Metadata = {
   title: 'Recall',
@@ -19,6 +20,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LanguageProvider>
             <SerwistRegister />
             <PinGate>
+              <InstallBanner />
               <div className="pb-20">{children}</div>
               <TabNav />
             </PinGate>

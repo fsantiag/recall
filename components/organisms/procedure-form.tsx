@@ -1,5 +1,5 @@
 'use client'
-
+import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
@@ -21,54 +21,86 @@ type FormValues = {
   patientName: string
   payer: string
   date: string
-  reminderDays: string
+  reminderDays: number
 }
 
 interface ProcedureFormProps {
-  defaultValues?: {
-    name?: string
-    patientName?: string
-    payer?: string
-    date?: string
-    reminderDays?: number
-  }
+  defaultValues?: Partial<FormValues>
   procedureId?: string
   onSuccess: () => void
 }
 
+const DAY_PRESETS = [3, 7, 14, 30, 60, 90]
+
+function DayChip({ n, active, onClick }: { n: number; active: boolean; onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={`px-3 py-1.5 rounded-full text-[13px] font-mono-rc font-medium border transition-colors
+        ${active
+          ? 'bg-primary text-primary-foreground border-transparent'
+          : 'bg-surface-alt text-foreground border-border'}`}
+    >
+      {n}d
+    </button>
+  )
+}
+
+function ProgressBar({ step }: { step: number }) {
+  return (
+    <div className="flex items-center gap-2 px-5 pb-5">
+      {[1, 2, 3].map((n) => (
+        <div
+          key={n}
+          className={`flex-1 h-[3px] rounded-full ${n <= step ? 'bg-primary' : 'bg-border'}`}
+        />
+      ))}
+      <span className="font-mono-rc text-[11px] text-ink-muted ml-1">{step} / 3</span>
+    </div>
+  )
+}
+
 export function ProcedureForm({ defaultValues, procedureId, onSuccess }: ProcedureFormProps) {
   const { t } = useTranslation()
+  const [step, setStep] = useState(1)
 
   const schema = z.object({
-    name: z.string().min(1, t('procedureNameRequired')),
-    patientName: z.string().min(1, t('patientNameRequired')),
-    payer: z.string().min(1, t('payerRequired')),
-    date: z.string().min(1, t('dateRequired')),
-    reminderDays: z.string().refine(
-      (v) => { const n = parseInt(v, 10); return !isNaN(n) && n >= 1 },
-      { message: t('reminderMinDays') }
-    ),
+    name:         z.string().min(1, t('procedureNameRequired')),
+    patientName:  z.string().min(1, t('patientNameRequired')),
+    payer:        z.string().min(1, t('payerRequired')),
+    date:         z.string().min(1, t('dateRequired')),
+    reminderDays: z.number().min(1, t('reminderMinDays')),
   })
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
-      name: defaultValues?.name ?? '',
-      patientName: defaultValues?.patientName ?? '',
-      payer: defaultValues?.payer ?? '',
-      date: defaultValues?.date ?? new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
-      reminderDays: String(defaultValues?.reminderDays ?? 30),
+      name:         defaultValues?.name ?? '',
+      patientName:  defaultValues?.patientName ?? '',
+      payer:        defaultValues?.payer ?? '',
+      date:         defaultValues?.date ??
+        new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
+      reminderDays: defaultValues?.reminderDays ?? 7,
     },
   })
 
+  const reminderDays = form.watch('reminderDays')
+  const date = form.watch('date')
+
+  const reminderDate = (() => {
+    if (!date) return ''
+    const d = new Date(date)
+    d.setDate(d.getDate() + (reminderDays || 0))
+    return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
+  })()
+
   async function onSubmit(values: FormValues) {
     try {
-      const reminderDays = parseInt(values.reminderDays, 10)
-      const payload = { ...values, reminderDays }
       if (procedureId) {
-        await updateProcedure(procedureId, payload)
+        await updateProcedure(procedureId, values)
       } else {
-        await addProcedure({ ...payload, status: 'pending' })
+        await addProcedure({ ...values, status: 'pending' })
       }
       onSuccess()
     } catch {
@@ -76,70 +108,146 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
     }
   }
 
+  async function goToStep2() {
+    const ok = await form.trigger('patientName')
+    if (ok) setStep(2)
+  }
+
+  async function goToStep3() {
+    const ok = await form.trigger(['name', 'payer', 'date', 'reminderDays'])
+    if (ok) setStep(3)
+  }
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('fieldProcedureName')}</FormLabel>
-              <FormControl><Input placeholder={t('placeholderProcedureName')} {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="patientName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('fieldPatientName')}</FormLabel>
-              <FormControl><Input placeholder={t('placeholderPatientName')} {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="payer"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('fieldPayer')}</FormLabel>
-              <FormControl><Input placeholder={t('placeholderPayer')} {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="date"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('fieldDateTime')}</FormLabel>
-              <FormControl><Input type="datetime-local" {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="reminderDays"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>{t('fieldReminderDays')}</FormLabel>
-              <FormControl><Input type="number" min={1} {...field} /></FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {form.formState.errors.root && (
-          <p className="text-sm text-destructive">{form.formState.errors.root.message}</p>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <ProgressBar step={step} />
+
+        {step === 1 && (
+          <div className="px-5 space-y-5">
+            <h2 className="text-[22px] font-semibold tracking-tight">{t('stepPatient')}</h2>
+            <FormField control={form.control} name="patientName" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldPatientName')}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t('placeholderPatientName')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <Button type="button" className="w-full" size="lg" onClick={goToStep2}>
+              {t('save')} →
+            </Button>
+          </div>
         )}
-        <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? t('saving') : t('save')}
-        </Button>
+
+        {step === 2 && (
+          <div className="px-5 space-y-5">
+            <button
+              type="button"
+              onClick={() => setStep(1)}
+              className="text-[15px] text-ink-muted font-medium"
+            >
+              ← Back
+            </button>
+            <h2 className="text-[22px] font-semibold tracking-tight">{t('stepDetails')}</h2>
+            <FormField control={form.control} name="name" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldProcedureName')}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t('placeholderProcedureName')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="payer" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldPayer')}</FormLabel>
+                <FormControl>
+                  <Input placeholder={t('placeholderPayer')} {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="date" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldDateTime')}</FormLabel>
+                <FormControl>
+                  <Input type="datetime-local" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )} />
+
+            <div>
+              <p className="text-[12px] font-medium uppercase tracking-widest text-ink-muted mb-3">
+                {t('remindInLabel')}
+              </p>
+              <div className="rounded-[14px] border bg-card p-4 space-y-4">
+                <div className="flex items-baseline justify-center gap-2.5">
+                  <span className="font-mono-rc text-[56px] font-medium text-primary leading-none tracking-tighter">
+                    {reminderDays}
+                  </span>
+                  <span className="text-[18px] text-ink-muted">{t('daysLabel')}</span>
+                </div>
+                <div className="flex flex-wrap gap-2 justify-center">
+                  {DAY_PRESETS.map((n) => (
+                    <DayChip
+                      key={n} n={n} active={reminderDays === n}
+                      onClick={() => form.setValue('reminderDays', n)}
+                    />
+                  ))}
+                </div>
+                <div className="flex items-center justify-between border-t pt-3">
+                  <span className="text-[13px] text-ink-muted">{t('reminderDateLabel')}</span>
+                  <span className="font-mono-rc text-[13px] font-medium">{reminderDate}</span>
+                </div>
+              </div>
+            </div>
+
+            <Button type="button" className="w-full" size="lg" onClick={goToStep3}>
+              {t('save')} →
+            </Button>
+          </div>
+        )}
+
+        {step === 3 && (
+          <div className="px-5 space-y-5">
+            <button
+              type="button"
+              onClick={() => setStep(2)}
+              className="text-[15px] text-ink-muted font-medium"
+            >
+              ← Back
+            </button>
+            <h2 className="text-[22px] font-semibold tracking-tight">{t('reviewTitle')}</h2>
+            <div className="rounded-[14px] border bg-card divide-y">
+              {([
+                [t('fieldPatientName'), form.getValues('patientName'), false],
+                [t('fieldProcedureName'), form.getValues('name'), false],
+                [t('fieldPayer'), form.getValues('payer'), false],
+                [t('fieldDateTime'), form.getValues('date'), true],
+                [t('fieldReminderDays'), `${reminderDays}d · ${reminderDate}`, true],
+              ] as [string, string, boolean][]).map(([label, value, mono]) => (
+                <div key={label} className="flex items-center justify-between px-4 py-3">
+                  <span className="text-[13px] text-ink-muted">{label}</span>
+                  <span className={`text-[14px] ${mono ? 'font-mono-rc' : 'font-medium'}`}>{value}</span>
+                </div>
+              ))}
+            </div>
+            {form.formState.errors.root && (
+              <p className="text-sm text-destructive">{form.formState.errors.root.message}</p>
+            )}
+            <Button
+              type="submit"
+              className="w-full"
+              size="lg"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? t('saving') : t('save')}
+            </Button>
+          </div>
+        )}
       </form>
     </Form>
   )

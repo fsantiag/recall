@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { addProcedure, updateProcedure } from '@/lib/procedures'
+import { useFieldSuggestions } from '@/lib/use-field-suggestions'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -102,6 +103,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
   const [customMode, setCustomMode] = useState(
     () => !DAY_PRESETS.includes(defaultValues?.reminderDays ?? 7)
   )
+  const { patientNames, procedureNames, payers } = useFieldSuggestions()
 
   const reminderDate = (() => {
     if (!date) return ''
@@ -145,8 +147,15 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
               <FormItem>
                 <FormLabel>{t('fieldPatientName')}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t('placeholderPatientName')} {...field} />
+                  <Input
+                    list={field.value.length >= 3 ? 'datalist-patient-names' : undefined}
+                    placeholder={t('placeholderPatientName')}
+                    {...field}
+                  />
                 </FormControl>
+                <datalist id="datalist-patient-names">
+                  {patientNames.map(n => <option key={n} value={n} />)}
+                </datalist>
                 <FormMessage />
               </FormItem>
             )} />
@@ -170,8 +179,15 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
               <FormItem>
                 <FormLabel>{t('fieldProcedureName')}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t('placeholderProcedureName')} {...field} />
+                  <Input
+                    list={field.value.length >= 3 ? 'datalist-procedure-names' : undefined}
+                    placeholder={t('placeholderProcedureName')}
+                    {...field}
+                  />
                 </FormControl>
+                <datalist id="datalist-procedure-names">
+                  {procedureNames.map(n => <option key={n} value={n} />)}
+                </datalist>
                 <FormMessage />
               </FormItem>
             )} />
@@ -179,8 +195,15 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
               <FormItem>
                 <FormLabel>{t('fieldPayer')}</FormLabel>
                 <FormControl>
-                  <Input placeholder={t('placeholderPayer')} {...field} />
+                  <Input
+                    list={field.value.length >= 3 ? 'datalist-payers' : undefined}
+                    placeholder={t('placeholderPayer')}
+                    {...field}
+                  />
                 </FormControl>
+                <datalist id="datalist-payers">
+                  {payers.map(n => <option key={n} value={n} />)}
+                </datalist>
                 <FormMessage />
               </FormItem>
             )} />

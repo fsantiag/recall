@@ -77,6 +77,40 @@ describe('ProcedureForm', () => {
     })
   })
 
+  describe('autocomplete datalists', () => {
+    it('renders patientName datalist on step 1', () => {
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      expect(document.getElementById('datalist-patient-names')).toBeInTheDocument()
+    })
+
+    it('wires list attribute on patientName input after 3 chars', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      const input = screen.getByLabelText(/patient name/i)
+      expect(input).not.toHaveAttribute('list')
+      await user.type(input, 'Ana')
+      expect(input).toHaveAttribute('list', 'datalist-patient-names')
+    })
+
+    it('does not wire list attribute with fewer than 3 chars', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      const input = screen.getByLabelText(/patient name/i)
+      await user.type(input, 'An')
+      expect(input).not.toHaveAttribute('list')
+    })
+
+    it('renders procedureName and payer datalists on step 2', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      await user.type(screen.getByLabelText(/patient name/i), 'Jane')
+      await user.click(screen.getByRole('button', { name: /save/i }))
+      await screen.findByLabelText(/procedure name/i)
+      expect(document.getElementById('datalist-procedure-names')).toBeInTheDocument()
+      expect(document.getElementById('datalist-payers')).toBeInTheDocument()
+    })
+  })
+
   it('calls onSuccess after completing all 3 steps', async () => {
     const user = userEvent.setup()
     const onSuccess = vi.fn()

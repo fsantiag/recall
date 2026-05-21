@@ -21,7 +21,7 @@ export function PinGate({ children }: { children: ReactNode }) {
 
   async function handleSetup(e: React.FormEvent) {
     e.preventDefault()
-    if (pin.length < 4) { setError('PIN must be at least 4 digits'); return }
+    if (pin.length < 4) { setError('PIN must be at least 4 characters'); return }
     if (pin !== confirmPin) { setError('PINs do not match'); return }
     await setPin(pin)
     setState('unlocked')

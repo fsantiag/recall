@@ -13,6 +13,7 @@ import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { RecallMark } from '@/components/brand/RecallMark'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { fireSummaryNotification } from '@/lib/notifications'
+import type { TranslationKey } from '@/lib/i18n'
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -36,7 +37,7 @@ function StatChip({ n, label, tone }: { n: number; label: string; tone: 'danger'
   )
 }
 
-function Onboarding({ t }: { t: (k: string) => string }) {
+function Onboarding({ t }: { t: (k: TranslationKey) => string }) {
   return (
     <div className="flex flex-col items-center px-7 pt-16 pb-10">
       <div className="relative flex items-center justify-center w-[132px] h-[132px] rounded-full bg-brand-50 mb-8">
@@ -57,7 +58,7 @@ function Onboarding({ t }: { t: (k: string) => string }) {
           ['onboardingF1Title', 'onboardingF1Body'],
           ['onboardingF2Title', 'onboardingF2Body'],
           ['onboardingF3Title', 'onboardingF3Body'],
-        ] as [string, string][]).map(([titleKey, bodyKey]) => (
+        ] as [TranslationKey, TranslationKey][]).map(([titleKey, bodyKey]) => (
           <div key={titleKey} className="flex gap-3">
             <div className="w-9 h-9 rounded-[10px] bg-brand-50 shrink-0 flex items-center justify-center">
               <span className="w-2 h-2 rounded-full bg-primary" />

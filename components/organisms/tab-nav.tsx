@@ -18,7 +18,7 @@ export function TabNav() {
   return (
     <nav
       aria-label={t('navAriaLabel')}
-      className="fixed bottom-0 left-0 right-0 z-30 flex justify-around
+      className="fixed bottom-0 left-0 right-0 z-30 flex
                  border-t bg-card pt-2 pb-[env(safe-area-inset-bottom,8px)]"
     >
       {TABS.map(({ href, labelKey, icon: Icon }) => {
@@ -28,7 +28,7 @@ export function TabNav() {
             key={href}
             href={href}
             aria-current={active ? 'page' : undefined}
-            className={`flex flex-col items-center gap-0.5 px-4 py-1 text-[10.5px] font-medium
+            className={`flex-1 flex flex-col items-center gap-0.5 py-1 text-[10.5px] font-medium
               ${active ? 'text-primary' : 'text-ink-soft'}`}
           >
             <Icon className="h-[22px] w-[22px]" />

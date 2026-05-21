@@ -10,7 +10,7 @@ export function PendingAlert() {
   const [overdue, setOverdue] = useState<Procedure[]>([])
 
   useEffect(() => {
-    getOverdueProcedures().then(setOverdue)
+    getOverdueProcedures().then(setOverdue).catch(() => {})
   }, [])
 
   if (overdue.length === 0) return null

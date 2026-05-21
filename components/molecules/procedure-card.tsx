@@ -26,12 +26,12 @@ export function ProcedureCard({ procedure: p, onMarkPaid }: ProcedureCardProps) 
             </Link>
             <p className="text-sm text-muted-foreground">{p.patientName}</p>
             <p className="text-sm text-muted-foreground">
-              {p.payer} · {p.date}
+              {p.payer} · {new Date(p.date + 'T00:00:00').toLocaleDateString()}
             </p>
           </div>
           <div className="flex items-center gap-2 shrink-0">
             <Badge variant={p.status === 'paid' ? 'secondary' : 'destructive'}>
-              {p.status}
+              {p.status === 'paid' ? 'Paid' : 'Pending'}
             </Badge>
             {p.status === 'pending' && (
               <Button

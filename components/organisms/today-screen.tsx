@@ -12,6 +12,7 @@ import type { Procedure } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { RecallMark } from '@/components/brand/RecallMark'
 import { useTranslation } from '@/components/organisms/language-provider'
+import { fireSummaryNotification } from '@/lib/notifications'
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
@@ -115,6 +116,7 @@ export function TodayScreen() {
     setGroups(g)
     const total = g.overdue.length + g.dueToday.length + g.thisWeek.length + g.upcoming.length
     setAllEmpty(total === 0)
+    fireSummaryNotification(g.overdue.length, g.dueToday.length)
   }
 
   useEffect(() => { load().catch(() => {}) }, []) // eslint-disable-line react-hooks/exhaustive-deps

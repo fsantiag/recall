@@ -22,8 +22,6 @@ export interface Translations {
   currentPinIncorrect: string; newPinTooShort: string; newPinMismatch: string
   pinChanged: string; changePinButton: string; changePinFailed: string
   languageLabel: string; languageEn: string; languagePtBR: string
-  // Snooze
-  snooze: string; statusSnoozed: string
   // Today sections
   sectionOverdue: string; sectionToday: string; sectionThisWeek: string
   sectionUpcoming: string; sectionEmpty: string
@@ -122,7 +120,6 @@ const en: Translations = {
   languageLabel: 'Language',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
-  snooze: 'Snooze 3 days', statusSnoozed: 'Snoozed',
   sectionOverdue: 'Overdue', sectionToday: 'Today', sectionThisWeek: 'This week',
   sectionUpcoming: 'Upcoming', sectionEmpty: 'No billing reminders due.',
   overdueLabel: 'Overdue', dueTodayLabel: 'Due today', thisWeekLabel: 'This week',
@@ -218,7 +215,6 @@ const ptBR: Translations = {
   languageLabel: 'Idioma',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
-  snooze: 'Adiar 3 dias', statusSnoozed: 'Adiado',
   sectionOverdue: 'Em atraso', sectionToday: 'Hoje', sectionThisWeek: 'Esta semana',
   sectionUpcoming: 'Próximos', sectionEmpty: 'Nenhum lembrete de cobrança pendente.',
   overdueLabel: 'Em atraso', dueTodayLabel: 'Vence hoje', thisWeekLabel: 'Esta semana',

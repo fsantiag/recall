@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAllProcedures, updateProcedure, snoozeProcedure } from '@/lib/procedures'
+import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -31,15 +31,6 @@ export function ProcedureList() {
     }
   }
 
-  async function handleSnooze(id: string) {
-    try {
-      await snoozeProcedure(id, 3)
-      setProcedures((prev) => prev.filter((p) => p.id !== id))
-    } catch (err) {
-      console.error('Failed to snooze procedure:', err)
-    }
-  }
-
   if (error) return <p className="text-destructive text-sm">{error}</p>
   if (loading) return <p className="text-muted-foreground text-sm">{t('loading')}</p>
   if (procedures.length === 0)
@@ -51,7 +42,7 @@ export function ProcedureList() {
     <ul className="space-y-3">
       {procedures.map((p) => (
         <li key={p.id}>
-          <ProcedureCard procedure={p} onToggleStatus={toggleStatus} onSnooze={handleSnooze} />
+          <ProcedureCard procedure={p} onToggleStatus={toggleStatus} />
         </li>
       ))}
     </ul>

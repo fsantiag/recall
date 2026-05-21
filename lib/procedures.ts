@@ -74,9 +74,6 @@ export async function getDueProceduresGrouped(): Promise<DueGroups> {
 
   for (const p of procedures) {
     if (p.status === 'paid') continue
-    if (p.status === 'snoozed') {
-      if (!p.snoozedUntil || p.snoozedUntil > todayStr) continue
-    }
     const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
     dueDate.setDate(dueDate.getDate() + p.reminderDays)
     const dueDateStr = dueDate.toISOString().split('T')[0]
@@ -90,11 +87,3 @@ export async function getDueProceduresGrouped(): Promise<DueGroups> {
   return result
 }
 
-export async function snoozeProcedure(id: string, days = 3): Promise<Procedure> {
-  const until = new Date()
-  until.setDate(until.getDate() + days)
-  return updateProcedure(id, {
-    status: 'snoozed',
-    snoozedUntil: until.toISOString().split('T')[0],
-  })
-}

@@ -8,7 +8,6 @@ import {
   deleteProcedure,
   getOverdueProcedures,
   getDueProceduresGrouped,
-  snoozeProcedure,
 } from '@/lib/procedures'
 
 const BASE = {
@@ -121,25 +120,4 @@ describe('getDueProceduresGrouped', () => {
     expect(groups.overdue).toHaveLength(0)
   })
 
-  it('excludes snoozed procedures with future snoozedUntil', async () => {
-    const past = new Date()
-    past.setDate(past.getDate() - 5)
-    const p = await addProcedure({ ...BASE, date: past.toISOString().slice(0, 16), reminderDays: 1 })
-    await snoozeProcedure(p.id, 3)
-    const groups = await getDueProceduresGrouped()
-    expect(groups.overdue).toHaveLength(0)
-  })
-})
-
-describe('snoozeProcedure', () => {
-  beforeEach(() => { resetDB() })
-
-  it('sets status to snoozed with a future snoozedUntil date', async () => {
-    const p = await addProcedure({ ...BASE, date: new Date().toISOString().slice(0, 16) })
-    const snoozed = await snoozeProcedure(p.id, 3)
-    expect(snoozed.status).toBe('snoozed')
-    expect(snoozed.snoozedUntil).toBeDefined()
-    const snoozeDate = new Date(snoozed.snoozedUntil! + 'T00:00:00')
-    expect(snoozeDate > new Date()).toBe(true)
-  })
 })

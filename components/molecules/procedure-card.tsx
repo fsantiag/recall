@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link'
-import { CheckCircle2, RotateCcw, Clock } from 'lucide-react'
+import { CheckCircle2, RotateCcw } from 'lucide-react'
 import type { Procedure } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -8,7 +8,6 @@ import { useTranslation } from '@/components/organisms/language-provider'
 interface ProcedureCardProps {
   procedure: Procedure
   onToggleStatus: (id: string) => void
-  onSnooze: (id: string) => void
   dueTone?: 'danger' | 'brand' | 'sage' | 'neutral'
   dueLabel?: string
 }
@@ -23,7 +22,6 @@ const TONE_CLASSES: Record<string, string> = {
 export function ProcedureCard({
   procedure: p,
   onToggleStatus,
-  onSnooze,
   dueTone = 'neutral',
   dueLabel,
 }: ProcedureCardProps) {
@@ -49,17 +47,6 @@ export function ProcedureCard({
       <div className="flex items-center justify-between pt-2.5 border-t border-dashed">
         <p className="font-mono-rc text-[11.5px] text-ink-soft truncate">{p.payer} · {dateStr}</p>
         <div className="relative flex items-center gap-1 shrink-0">
-          {p.status === 'pending' && (
-            <Button
-              size="icon"
-              variant="ghost"
-              className="h-8 w-8"
-              onClick={(e) => { e.preventDefault(); onSnooze(p.id) }}
-              aria-label={t('snooze')}
-            >
-              <Clock className="h-4 w-4" />
-            </Button>
-          )}
           <Button
             size="icon"
             variant="ghost"

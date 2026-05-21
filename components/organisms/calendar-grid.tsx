@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
-import { getAllProcedures, updateProcedure, snoozeProcedure } from '@/lib/procedures'
+import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 
@@ -57,12 +57,6 @@ export function CalendarGrid() {
     if (!p) return
     await updateProcedure(id, { status: p.status === 'pending' ? 'paid' : 'pending' })
     getAllProcedures().then(setProcedures)
-  }
-
-  async function snooze(id: string) {
-    await snoozeProcedure(id, 3)
-    getAllProcedures().then(setProcedures)
-    setSelectedDay(null)
   }
 
   const selectedProcedures = selectedDay
@@ -134,7 +128,7 @@ export function CalendarGrid() {
             })}
           </p>
           {selectedProcedures.map((p) => (
-            <ProcedureCard key={p.id} procedure={p} onToggleStatus={toggle} onSnooze={snooze} />
+            <ProcedureCard key={p.id} procedure={p} onToggleStatus={toggle} />
           ))}
         </div>
       )}

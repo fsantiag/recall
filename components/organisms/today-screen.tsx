@@ -6,7 +6,6 @@ import {
   getAllProcedures,
   getDueProceduresGrouped,
   updateProcedure,
-  snoozeProcedure,
   type DueGroups,
 } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
@@ -83,13 +82,12 @@ function Onboarding({ t }: { t: (k: TranslationKey) => string }) {
 }
 
 function CardGroup({
-  procedures, tone, dueLabel, onToggle, onSnooze,
+  procedures, tone, dueLabel, onToggle,
 }: {
   procedures: Procedure[]
   tone: 'danger' | 'brand' | 'sage' | 'neutral'
   dueLabel: string
   onToggle: (id: string) => void
-  onSnooze: (id: string) => void
 }) {
   if (procedures.length === 0) return null
   return (
@@ -101,7 +99,6 @@ function CardGroup({
           dueTone={tone}
           dueLabel={dueLabel}
           onToggleStatus={onToggle}
-          onSnooze={onSnooze}
         />
       ))}
     </div>
@@ -130,11 +127,6 @@ export function TodayScreen() {
     const p = all.find((x) => x.id === id)
     if (!p) return
     await updateProcedure(id, { status: p.status === 'pending' ? 'paid' : 'pending' })
-    load()
-  }
-
-  async function handleSnooze(id: string) {
-    await snoozeProcedure(id, 3)
     load()
   }
 
@@ -170,25 +162,25 @@ export function TodayScreen() {
           {groups.overdue.length > 0 && (
             <>
               <SectionLabel>{t('sectionOverdue')}</SectionLabel>
-              <CardGroup procedures={groups.overdue} tone="danger" dueLabel={t('overdueLabel')} onToggle={toggleStatus} onSnooze={handleSnooze} />
+              <CardGroup procedures={groups.overdue} tone="danger" dueLabel={t('overdueLabel')} onToggle={toggleStatus} />
             </>
           )}
           {groups.dueToday.length > 0 && (
             <>
               <SectionLabel>{t('sectionToday')}</SectionLabel>
-              <CardGroup procedures={groups.dueToday} tone="brand" dueLabel={t('dueTodayLabel')} onToggle={toggleStatus} onSnooze={handleSnooze} />
+              <CardGroup procedures={groups.dueToday} tone="brand" dueLabel={t('dueTodayLabel')} onToggle={toggleStatus} />
             </>
           )}
           {groups.thisWeek.length > 0 && (
             <>
               <SectionLabel>{t('sectionThisWeek')}</SectionLabel>
-              <CardGroup procedures={groups.thisWeek} tone="sage" dueLabel={t('thisWeekLabel')} onToggle={toggleStatus} onSnooze={handleSnooze} />
+              <CardGroup procedures={groups.thisWeek} tone="sage" dueLabel={t('thisWeekLabel')} onToggle={toggleStatus} />
             </>
           )}
           {groups.upcoming.length > 0 && (
             <>
               <SectionLabel>{t('sectionUpcoming')}</SectionLabel>
-              <CardGroup procedures={groups.upcoming} tone="neutral" dueLabel="" onToggle={toggleStatus} onSnooze={handleSnooze} />
+              <CardGroup procedures={groups.upcoming} tone="neutral" dueLabel="" onToggle={toggleStatus} />
             </>
           )}
         </>

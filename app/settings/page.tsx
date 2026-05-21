@@ -19,15 +19,19 @@ export default function SettingsPage() {
     setError('')
     setSuccess(false)
 
-    if (!(await verifyPin(currentPin))) { setError('Current PIN is incorrect'); return }
-    if (newPin.length < 4) { setError('New PIN must be at least 4 characters'); return }
-    if (newPin !== confirmPin) { setError('New PINs do not match'); return }
+    try {
+      if (!(await verifyPin(currentPin))) { setError('Current PIN is incorrect'); return }
+      if (newPin.length < 4) { setError('New PIN must be at least 4 characters'); return }
+      if (newPin !== confirmPin) { setError('New PINs do not match'); return }
 
-    await setPin(newPin)
-    setCurrentPin('')
-    setNewPin('')
-    setConfirmPin('')
-    setSuccess(true)
+      await setPin(newPin)
+      setCurrentPin('')
+      setNewPin('')
+      setConfirmPin('')
+      setSuccess(true)
+    } catch {
+      setError('Failed to change PIN. Please try again.')
+    }
   }
 
   return (

@@ -31,6 +31,52 @@ describe('ProcedureForm', () => {
     await screen.findByLabelText(/procedure name/i)
   })
 
+  describe('reminder days — custom mode', () => {
+    async function advanceToStep2(user: ReturnType<typeof userEvent.setup>) {
+      await user.type(screen.getByLabelText(/patient name/i), 'Jane Doe')
+      await user.click(screen.getByRole('button', { name: /save/i }))
+      await screen.findByLabelText(/procedure name/i)
+    }
+
+    it('shows a Custom chip on step 2', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      await advanceToStep2(user)
+      expect(screen.getByRole('button', { name: /custom/i })).toBeInTheDocument()
+    })
+
+    it('clicking Custom chip reveals a date input', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      await advanceToStep2(user)
+      await user.click(screen.getByRole('button', { name: /custom/i }))
+      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+    })
+
+    it('clicking a preset chip after Custom hides the date input', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+      await advanceToStep2(user)
+      await user.click(screen.getByRole('button', { name: /custom/i }))
+      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+      await user.click(screen.getByRole('button', { name: /^7d$/i }))
+      expect(screen.queryByLabelText(/reminder date/i)).not.toBeInTheDocument()
+    })
+
+    it('opens in custom mode automatically when reminderDays is not a preset', async () => {
+      const user = userEvent.setup()
+      renderWithProviders(
+        <ProcedureForm
+          onSuccess={vi.fn()}
+          defaultValues={{ patientName: 'Jane', date: '2026-01-01T09:00', reminderDays: 45 }}
+        />
+      )
+      await user.click(screen.getByRole('button', { name: /save/i }))
+      await screen.findByLabelText(/procedure name/i)
+      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+    })
+  })
+
   it('calls onSuccess after completing all 3 steps', async () => {
     const user = userEvent.setup()
     const onSuccess = vi.fn()

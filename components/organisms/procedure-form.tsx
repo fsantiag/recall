@@ -32,6 +32,18 @@ interface ProcedureFormProps {
 
 const DAY_PRESETS = [3, 7, 14, 30, 60, 90]
 
+function toDateInputValue(procedureDateStr: string, days: number): string {
+  const d = new Date(procedureDateStr)
+  d.setDate(d.getDate() + days)
+  return d.toISOString().slice(0, 10)
+}
+
+function minDateInputValue(procedureDateStr: string): string {
+  const d = new Date(procedureDateStr)
+  d.setDate(d.getDate() + 1)
+  return d.toISOString().slice(0, 10)
+}
+
 function DayChip({ n, active, onClick }: { n: number; active: boolean; onClick: () => void }) {
   return (
     <button
@@ -87,6 +99,9 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
 
   const reminderDays = form.watch('reminderDays')
   const date = form.watch('date')
+  const [customMode, setCustomMode] = useState(
+    () => !DAY_PRESETS.includes(defaultValues?.reminderDays ?? 7)
+  )
 
   const reminderDate = (() => {
     if (!date) return ''
@@ -193,11 +208,40 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
                 <div className="flex flex-wrap gap-2 justify-center">
                   {DAY_PRESETS.map((n) => (
                     <DayChip
-                      key={n} n={n} active={reminderDays === n}
-                      onClick={() => form.setValue('reminderDays', n)}
+                      key={n} n={n} active={!customMode && reminderDays === n}
+                      onClick={() => { setCustomMode(false); form.setValue('reminderDays', n) }}
                     />
                   ))}
+                  <button
+                    type="button"
+                    onClick={() => setCustomMode(true)}
+                    className={`px-3 py-1.5 rounded-full text-[13px] font-mono-rc font-medium border transition-colors
+                      ${customMode
+                        ? 'bg-primary text-primary-foreground border-transparent'
+                        : 'bg-surface-alt text-foreground border-border'}`}
+                  >
+                    {t('customLabel')}
+                  </button>
                 </div>
+                {customMode && (
+                  <div className="pt-2">
+                    <label htmlFor="custom-reminder-date" className="sr-only">{t('reminderDateLabel')}</label>
+                    <input
+                      id="custom-reminder-date"
+                      type="date"
+                      min={date ? minDateInputValue(date) : undefined}
+                      value={date ? toDateInputValue(date, reminderDays) : ''}
+                      onChange={(e) => {
+                        if (!e.target.value || !date) return
+                        const picked = new Date(e.target.value)
+                        const base = new Date(date)
+                        const days = Math.max(1, Math.round((picked.getTime() - base.getTime()) / 86400000))
+                        form.setValue('reminderDays', days, { shouldValidate: true })
+                      }}
+                      className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+                    />
+                  </div>
+                )}
                 <div className="flex items-center justify-between border-t pt-3">
                   <span className="text-[13px] text-ink-muted">{t('reminderDateLabel')}</span>
                   <span className="font-mono-rc text-[13px] font-medium">{reminderDate}</span>

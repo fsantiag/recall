@@ -15,7 +15,9 @@ export function PinGate({ children }: { children: ReactNode }) {
   const [confirmPin, setConfirmPin] = useState('')
   const [error, setError] = useState('')
 
+  // Read localStorage only on the client after mount to avoid SSR issues.
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setState(hasPinSet() ? 'locked' : 'setup')
   }, [])
 

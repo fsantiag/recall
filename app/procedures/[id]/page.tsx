@@ -6,7 +6,6 @@ import { getProcedure, deleteProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureForm } from '@/components/organisms/procedure-form'
 import { useTranslation } from '@/components/organisms/language-provider'
-import { Button } from '@/components/ui/button'
 
 export default function EditProcedurePage() {
   const params = useParams()
@@ -48,10 +47,8 @@ export default function EditProcedurePage() {
           reminderDays: procedure.reminderDays,
         }}
         onSuccess={() => router.push('/')}
+        onDelete={handleDelete}
       />
-      <Button variant="destructive" size="lg" className="w-full mt-4" onClick={handleDelete}>
-        {t('deleteProcedure')}
-      </Button>
     </main>
   )
 }

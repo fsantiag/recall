@@ -29,6 +29,7 @@ interface ProcedureFormProps {
   defaultValues?: Partial<FormValues>
   procedureId?: string
   onSuccess: () => void
+  onDelete?: () => void
 }
 
 const DAY_PRESETS = [3, 7, 14, 30, 60, 90]
@@ -74,7 +75,7 @@ function ProgressBar({ step }: { step: number }) {
   )
 }
 
-export function ProcedureForm({ defaultValues, procedureId, onSuccess }: ProcedureFormProps) {
+export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete }: ProcedureFormProps) {
   const { t } = useTranslation()
   const [step, setStep] = useState(1)
 
@@ -162,6 +163,11 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
             <Button type="button" className="w-full" size="lg" onClick={goToStep2}>
               {t('save')} →
             </Button>
+            {onDelete && (
+              <Button type="button" variant="destructive" size="lg" className="w-full" onClick={onDelete}>
+                {t('deleteProcedure')}
+              </Button>
+            )}
           </div>
         )}
 
@@ -275,6 +281,11 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
             <Button type="button" className="w-full" size="lg" onClick={goToStep3}>
               {t('save')} →
             </Button>
+            {onDelete && (
+              <Button type="button" variant="destructive" size="lg" className="w-full" onClick={onDelete}>
+                {t('deleteProcedure')}
+              </Button>
+            )}
           </div>
         )}
 
@@ -313,6 +324,11 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
             >
               {form.formState.isSubmitting ? t('saving') : t('save')}
             </Button>
+            {onDelete && (
+              <Button type="button" variant="destructive" size="lg" className="w-full" onClick={onDelete}>
+                {t('deleteProcedure')}
+              </Button>
+            )}
           </div>
         )}
       </form>

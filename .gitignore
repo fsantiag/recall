@@ -28,6 +28,10 @@
 .idea/
 .vscode/
 
+# planning / session context
+CONTEXT.md
+docs/superpowers/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

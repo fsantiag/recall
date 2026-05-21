@@ -1,3 +1,8 @@
+@import "@fontsource/geist/400.css";
+@import "@fontsource/geist/500.css";
+@import "@fontsource/geist/600.css";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
@@ -42,6 +47,10 @@
 }
 
 :root {
+  /* Font stacks — resolved by @fontsource imports above */
+  --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-geist-mono: 'Geist Mono', 'SF Mono', ui-monospace, 'Roboto Mono', monospace;
+
   /* RC light tokens */
   --rc-bg:            oklch(0.985 0.004 220);
   --rc-surface:       oklch(1 0 0);

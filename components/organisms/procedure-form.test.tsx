@@ -50,7 +50,7 @@ describe('ProcedureForm', () => {
       renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
       await advanceToStep2(user)
       await user.click(screen.getByRole('button', { name: /custom/i }))
-      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/due date/i)).toBeInTheDocument()
     })
 
     it('clicking a preset chip after Custom hides the date input', async () => {
@@ -58,9 +58,9 @@ describe('ProcedureForm', () => {
       renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
       await advanceToStep2(user)
       await user.click(screen.getByRole('button', { name: /custom/i }))
-      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/due date/i)).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: /^7d$/i }))
-      expect(screen.queryByLabelText(/reminder date/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText(/due date/i)).not.toBeInTheDocument()
     })
 
     it('opens in custom mode automatically when reminderDays is not a preset', async () => {
@@ -73,7 +73,7 @@ describe('ProcedureForm', () => {
       )
       await user.click(screen.getByRole('button', { name: /save/i }))
       await screen.findByLabelText(/procedure name/i)
-      expect(screen.getByLabelText(/reminder date/i)).toBeInTheDocument()
+      expect(screen.getByLabelText(/due date/i)).toBeInTheDocument()
     })
   })
 

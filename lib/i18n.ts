@@ -49,6 +49,8 @@ export interface Translations {
   installBannerTitle: string; installBannerBody: string
   installButton: string; installDismiss: string; installShowAgain: string
   installSettingsTitle: string; installSettingsIosHint: string
+  // Reminder picker
+  customLabel: string
 }
 
 const en: Translations = {
@@ -144,6 +146,7 @@ const en: Translations = {
   installShowAgain: 'Show install banner again',
   installSettingsTitle: 'Install App',
   installSettingsIosHint: "To install, tap Share in Safari then 'Add to Home Screen'.",
+  customLabel: 'Custom',
 }
 
 const ptBR: Translations = {
@@ -239,6 +242,7 @@ const ptBR: Translations = {
   installShowAgain: 'Mostrar aviso de instalação novamente',
   installSettingsTitle: 'Instalar aplicativo',
   installSettingsIosHint: "Para instalar, toque em Compartilhar no Safari e depois 'Adicionar à Tela de Início'.",
+  customLabel: 'Personalizado',
 }
 
 export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }

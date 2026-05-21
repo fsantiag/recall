@@ -56,14 +56,18 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
   })
 
   async function onSubmit(values: FormValues) {
-    const reminderDays = parseInt(values.reminderDays, 10)
-    const payload = { ...values, reminderDays }
-    if (procedureId) {
-      await updateProcedure(procedureId, payload)
-    } else {
-      await addProcedure({ ...payload, status: 'pending' })
+    try {
+      const reminderDays = parseInt(values.reminderDays, 10)
+      const payload = { ...values, reminderDays }
+      if (procedureId) {
+        await updateProcedure(procedureId, payload)
+      } else {
+        await addProcedure({ ...payload, status: 'pending' })
+      }
+      onSuccess()
+    } catch {
+      form.setError('root', { message: 'Failed to save. Please try again.' })
     }
-    onSuccess()
   }
 
   return (
@@ -124,6 +128,9 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
             </FormItem>
           )}
         />
+        {form.formState.errors.root && (
+          <p className="text-sm text-destructive">{form.formState.errors.root.message}</p>
+        )}
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
           {form.formState.isSubmitting ? 'Saving...' : 'Save'}
         </Button>

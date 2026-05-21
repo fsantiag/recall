@@ -13,16 +13,22 @@ export default function EditProcedurePage() {
   const [procedure, setProcedure] = useState<Procedure | null>(null)
 
   useEffect(() => {
-    getProcedure(params.id as string).then((p) => {
-      if (!p) router.push('/')
-      else setProcedure(p)
-    })
+    getProcedure(params.id as string)
+      .then((p) => {
+        if (!p) router.push('/')
+        else setProcedure(p)
+      })
+      .catch(() => router.push('/'))
   }, [params.id, router])
 
   async function handleDelete() {
     if (!procedure || !confirm('Delete this procedure?')) return
-    await deleteProcedure(procedure.id)
-    router.push('/')
+    try {
+      await deleteProcedure(procedure.id)
+      router.push('/')
+    } catch {
+      alert('Failed to delete. Please try again.')
+    }
   }
 
   if (!procedure) return null

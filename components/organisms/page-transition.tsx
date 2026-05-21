@@ -11,8 +11,11 @@ export function PageTransition({ children }: { children: React.ReactNode }) {
     const el = ref.current
     if (!el) return
     el.animate(
-      [{ opacity: 0 }, { opacity: 1 }],
-      { duration: 200, easing: 'ease-out', fill: 'forwards' }
+      [
+        { opacity: 0, transform: 'translateY(10px)' },
+        { opacity: 1, transform: 'translateY(0)' },
+      ],
+      { duration: 220, easing: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)', fill: 'forwards' }
     )
   }, [pathname])
 

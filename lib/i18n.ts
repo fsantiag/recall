@@ -8,6 +8,8 @@ export interface Translations {
   pinPlaceholder: string; pinConfirmPlaceholder: string; pinTooShort: string
   pinMismatch: string; pinIncorrect: string; pinSetButton: string; pinUnlockButton: string
   navHome: string; navAdd: string; navSettings: string; navAriaLabel: string
+  navToday: string; navAll: string; navCalendar: string
+  allProceduresTitle: string
   alertTitle: string; alertSingular: string; alertPlural: string
   loading: string; empty: string; loadError: string
   markPaid: string; markPending: string; statusPaid: string; statusPending: string
@@ -69,6 +71,10 @@ const en: Translations = {
   navAdd: 'Add',
   navSettings: 'Settings',
   navAriaLabel: 'Main navigation',
+  navToday: 'Today',
+  navAll: 'All',
+  navCalendar: 'Calendar',
+  allProceduresTitle: 'All procedures',
   // Alert
   alertTitle: 'Payment Reminder',
   alertSingular: '1 procedure is past its claim deadline.',
@@ -164,6 +170,10 @@ const ptBR: Translations = {
   navAdd: 'Adicionar',
   navSettings: 'Configurações',
   navAriaLabel: 'Navegação principal',
+  navToday: 'Hoje',
+  navAll: 'Todos',
+  navCalendar: 'Calendário',
+  allProceduresTitle: 'Todos os procedimentos',
   // Alert
   alertTitle: 'Lembrete de Cobrança',
   alertSingular: '1 procedimento está com a cobrança em atraso.',

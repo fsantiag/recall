@@ -2,23 +2,26 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Bell, List, CalendarDays, Settings } from 'lucide-react'
+import { useTranslation } from '@/components/organisms/language-provider'
+import type { TranslationKey } from '@/lib/i18n'
 
-const TABS = [
-  { href: '/',           label: 'Today',    icon: Bell },
-  { href: '/procedures', label: 'All',      icon: List },
-  { href: '/calendar',   label: 'Calendar', icon: CalendarDays },
-  { href: '/settings',   label: 'Settings', icon: Settings },
+const TABS: { href: string; labelKey: TranslationKey; icon: React.ElementType }[] = [
+  { href: '/',           labelKey: 'navToday',    icon: Bell },
+  { href: '/procedures', labelKey: 'navAll',      icon: List },
+  { href: '/calendar',   labelKey: 'navCalendar', icon: CalendarDays },
+  { href: '/settings',   labelKey: 'navSettings', icon: Settings },
 ]
 
 export function TabNav() {
   const pathname = usePathname()
+  const { t } = useTranslation()
   return (
     <nav
-      aria-label="Main navigation"
+      aria-label={t('navAriaLabel')}
       className="fixed bottom-0 left-0 right-0 z-30 flex justify-around
                  border-t bg-card pt-2 pb-[env(safe-area-inset-bottom,8px)]"
     >
-      {TABS.map(({ href, label, icon: Icon }) => {
+      {TABS.map(({ href, labelKey, icon: Icon }) => {
         const active = href === '/' ? pathname === '/' : pathname.startsWith(href)
         return (
           <Link
@@ -29,7 +32,7 @@ export function TabNav() {
               ${active ? 'text-primary' : 'text-ink-soft'}`}
           >
             <Icon className="h-[22px] w-[22px]" />
-            {label}
+            {t(labelKey)}
           </Link>
         )
       })}

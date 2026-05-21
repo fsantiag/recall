@@ -45,6 +45,10 @@ export interface Translations {
   // Form steps
   stepPatient: string; stepDetails: string; stepReview: string
   reviewTitle: string; addAnother: string
+  // Install
+  installBannerTitle: string; installBannerBody: string
+  installButton: string; installDismiss: string; installShowAgain: string
+  installSettingsTitle: string; installSettingsIosHint: string
 }
 
 const en: Translations = {
@@ -133,6 +137,13 @@ const en: Translations = {
   calendarTitle: 'Calendar', calendarNoItems: 'No reminders this month.',
   stepPatient: 'Patient', stepDetails: 'Details', stepReview: 'Review',
   reviewTitle: 'Review', addAnother: 'Add another',
+  installBannerTitle: 'Install Recall',
+  installBannerBody: "Tap Share then 'Add to Home Screen'",
+  installButton: 'Install',
+  installDismiss: 'Dismiss install banner',
+  installShowAgain: 'Show install banner again',
+  installSettingsTitle: 'Install App',
+  installSettingsIosHint: "To install, tap Share in Safari then 'Add to Home Screen'.",
 }
 
 const ptBR: Translations = {
@@ -221,6 +232,13 @@ const ptBR: Translations = {
   calendarTitle: 'Calendário', calendarNoItems: 'Nenhum lembrete neste mês.',
   stepPatient: 'Paciente', stepDetails: 'Detalhes', stepReview: 'Revisão',
   reviewTitle: 'Revisão', addAnother: 'Adicionar outro',
+  installBannerTitle: 'Instalar o Recall',
+  installBannerBody: "Toque em Compartilhar e depois 'Adicionar à Tela de Início'",
+  installButton: 'Instalar',
+  installDismiss: 'Fechar aviso de instalação',
+  installShowAgain: 'Mostrar aviso de instalação novamente',
+  installSettingsTitle: 'Instalar aplicativo',
+  installSettingsIosHint: "Para instalar, toque em Compartilhar no Safari e depois 'Adicionar à Tela de Início'.",
 }
 
 export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }

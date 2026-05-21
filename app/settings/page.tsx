@@ -11,6 +11,7 @@ import {
   setNotificationsEnabled,
   requestNotificationPermission,
 } from '@/lib/notifications'
+import { useInstallPrompt } from '@/lib/use-install-prompt'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -19,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 export default function SettingsPage() {
   const { t, language, setLanguage } = useTranslation()
   const { theme, setTheme } = useTheme()
+  const { canInstall, isIOS, isDismissed: installDismissed, prompt: installPrompt, resetDismissed } = useInstallPrompt()
   const [notifsOn, setNotifsOn] = useState(() => notificationsEnabled())
   const [currentPin, setCurrentPin] = useState('')
   const [newPin, setNewPin] = useState('')
@@ -103,6 +105,33 @@ export default function SettingsPage() {
           </button>
         </CardContent>
       </Card>
+
+      {/* Install App */}
+      {canInstall && (
+        <Card>
+          <CardHeader><CardTitle>{t('installSettingsTitle')}</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {isIOS ? (
+              <p className="text-sm text-muted-foreground">{t('installSettingsIosHint')}</p>
+            ) : (
+              <button
+                onClick={installPrompt}
+                className="w-full rounded-md border px-4 py-2 text-sm bg-background text-foreground hover:bg-muted transition-colors"
+              >
+                {t('installButton')}
+              </button>
+            )}
+            {installDismissed && (
+              <button
+                onClick={resetDismissed}
+                className="w-full rounded-md border px-4 py-2 text-sm bg-background text-foreground hover:bg-muted transition-colors"
+              >
+                {t('installShowAgain')}
+              </button>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Language */}
       <Card>

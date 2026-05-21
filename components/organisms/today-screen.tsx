@@ -99,6 +99,7 @@ function CardGroup({
           dueTone={tone}
           dueLabel={dueLabel}
           onToggleStatus={onToggle}
+          showStatus={false}
         />
       ))}
     </div>

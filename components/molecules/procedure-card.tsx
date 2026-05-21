@@ -10,6 +10,7 @@ interface ProcedureCardProps {
   onToggleStatus: (id: string) => void
   dueTone?: 'danger' | 'brand' | 'sage' | 'neutral'
   dueLabel?: string
+  showStatus?: boolean
 }
 
 const TONE_CLASSES: Record<string, string> = {
@@ -24,6 +25,7 @@ export function ProcedureCard({
   onToggleStatus,
   dueTone = 'neutral',
   dueLabel,
+  showStatus = true,
 }: ProcedureCardProps) {
   const { t } = useTranslation()
   const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
@@ -53,13 +55,13 @@ export function ProcedureCard({
           {p.payer} · {t('reminderOn')} {dueDateStr}
         </p>
         <div className="relative flex items-center gap-2 shrink-0">
-          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${
+          {showStatus && <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${
             p.status === 'paid'
               ? 'bg-sage-soft text-sage-deep'
               : 'bg-surface-alt text-ink-muted'
           }`}>
             {p.status === 'paid' ? t('statusPaid') : t('statusPending')}
-          </span>
+          </span>}
           <Button
             size="icon"
             variant="ghost"

@@ -49,7 +49,7 @@ export default function EditProcedurePage() {
         }}
         onSuccess={() => router.push('/')}
       />
-      <Button type="button" variant="destructive" size="lg" className="w-full mt-4" onClick={handleDelete}>
+      <Button variant="destructive" size="lg" className="w-full mt-4" onClick={handleDelete}>
         {t('deleteProcedure')}
       </Button>
     </main>

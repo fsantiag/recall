@@ -7,21 +7,25 @@ import type { Procedure } from '@/lib/types'
 import { ProcedureForm } from '@/components/organisms/procedure-form'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { toast } from 'sonner'
+import { procedureCache } from '@/lib/procedure-cache'
 
 export default function EditProcedurePage() {
   const params = useParams()
   const router = useRouter()
   const { t } = useTranslation()
-  const [procedure, setProcedure] = useState<Procedure | null>(null)
+  const id = params.id as string
+  const [procedure, setProcedure] = useState<Procedure | null>(
+    () => procedureCache.get(id) ?? null
+  )
 
   useEffect(() => {
-    getProcedure(params.id as string)
+    getProcedure(id)
       .then((p) => {
         if (!p) router.push('/')
         else setProcedure(p)
       })
       .catch(() => router.push('/'))
-  }, [params.id, router])
+  }, [id, router])
 
   async function handleDelete() {
     if (!procedure || !confirm(t('deleteConfirm'))) return

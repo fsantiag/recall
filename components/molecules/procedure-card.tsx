@@ -4,6 +4,7 @@ import { CheckCircle2, RotateCcw } from 'lucide-react'
 import type { Procedure } from '@/lib/types'
 import { Button } from '@/components/ui/button'
 import { useTranslation } from '@/components/organisms/language-provider'
+import { procedureCache } from '@/lib/procedure-cache'
 
 interface ProcedureCardProps {
   procedure: Procedure
@@ -38,7 +39,7 @@ export function ProcedureCard({
 
   return (
     <div className="relative rounded-[14px] border bg-card p-3.5 flex flex-col gap-2.5">
-      <Link href={`/procedures/${p.id}`} className="absolute inset-0 rounded-[14px]" aria-label={p.name} />
+      <Link href={`/procedures/${p.id}`} className="absolute inset-0 rounded-[14px]" aria-label={p.name} onClick={() => procedureCache.set(p)} />
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">
           <p className="font-semibold text-[16px] tracking-tight leading-tight truncate">{p.name}</p>

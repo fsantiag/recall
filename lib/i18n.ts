@@ -27,7 +27,7 @@ export interface Translations {
   sectionUpcoming: string; sectionEmpty: string
   overdueLabel: string; dueTodayLabel: string; thisWeekLabel: string
   // Day chip picker
-  remindInLabel: string; reminderDateLabel: string; daysLabel: string
+  remindInLabel: string; reminderDateLabel: string; daysLabel: string; reminderOn: string
   // Theme
   themeLabel: string; themeSystem: string; themeLight: string; themeDark: string
   // Notifications
@@ -123,7 +123,7 @@ const en: Translations = {
   sectionOverdue: 'Overdue', sectionToday: 'Today', sectionThisWeek: 'This week',
   sectionUpcoming: 'Upcoming', sectionEmpty: 'No billing reminders due.',
   overdueLabel: 'Overdue', dueTodayLabel: 'Due today', thisWeekLabel: 'This week',
-  remindInLabel: 'Remind me in', reminderDateLabel: 'Reminder date', daysLabel: 'days',
+  remindInLabel: 'Remind me in', reminderDateLabel: 'Reminder date', daysLabel: 'days', reminderOn: 'Reminder',
   themeLabel: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
   notificationsLabel: 'Push notifications', notificationsEnable: 'Enable',
   notificationsGranted: 'Enabled',
@@ -218,7 +218,7 @@ const ptBR: Translations = {
   sectionOverdue: 'Em atraso', sectionToday: 'Hoje', sectionThisWeek: 'Esta semana',
   sectionUpcoming: 'Próximos', sectionEmpty: 'Nenhum lembrete de cobrança pendente.',
   overdueLabel: 'Em atraso', dueTodayLabel: 'Vence hoje', thisWeekLabel: 'Esta semana',
-  remindInLabel: 'Lembrar em', reminderDateLabel: 'Data do lembrete', daysLabel: 'dias',
+  remindInLabel: 'Lembrar em', reminderDateLabel: 'Data do lembrete', daysLabel: 'dias', reminderOn: 'Lembrete',
   themeLabel: 'Aparência', themeSystem: 'Sistema', themeLight: 'Claro', themeDark: 'Escuro',
   notificationsLabel: 'Notificações push', notificationsEnable: 'Ativar',
   notificationsGranted: 'Ativado',

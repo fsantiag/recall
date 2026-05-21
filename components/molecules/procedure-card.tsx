@@ -26,8 +26,12 @@ export function ProcedureCard({
   dueLabel,
 }: ProcedureCardProps) {
   const { t } = useTranslation()
-  const dateStr = new Date(p.date).toLocaleDateString([], {
-    month: 'short', day: 'numeric', year: 'numeric',
+  const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
+  dueDate.setDate(dueDate.getDate() + p.reminderDays)
+  const dueDateStr = dueDate.toLocaleDateString([], {
+    month: 'short',
+    day: 'numeric',
+    year: dueDate.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined,
   })
 
   return (
@@ -45,7 +49,9 @@ export function ProcedureCard({
         )}
       </div>
       <div className="flex items-center justify-between pt-2.5 border-t border-dashed">
-        <p className="font-mono-rc text-[11.5px] text-ink-soft truncate">{p.payer} · {dateStr}</p>
+        <p className="font-mono-rc text-[11.5px] text-ink-soft truncate">
+          {p.payer} · {t('reminderOn')} {dueDateStr}
+        </p>
         <div className="relative flex items-center gap-1 shrink-0">
           <Button
             size="icon"

@@ -34,9 +34,20 @@ export default function EditProcedurePage() {
 
   if (!procedure) return null
 
+  const dueDate = new Date(procedure.date.slice(0, 10) + 'T00:00:00')
+  dueDate.setDate(dueDate.getDate() + procedure.reminderDays)
+  const dueDateStr = dueDate.toLocaleDateString([], {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
   return (
     <main className="container mx-auto px-4 py-6 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-6">{t('editProcedureTitle')}</h1>
+      <h1 className="text-2xl font-bold mb-1">{t('editProcedureTitle')}</h1>
+      <p className="text-[13px] text-ink-muted mb-6">
+        {t('reminderDateLabel')}: <span className="font-mono-rc font-medium text-foreground">{dueDateStr}</span>
+      </p>
       <ProcedureForm
         procedureId={procedure.id}
         defaultValues={{

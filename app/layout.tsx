@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { PinGate } from '@/components/organisms/pin-gate'
 import { SerwistRegister } from '@/components/organisms/serwist-register'
-import { Nav } from '@/components/organisms/nav'
+import { TabNav } from '@/components/organisms/tab-nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
 import { ThemeProvider } from '@/components/organisms/theme-provider'
 
@@ -23,8 +23,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LanguageProvider>
             <SerwistRegister />
             <PinGate>
-              <div className="pb-16">{children}</div>
-              <Nav />
+              <div className="pb-20">{children}</div>
+              <TabNav />
             </PinGate>
           </LanguageProvider>
         </ThemeProvider>

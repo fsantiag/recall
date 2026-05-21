@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import {
+  getAllProcedures,
   getDueProceduresGrouped,
   updateProcedure,
   snoozeProcedure,
@@ -110,13 +111,12 @@ function CardGroup({
 export function TodayScreen() {
   const { t } = useTranslation()
   const [groups, setGroups] = useState<DueGroups | null>(null)
-  const [allEmpty, setAllEmpty] = useState(false)
+  const [noProcedures, setNoProcedures] = useState(false)
 
   async function load() {
-    const g = await getDueProceduresGrouped()
+    const [g, all] = await Promise.all([getDueProceduresGrouped(), getAllProcedures()])
     setGroups(g)
-    const total = g.overdue.length + g.dueToday.length + g.thisWeek.length + g.upcoming.length
-    setAllEmpty(total === 0)
+    setNoProcedures(all.length === 0)
     fireSummaryNotification(g.overdue.length, g.dueToday.length)
   }
 
@@ -143,7 +143,7 @@ export function TodayScreen() {
   })
   const dueCount = (groups?.overdue.length ?? 0) + (groups?.dueToday.length ?? 0)
 
-  if (allEmpty) return <Onboarding t={t} />
+  if (noProcedures) return <Onboarding t={t} />
 
   return (
     <div className="min-h-screen pb-24">

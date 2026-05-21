@@ -5,6 +5,7 @@ import { PinGate } from '@/components/organisms/pin-gate'
 import { SerwistRegister } from '@/components/organisms/serwist-register'
 import { Nav } from '@/components/organisms/nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
+import { ThemeProvider } from '@/components/organisms/theme-provider'
 
 const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
 const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
@@ -18,13 +19,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <body className={`${geist.variable} ${geistMono.variable}`}>
-        <LanguageProvider>
-          <SerwistRegister />
-          <PinGate>
-            <div className="pb-16">{children}</div>
-            <Nav />
-          </PinGate>
-        </LanguageProvider>
+        <ThemeProvider>
+          <LanguageProvider>
+            <SerwistRegister />
+            <PinGate>
+              <div className="pb-16">{children}</div>
+              <Nav />
+            </PinGate>
+          </LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

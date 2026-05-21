@@ -28,10 +28,10 @@ export function ProcedureCard({
   dueLabel,
   showStatus = true,
 }: ProcedureCardProps) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
   dueDate.setDate(dueDate.getDate() + p.reminderDays)
-  const dueDateStr = dueDate.toLocaleDateString([], {
+  const dueDateStr = dueDate.toLocaleDateString(language, {
     month: 'short',
     day: 'numeric',
     year: dueDate.getFullYear() !== new Date().getFullYear() ? 'numeric' : undefined,

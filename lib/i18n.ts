@@ -4,9 +4,6 @@ export const LANGUAGE_KEY = 'recall_language'
 export const DEFAULT_LANGUAGE: Language = 'pt-BR'
 
 export interface Translations {
-  pinSetupTitle: string; pinLockTitle: string; pinLabel: string; pinConfirmLabel: string
-  pinPlaceholder: string; pinConfirmPlaceholder: string; pinTooShort: string
-  pinMismatch: string; pinIncorrect: string; pinSetButton: string; pinUnlockButton: string
   navHome: string; navAdd: string; navSettings: string; navAriaLabel: string
   navToday: string; navAll: string; navCalendar: string
   allProceduresTitle: string
@@ -15,7 +12,6 @@ export interface Translations {
   markPaid: string; markPending: string; statusPaid: string; statusPending: string
   toastMarkedPaid: string; toastMarkedPending: string
   toastProcedureSaved: string; toastProcedureUpdated: string; toastProcedureDeleted: string
-  toastPinChanged: string
   fieldProcedureName: string; fieldPatientName: string; fieldPayer: string
   fieldDateTime: string; fieldReminderDays: string; saving: string; save: string
   saveFailed: string; procedureNameRequired: string; patientNameRequired: string
@@ -23,9 +19,6 @@ export interface Translations {
   placeholderProcedureName: string; placeholderPatientName: string; placeholderPayer: string
   addProcedureTitle: string; editProcedureTitle: string; deleteProcedure: string
   deleteConfirm: string; deleteFailed: string; settingsTitle: string
-  changePinTitle: string; currentPin: string; newPin: string; confirmNewPin: string
-  currentPinIncorrect: string; newPinTooShort: string; newPinMismatch: string
-  pinChanged: string; changePinButton: string; changePinFailed: string
   languageLabel: string; languageEn: string; languagePtBR: string
   // Today sections
   sectionOverdue: string; sectionToday: string; sectionThisWeek: string
@@ -57,18 +50,6 @@ export interface Translations {
 }
 
 const en: Translations = {
-  // PIN Gate
-  pinSetupTitle: 'Set up your PIN',
-  pinLockTitle: 'Enter your PIN',
-  pinLabel: 'PIN',
-  pinConfirmLabel: 'Confirm PIN',
-  pinPlaceholder: 'Enter PIN',
-  pinConfirmPlaceholder: 'Confirm PIN',
-  pinTooShort: 'PIN must be at least 4 characters',
-  pinMismatch: 'PINs do not match',
-  pinIncorrect: 'Incorrect PIN',
-  pinSetButton: 'Set PIN',
-  pinUnlockButton: 'Unlock',
   // Nav
   navHome: 'Home',
   navAdd: 'Add',
@@ -96,7 +77,6 @@ const en: Translations = {
   toastProcedureSaved: 'Procedure saved',
   toastProcedureUpdated: 'Procedure updated',
   toastProcedureDeleted: 'Procedure deleted',
-  toastPinChanged: 'PIN updated successfully',
   // Form
   fieldProcedureName: 'Procedure Name',
   fieldPatientName: 'Patient Name',
@@ -122,16 +102,6 @@ const en: Translations = {
   deleteFailed: 'Failed to delete. Please try again.',
   // Settings
   settingsTitle: 'Settings',
-  changePinTitle: 'Change PIN',
-  currentPin: 'Current PIN',
-  newPin: 'New PIN',
-  confirmNewPin: 'Confirm New PIN',
-  currentPinIncorrect: 'Current PIN is incorrect',
-  newPinTooShort: 'New PIN must be at least 4 characters',
-  newPinMismatch: 'New PINs do not match',
-  pinChanged: 'PIN changed successfully.',
-  changePinButton: 'Change PIN',
-  changePinFailed: 'Failed to change PIN. Please try again.',
   languageLabel: 'Language',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
@@ -162,18 +132,6 @@ const en: Translations = {
 }
 
 const ptBR: Translations = {
-  // PIN Gate
-  pinSetupTitle: 'Configure seu PIN',
-  pinLockTitle: 'Digite seu PIN',
-  pinLabel: 'PIN',
-  pinConfirmLabel: 'Confirmar PIN',
-  pinPlaceholder: 'Digite o PIN',
-  pinConfirmPlaceholder: 'Confirmar PIN',
-  pinTooShort: 'O PIN deve ter pelo menos 4 caracteres',
-  pinMismatch: 'Os PINs não coincidem',
-  pinIncorrect: 'PIN incorreto',
-  pinSetButton: 'Definir PIN',
-  pinUnlockButton: 'Desbloquear',
   // Nav
   navHome: 'Início',
   navAdd: 'Adicionar',
@@ -201,7 +159,6 @@ const ptBR: Translations = {
   toastProcedureSaved: 'Procedimento salvo',
   toastProcedureUpdated: 'Procedimento atualizado',
   toastProcedureDeleted: 'Procedimento excluído',
-  toastPinChanged: 'PIN atualizado com sucesso',
   // Form
   fieldProcedureName: 'Nome do Procedimento',
   fieldPatientName: 'Nome do Paciente',
@@ -227,16 +184,6 @@ const ptBR: Translations = {
   deleteFailed: 'Falha ao excluir. Tente novamente.',
   // Settings
   settingsTitle: 'Configurações',
-  changePinTitle: 'Alterar PIN',
-  currentPin: 'PIN atual',
-  newPin: 'Novo PIN',
-  confirmNewPin: 'Confirmar novo PIN',
-  currentPinIncorrect: 'PIN atual incorreto',
-  newPinTooShort: 'O novo PIN deve ter pelo menos 4 caracteres',
-  newPinMismatch: 'Os novos PINs não coincidem',
-  pinChanged: 'PIN alterado com sucesso.',
-  changePinButton: 'Alterar PIN',
-  changePinFailed: 'Falha ao alterar o PIN. Tente novamente.',
   languageLabel: 'Idioma',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',

@@ -1,13 +1,13 @@
 import { renderHook, waitFor } from '@testing-library/react'
 import { describe, it, expect, beforeEach } from 'vitest'
-import { useFieldSuggestions } from './use-field-suggestions'
+import { useFieldSuggestions, invalidateSuggestionsCache } from './use-field-suggestions'
 import { addProcedure } from './procedures'
 import { resetDB } from './db'
 
 const BASE = { date: '2026-01-01T09:00', reminderDays: 7, status: 'pending' as const }
 
 describe('useFieldSuggestions', () => {
-  beforeEach(() => { resetDB() })
+  beforeEach(() => { resetDB(); invalidateSuggestionsCache() })
 
   it('returns empty arrays when no procedures exist', async () => {
     const { result } = renderHook(() => useFieldSuggestions())

@@ -10,11 +10,11 @@ import { toast } from 'sonner'
 function getDueDateStr(p: Procedure): string {
   const d = new Date(p.date.slice(0, 10) + 'T00:00:00')
   d.setDate(d.getDate() + p.reminderDays)
-  return d.toISOString().split('T')[0]
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
 
 export function CalendarGrid() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [procedures, setProcedures] = useState<Procedure[]>([])
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const today = useMemo(() => new Date(), [])
@@ -22,8 +22,8 @@ export function CalendarGrid() {
   const [viewMonth, setViewMonth] = useState(today.getMonth())
 
   useEffect(() => {
-    getAllProcedures().then(setProcedures).catch(() => {})
-  }, [])
+    getAllProcedures().then(setProcedures).catch(() => toast.error(t('loadError')))
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   const dueMap = useMemo(() => {
     const map: Record<string, number> = {}
@@ -38,11 +38,13 @@ export function CalendarGrid() {
   const firstDay = new Date(viewYear, viewMonth, 1)
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate()
   const startOffset = firstDay.getDay()
-  const monthLabel = firstDay.toLocaleDateString('en', { month: 'long', year: 'numeric' })
-  const todayStr = today.toISOString().split('T')[0]
+  const monthLabel = firstDay.toLocaleDateString(language, { month: 'long', year: 'numeric' })
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
 
   function prevMonth() {
     const d = new Date(viewYear, viewMonth - 1)
+    const min = new Date(today.getFullYear(), today.getMonth() - 24)
+    if (d < min) return
     setViewYear(d.getFullYear())
     setViewMonth(d.getMonth())
     setSelectedDay(null)
@@ -50,6 +52,8 @@ export function CalendarGrid() {
 
   function nextMonth() {
     const d = new Date(viewYear, viewMonth + 1)
+    const max = new Date(today.getFullYear(), today.getMonth() + 24)
+    if (d > max) return
     setViewYear(d.getFullYear())
     setViewMonth(d.getMonth())
     setSelectedDay(null)
@@ -59,9 +63,13 @@ export function CalendarGrid() {
     const p = procedures.find((x) => x.id === id)
     if (!p) return
     const newStatus = p.status === 'pending' ? 'paid' : 'pending'
-    await updateProcedure(id, { status: newStatus })
-    toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
-    getAllProcedures().then(setProcedures)
+    try {
+      await updateProcedure(id, { status: newStatus })
+      toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
+      getAllProcedures().then(setProcedures).catch(() => {})
+    } catch {
+      toast.error(t('saveFailed'))
+    }
   }
 
   const selectedProcedures = selectedDay
@@ -128,7 +136,7 @@ export function CalendarGrid() {
       {selectedDay && selectedProcedures.length > 0 && (
         <div className="mt-4 px-5 space-y-2 pb-4">
           <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-soft pt-2">
-            {new Date(selectedDay + 'T00:00:00').toLocaleDateString('en', {
+            {new Date(selectedDay + 'T00:00:00').toLocaleDateString(language, {
               weekday: 'long', month: 'long', day: 'numeric',
             })}
           </p>

@@ -12,7 +12,7 @@ import { procedureCache } from '@/lib/procedure-cache'
 export default function EditProcedurePage() {
   const params = useParams()
   const router = useRouter()
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const id = params.id as string
   const [procedure, setProcedure] = useState<Procedure | null>(
     () => procedureCache.get(id) ?? null
@@ -42,7 +42,7 @@ export default function EditProcedurePage() {
 
   const dueDate = new Date(procedure.date.slice(0, 10) + 'T00:00:00')
   dueDate.setDate(dueDate.getDate() + procedure.reminderDays)
-  const dueDateStr = dueDate.toLocaleDateString([], {
+  const dueDateStr = dueDate.toLocaleDateString(language, {
     month: 'short',
     day: 'numeric',
     year: 'numeric',

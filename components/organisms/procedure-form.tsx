@@ -1,11 +1,11 @@
 'use client'
-import { useState } from 'react'
+import { useState, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { addProcedure, updateProcedure } from '@/lib/procedures'
 import { toast } from 'sonner'
-import { useFieldSuggestions } from '@/lib/use-field-suggestions'
+import { useFieldSuggestions, invalidateSuggestionsCache } from '@/lib/use-field-suggestions'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -77,16 +77,16 @@ function ProgressBar({ step }: { step: number }) {
 }
 
 export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete }: ProcedureFormProps) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [step, setStep] = useState(1)
 
-  const schema = z.object({
-    name:         z.string().min(1, t('procedureNameRequired')),
-    patientName:  z.string().min(1, t('patientNameRequired')),
-    payer:        z.string().min(1, t('payerRequired')),
+  const schema = useMemo(() => z.object({
+    name:         z.string().min(1, t('procedureNameRequired')).max(200),
+    patientName:  z.string().min(1, t('patientNameRequired')).max(200),
+    payer:        z.string().min(1, t('payerRequired')).max(100),
     date:         z.string().min(1, t('dateRequired')),
-    reminderDays: z.number().min(1, t('reminderMinDays')),
-  })
+    reminderDays: z.number().min(1, t('reminderMinDays')).max(365),
+  }), [t])
 
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -111,7 +111,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
     if (!date) return ''
     const d = new Date(date)
     d.setDate(d.getDate() + (reminderDays || 0))
-    return d.toLocaleDateString([], { month: 'short', day: 'numeric', year: 'numeric' })
+    return d.toLocaleDateString(language, { month: 'short', day: 'numeric', year: 'numeric' })
   })()
 
   async function onSubmit(values: FormValues) {
@@ -123,6 +123,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
         await addProcedure({ ...values, status: 'pending' })
         toast.success(t('toastProcedureSaved'))
       }
+      invalidateSuggestionsCache()
       onSuccess()
     } catch {
       form.setError('root', { message: t('saveFailed') })

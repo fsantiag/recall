@@ -16,14 +16,9 @@ export async function requestNotificationPermission(): Promise<boolean> {
   return result === 'granted'
 }
 
-export function fireSummaryNotification(overdueCount: number, todayCount: number): void {
+export function fireSummaryNotification(total: number, body: string): void {
   if (!('Notification' in window) || Notification.permission !== 'granted') return
   if (!notificationsEnabled()) return
-  const total = overdueCount + todayCount
   if (total === 0) return
-  const body =
-    overdueCount > 0
-      ? `${overdueCount} overdue · ${todayCount} due today`
-      : `${todayCount} due today`
-  new Notification('Recall', { body, tag: 'recall-summary', icon: '/icon-192x192.png' })
+  new Notification('Recall', { body, tag: 'recall-summary', icon: '/icon-192.png' })
 }

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import { verifyPin, setPin } from '@/lib/pin'
 import { type Language } from '@/lib/i18n'
 import { type Theme } from '@/lib/theme'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -12,10 +11,6 @@ import {
   requestNotificationPermission,
 } from '@/lib/notifications'
 import { useInstallPrompt } from '@/lib/use-install-prompt'
-import { Button } from '@/components/ui/button'
-import { toast } from 'sonner'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
 export default function SettingsPage() {
@@ -23,27 +18,6 @@ export default function SettingsPage() {
   const { theme, setTheme } = useTheme()
   const { canInstall, isIOS, isDismissed: installDismissed, prompt: installPrompt, resetDismissed } = useInstallPrompt()
   const [notifsOn, setNotifsOn] = useState(() => notificationsEnabled())
-  const [currentPin, setCurrentPin] = useState('')
-  const [newPin, setNewPin] = useState('')
-  const [confirmPin, setConfirmPin] = useState('')
-  const [error, setError] = useState('')
-
-  async function handleChangePin(e: React.FormEvent) {
-    e.preventDefault()
-    setError('')
-    try {
-      if (!(await verifyPin(currentPin))) { setError(t('currentPinIncorrect')); return }
-      if (newPin.length < 4) { setError(t('newPinTooShort')); return }
-      if (newPin !== confirmPin) { setError(t('newPinMismatch')); return }
-      await setPin(newPin)
-      setCurrentPin('')
-      setNewPin('')
-      setConfirmPin('')
-      toast.success(t('toastPinChanged'))
-    } catch {
-      setError(t('changePinFailed'))
-    }
-  }
 
   async function handleNotifToggle() {
     if (notifsOn) {
@@ -153,46 +127,6 @@ export default function SettingsPage() {
         </CardContent>
       </Card>
 
-      {/* Change PIN */}
-      <Card>
-        <CardHeader><CardTitle>{t('changePinTitle')}</CardTitle></CardHeader>
-        <CardContent>
-          <form onSubmit={handleChangePin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="current-pin">{t('currentPin')}</Label>
-              <Input
-                id="current-pin"
-                type="password"
-                inputMode="numeric"
-                value={currentPin}
-                onChange={(e) => setCurrentPin(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="new-pin">{t('newPin')}</Label>
-              <Input
-                id="new-pin"
-                type="password"
-                inputMode="numeric"
-                value={newPin}
-                onChange={(e) => setNewPin(e.target.value)}
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="confirm-new-pin">{t('confirmNewPin')}</Label>
-              <Input
-                id="confirm-new-pin"
-                type="password"
-                inputMode="numeric"
-                value={confirmPin}
-                onChange={(e) => setConfirmPin(e.target.value)}
-              />
-            </div>
-            {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button type="submit" className="w-full">{t('changePinButton')}</Button>
-          </form>
-        </CardContent>
-      </Card>
     </main>
   )
 }

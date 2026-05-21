@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
 import {
@@ -108,18 +108,27 @@ function CardGroup({
 }
 
 export function TodayScreen() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
+  const tRef = useRef(t)
+  useEffect(() => { tRef.current = t })
   const [groups, setGroups] = useState<DueGroups | null>(null)
   const [noProcedures, setNoProcedures] = useState(false)
 
-  async function load() {
+  const load = useCallback(async () => {
     const [g, all] = await Promise.all([getDueProceduresGrouped(), getAllProcedures()])
     setGroups(g)
     setNoProcedures(all.length === 0)
-    fireSummaryNotification(g.overdue.length, g.dueToday.length)
-  }
+    const ct = tRef.current
+    const total = g.overdue.length + g.dueToday.length
+    const body = g.overdue.length > 0
+      ? `${g.overdue.length} ${ct('overdueLabel')} · ${g.dueToday.length} ${ct('dueTodayLabel')}`
+      : `${g.dueToday.length} ${ct('dueTodayLabel')}`
+    fireSummaryNotification(total, body)
+  }, [])
 
-  useEffect(() => { load().catch(() => {}) }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    load().catch(() => toast.error(tRef.current('loadError'))) // eslint-disable-line react-hooks/set-state-in-effect
+  }, [load])
 
   async function toggleStatus(id: string) {
     const all = [
@@ -131,10 +140,10 @@ export function TodayScreen() {
     const newStatus = p.status === 'pending' ? 'paid' : 'pending'
     await updateProcedure(id, { status: newStatus })
     toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
-    load()
+    load().catch(() => {})
   }
 
-  const today = new Date().toLocaleDateString('en', {
+  const today = new Date().toLocaleDateString(language, {
     weekday: 'short', month: 'short', day: 'numeric',
   })
   const dueCount = (groups?.overdue.length ?? 0) + (groups?.dueToday.length ?? 0)

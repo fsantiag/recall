@@ -28,8 +28,8 @@ export function ProcedureList() {
       await updateProcedure(id, { status: newStatus })
       setProcedures((prev) => prev.map((p) => (p.id === id ? { ...p, status: newStatus } : p)))
       toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
-    } catch (err) {
-      console.error('Failed to update procedure status:', err)
+    } catch {
+      toast.error(t('saveFailed'))
     }
   }
 

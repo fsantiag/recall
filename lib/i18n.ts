@@ -22,6 +22,29 @@ export interface Translations {
   currentPinIncorrect: string; newPinTooShort: string; newPinMismatch: string
   pinChanged: string; changePinButton: string; changePinFailed: string
   languageLabel: string; languageEn: string; languagePtBR: string
+  // Snooze
+  snooze: string; statusSnoozed: string
+  // Today sections
+  sectionOverdue: string; sectionToday: string; sectionThisWeek: string
+  sectionUpcoming: string; sectionEmpty: string
+  overdueLabel: string; dueTodayLabel: string; thisWeekLabel: string
+  // Day chip picker
+  remindInLabel: string; reminderDateLabel: string; daysLabel: string
+  // Theme
+  themeLabel: string; themeSystem: string; themeLight: string; themeDark: string
+  // Notifications
+  notificationsLabel: string; notificationsEnable: string; notificationsGranted: string
+  // Onboarding
+  onboardingHeadline: string; onboardingSubtitle: string
+  onboardingF1Title: string; onboardingF1Body: string
+  onboardingF2Title: string; onboardingF2Body: string
+  onboardingF3Title: string; onboardingF3Body: string
+  onboardingCta: string
+  // Calendar
+  calendarTitle: string; calendarNoItems: string
+  // Form steps
+  stepPatient: string; stepDetails: string; stepReview: string
+  reviewTitle: string; addAnother: string
 }
 
 const en: Translations = {
@@ -93,6 +116,23 @@ const en: Translations = {
   languageLabel: 'Language',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
+  snooze: 'Snooze 3 days', statusSnoozed: 'Snoozed',
+  sectionOverdue: 'Overdue', sectionToday: 'Today', sectionThisWeek: 'This week',
+  sectionUpcoming: 'Upcoming', sectionEmpty: 'No billing reminders due.',
+  overdueLabel: 'Overdue', dueTodayLabel: 'Due today', thisWeekLabel: 'This week',
+  remindInLabel: 'Remind me in', reminderDateLabel: 'Reminder date', daysLabel: 'days',
+  themeLabel: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
+  notificationsLabel: 'Push notifications', notificationsEnable: 'Enable',
+  notificationsGranted: 'Enabled',
+  onboardingHeadline: 'Never lose track of a follow-up.',
+  onboardingSubtitle: 'Log a procedure, set a reminder window, and get alerted when payment is due.',
+  onboardingF1Title: 'Add a procedure', onboardingF1Body: 'Record the patient, payer, and date.',
+  onboardingF2Title: 'Set a reminder window', onboardingF2Body: '3, 7, 30 days — whatever the payer requires.',
+  onboardingF3Title: 'Get alerted on time', onboardingF3Body: 'Grouped by urgency. Works offline.',
+  onboardingCta: 'Get started',
+  calendarTitle: 'Calendar', calendarNoItems: 'No reminders this month.',
+  stepPatient: 'Patient', stepDetails: 'Details', stepReview: 'Review',
+  reviewTitle: 'Review', addAnother: 'Add another',
 }
 
 const ptBR: Translations = {
@@ -164,6 +204,23 @@ const ptBR: Translations = {
   languageLabel: 'Idioma',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
+  snooze: 'Adiar 3 dias', statusSnoozed: 'Adiado',
+  sectionOverdue: 'Em atraso', sectionToday: 'Hoje', sectionThisWeek: 'Esta semana',
+  sectionUpcoming: 'Próximos', sectionEmpty: 'Nenhum lembrete de cobrança pendente.',
+  overdueLabel: 'Em atraso', dueTodayLabel: 'Vence hoje', thisWeekLabel: 'Esta semana',
+  remindInLabel: 'Lembrar em', reminderDateLabel: 'Data do lembrete', daysLabel: 'dias',
+  themeLabel: 'Aparência', themeSystem: 'Sistema', themeLight: 'Claro', themeDark: 'Escuro',
+  notificationsLabel: 'Notificações push', notificationsEnable: 'Ativar',
+  notificationsGranted: 'Ativado',
+  onboardingHeadline: 'Nunca perca uma cobrança.',
+  onboardingSubtitle: 'Registre o procedimento, defina o prazo e receba alertas quando o pagamento vencer.',
+  onboardingF1Title: 'Adicione um procedimento', onboardingF1Body: 'Registre o paciente, convênio e data.',
+  onboardingF2Title: 'Defina o prazo', onboardingF2Body: '3, 7, 30 dias — conforme o convênio exige.',
+  onboardingF3Title: 'Receba alertas no prazo', onboardingF3Body: 'Agrupado por urgência. Funciona offline.',
+  onboardingCta: 'Começar',
+  calendarTitle: 'Calendário', calendarNoItems: 'Nenhum lembrete neste mês.',
+  stepPatient: 'Paciente', stepDetails: 'Detalhes', stepReview: 'Revisão',
+  reviewTitle: 'Revisão', addAnother: 'Adicionar outro',
 }
 
 export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }

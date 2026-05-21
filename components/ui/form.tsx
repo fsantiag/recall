@@ -84,8 +84,7 @@ const FormLabel = React.forwardRef<
 })
 FormLabel.displayName = 'FormLabel'
 
-const FormControl = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-  ({ children, ...props }, _ref) => {
+const FormControl = ({ children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
     const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
     const child = React.Children.only(children) as React.ReactElement<Record<string, unknown>>
     return React.cloneElement(child, {
@@ -96,8 +95,7 @@ const FormControl = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
       'aria-invalid': !!error,
       ...props,
     })
-  }
-)
+}
 FormControl.displayName = 'FormControl'
 
 const FormDescription = React.forwardRef<

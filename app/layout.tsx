@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
 import { PinGate } from '@/components/organisms/pin-gate'
 import { SerwistRegister } from '@/components/organisms/serwist-register'
 import { Nav } from '@/components/organisms/nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
 
-const inter = Inter({ subsets: ['latin'] })
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' })
+const geistMono = Geist_Mono({ subsets: ['latin'], variable: '--font-geist-mono' })
 
 export const metadata: Metadata = {
   title: 'Recall',
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body className={inter.className}>
+      <body className={`${geist.variable} ${geistMono.variable}`}>
         <LanguageProvider>
           <SerwistRegister />
           <PinGate>

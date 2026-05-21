@@ -53,12 +53,11 @@ export function ProcedureCard({
           {p.payer} · {t('reminderOn')} {dueDateStr}
         </p>
         <div className="relative flex items-center gap-2 shrink-0">
-          <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium ${
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${
             p.status === 'paid'
               ? 'bg-sage-soft text-sage-deep'
               : 'bg-surface-alt text-ink-muted'
           }`}>
-            <span className={`w-1.5 h-1.5 rounded-full ${p.status === 'paid' ? 'bg-sage-deep' : 'bg-ink-soft'}`} />
             {p.status === 'paid' ? t('statusPaid') : t('statusPending')}
           </span>
           <Button

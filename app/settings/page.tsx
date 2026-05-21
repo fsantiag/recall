@@ -13,6 +13,7 @@ import {
 } from '@/lib/notifications'
 import { useInstallPrompt } from '@/lib/use-install-prompt'
 import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -26,12 +27,10 @@ export default function SettingsPage() {
   const [newPin, setNewPin] = useState('')
   const [confirmPin, setConfirmPin] = useState('')
   const [error, setError] = useState('')
-  const [success, setSuccess] = useState(false)
 
   async function handleChangePin(e: React.FormEvent) {
     e.preventDefault()
     setError('')
-    setSuccess(false)
     try {
       if (!(await verifyPin(currentPin))) { setError(t('currentPinIncorrect')); return }
       if (newPin.length < 4) { setError(t('newPinTooShort')); return }
@@ -40,7 +39,7 @@ export default function SettingsPage() {
       setCurrentPin('')
       setNewPin('')
       setConfirmPin('')
-      setSuccess(true)
+      toast.success(t('toastPinChanged'))
     } catch {
       setError(t('changePinFailed'))
     }
@@ -190,7 +189,6 @@ export default function SettingsPage() {
               />
             </div>
             {error && <p className="text-sm text-destructive">{error}</p>}
-            {success && <p className="text-sm text-green-600">{t('pinChanged')}</p>}
             <Button type="submit" className="w-full">{t('changePinButton')}</Button>
           </form>
         </CardContent>

@@ -6,6 +6,7 @@ import { getProcedure, deleteProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureForm } from '@/components/organisms/procedure-form'
 import { useTranslation } from '@/components/organisms/language-provider'
+import { toast } from 'sonner'
 
 export default function EditProcedurePage() {
   const params = useParams()
@@ -26,9 +27,10 @@ export default function EditProcedurePage() {
     if (!procedure || !confirm(t('deleteConfirm'))) return
     try {
       await deleteProcedure(procedure.id)
+      toast.success(t('toastProcedureDeleted'))
       router.push('/')
     } catch {
-      alert(t('deleteFailed'))
+      toast.error(t('deleteFailed'))
     }
   }
 

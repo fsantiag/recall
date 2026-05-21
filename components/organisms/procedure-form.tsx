@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { addProcedure, updateProcedure } from '@/lib/procedures'
+import { toast } from 'sonner'
 import { useFieldSuggestions } from '@/lib/use-field-suggestions'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { Button } from '@/components/ui/button'
@@ -117,8 +118,10 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
     try {
       if (procedureId) {
         await updateProcedure(procedureId, values)
+        toast.success(t('toastProcedureUpdated'))
       } else {
         await addProcedure({ ...values, status: 'pending' })
+        toast.success(t('toastProcedureSaved'))
       }
       onSuccess()
     } catch {

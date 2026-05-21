@@ -5,6 +5,7 @@ import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
+import { toast } from 'sonner'
 
 export function ProcedureList() {
   const { t } = useTranslation()
@@ -26,6 +27,7 @@ export function ProcedureList() {
     try {
       await updateProcedure(id, { status: newStatus })
       setProcedures((prev) => prev.map((p) => (p.id === id ? { ...p, status: newStatus } : p)))
+      toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
     } catch (err) {
       console.error('Failed to update procedure status:', err)
     }

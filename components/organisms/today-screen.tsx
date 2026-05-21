@@ -13,6 +13,7 @@ import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { RecallMark } from '@/components/brand/RecallMark'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { fireSummaryNotification } from '@/lib/notifications'
+import { toast } from 'sonner'
 import type { TranslationKey } from '@/lib/i18n'
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
@@ -127,7 +128,9 @@ export function TodayScreen() {
     ]
     const p = all.find((x) => x.id === id)
     if (!p) return
-    await updateProcedure(id, { status: p.status === 'pending' ? 'paid' : 'pending' })
+    const newStatus = p.status === 'pending' ? 'paid' : 'pending'
+    await updateProcedure(id, { status: newStatus })
+    toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
     load()
   }
 

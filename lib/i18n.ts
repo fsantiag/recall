@@ -13,6 +13,9 @@ export interface Translations {
   alertTitle: string; alertSingular: string; alertPlural: string
   loading: string; empty: string; loadError: string
   markPaid: string; markPending: string; statusPaid: string; statusPending: string
+  toastMarkedPaid: string; toastMarkedPending: string
+  toastProcedureSaved: string; toastProcedureUpdated: string; toastProcedureDeleted: string
+  toastPinChanged: string
   fieldProcedureName: string; fieldPatientName: string; fieldPayer: string
   fieldDateTime: string; fieldReminderDays: string; saving: string; save: string
   saveFailed: string; procedureNameRequired: string; patientNameRequired: string
@@ -88,6 +91,12 @@ const en: Translations = {
   markPending: 'Mark as pending',
   statusPaid: 'Paid',
   statusPending: 'Pending',
+  toastMarkedPaid: 'Marked as paid',
+  toastMarkedPending: 'Marked as pending',
+  toastProcedureSaved: 'Procedure saved',
+  toastProcedureUpdated: 'Procedure updated',
+  toastProcedureDeleted: 'Procedure deleted',
+  toastPinChanged: 'PIN updated successfully',
   // Form
   fieldProcedureName: 'Procedure Name',
   fieldPatientName: 'Patient Name',
@@ -187,6 +196,12 @@ const ptBR: Translations = {
   markPending: 'Marcar como pendente',
   statusPaid: 'Pago',
   statusPending: 'Pendente',
+  toastMarkedPaid: 'Marcado como pago',
+  toastMarkedPending: 'Marcado como pendente',
+  toastProcedureSaved: 'Procedimento salvo',
+  toastProcedureUpdated: 'Procedimento atualizado',
+  toastProcedureDeleted: 'Procedimento excluído',
+  toastPinChanged: 'PIN atualizado com sucesso',
   // Form
   fieldProcedureName: 'Nome do Procedimento',
   fieldPatientName: 'Nome do Paciente',

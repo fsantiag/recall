@@ -4,6 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
+import { useTranslation } from '@/components/organisms/language-provider'
+import { toast } from 'sonner'
 
 function getDueDateStr(p: Procedure): string {
   const d = new Date(p.date.slice(0, 10) + 'T00:00:00')
@@ -12,6 +14,7 @@ function getDueDateStr(p: Procedure): string {
 }
 
 export function CalendarGrid() {
+  const { t } = useTranslation()
   const [procedures, setProcedures] = useState<Procedure[]>([])
   const [selectedDay, setSelectedDay] = useState<string | null>(null)
   const today = useMemo(() => new Date(), [])
@@ -55,7 +58,9 @@ export function CalendarGrid() {
   async function toggle(id: string) {
     const p = procedures.find((x) => x.id === id)
     if (!p) return
-    await updateProcedure(id, { status: p.status === 'pending' ? 'paid' : 'pending' })
+    const newStatus = p.status === 'pending' ? 'paid' : 'pending'
+    await updateProcedure(id, { status: newStatus })
+    toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
     getAllProcedures().then(setProcedures)
   }
 

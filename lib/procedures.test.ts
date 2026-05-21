@@ -106,7 +106,8 @@ describe('getDueProceduresGrouped', () => {
 
   it('groups due-today procedures', async () => {
     const now = new Date()
-    await addProcedure({ ...BASE, date: now.toISOString().slice(0, 16), reminderDays: 0 })
+    const localNow = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+    await addProcedure({ ...BASE, date: localNow, reminderDays: 0 })
     const groups = await getDueProceduresGrouped()
     expect(groups.dueToday).toHaveLength(1)
   })

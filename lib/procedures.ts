@@ -1,6 +1,14 @@
 import { getDB } from './db'
 import type { Procedure } from './types'
 
+function localDateStr(d: Date): string {
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, '0'),
+    String(d.getDate()).padStart(2, '0'),
+  ].join('-')
+}
+
 export async function getAllProcedures(): Promise<Procedure[]> {
   const db = await getDB()
   return db.getAll('procedures')
@@ -65,10 +73,10 @@ export async function getDueProceduresGrouped(): Promise<DueGroups> {
   const procedures = await getAllProcedures()
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  const todayStr = today.toISOString().split('T')[0]
+  const todayStr = localDateStr(today)
   const weekEnd = new Date(today)
   weekEnd.setDate(weekEnd.getDate() + 7)
-  const weekEndStr = weekEnd.toISOString().split('T')[0]
+  const weekEndStr = localDateStr(weekEnd)
 
   const result: DueGroups = { overdue: [], dueToday: [], thisWeek: [], upcoming: [] }
 
@@ -76,7 +84,7 @@ export async function getDueProceduresGrouped(): Promise<DueGroups> {
     if (p.status === 'paid') continue
     const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
     dueDate.setDate(dueDate.getDate() + p.reminderDays)
-    const dueDateStr = dueDate.toISOString().split('T')[0]
+    const dueDateStr = localDateStr(dueDate)
 
     if (dueDateStr < todayStr) result.overdue.push(p)
     else if (dueDateStr === todayStr) result.dueToday.push(p)

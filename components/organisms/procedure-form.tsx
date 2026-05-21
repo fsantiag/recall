@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { addProcedure, updateProcedure } from '@/lib/procedures'
+import { useTranslation } from '@/components/organisms/language-provider'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
@@ -15,21 +16,13 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 
-const schema = z.object({
-  name: z.string().min(1, 'Procedure name is required'),
-  patientName: z.string().min(1, 'Patient name is required'),
-  payer: z.string().min(1, 'Payer is required'),
-  date: z.string().min(1, 'Date is required'),
-  reminderDays: z.string().refine(
-    (v) => {
-      const n = parseInt(v, 10)
-      return !isNaN(n) && n >= 1
-    },
-    { message: 'Must be at least 1 day' }
-  ),
-})
-
-type FormValues = z.infer<typeof schema>
+type FormValues = {
+  name: string
+  patientName: string
+  payer: string
+  date: string
+  reminderDays: string
+}
 
 interface ProcedureFormProps {
   defaultValues?: {
@@ -44,13 +37,26 @@ interface ProcedureFormProps {
 }
 
 export function ProcedureForm({ defaultValues, procedureId, onSuccess }: ProcedureFormProps) {
+  const { t } = useTranslation()
+
+  const schema = z.object({
+    name: z.string().min(1, t('procedureNameRequired')),
+    patientName: z.string().min(1, t('patientNameRequired')),
+    payer: z.string().min(1, t('payerRequired')),
+    date: z.string().min(1, t('dateRequired')),
+    reminderDays: z.string().refine(
+      (v) => { const n = parseInt(v, 10); return !isNaN(n) && n >= 1 },
+      { message: t('reminderMinDays') }
+    ),
+  })
+
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
     defaultValues: {
       name: defaultValues?.name ?? '',
       patientName: defaultValues?.patientName ?? '',
       payer: defaultValues?.payer ?? '',
-      date: defaultValues?.date ?? '',
+      date: defaultValues?.date ?? new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
       reminderDays: String(defaultValues?.reminderDays ?? 30),
     },
   })
@@ -66,7 +72,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
       }
       onSuccess()
     } catch {
-      form.setError('root', { message: 'Failed to save. Please try again.' })
+      form.setError('root', { message: t('saveFailed') })
     }
   }
 
@@ -78,8 +84,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           name="name"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Procedure Name</FormLabel>
-              <FormControl><Input placeholder="e.g. Consultation" {...field} /></FormControl>
+              <FormLabel>{t('fieldProcedureName')}</FormLabel>
+              <FormControl><Input placeholder={t('placeholderProcedureName')} {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -89,8 +95,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           name="patientName"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Patient Name</FormLabel>
-              <FormControl><Input placeholder="e.g. John Doe" {...field} /></FormControl>
+              <FormLabel>{t('fieldPatientName')}</FormLabel>
+              <FormControl><Input placeholder={t('placeholderPatientName')} {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -100,8 +106,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           name="payer"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Payer</FormLabel>
-              <FormControl><Input placeholder="e.g. Unimed" {...field} /></FormControl>
+              <FormLabel>{t('fieldPayer')}</FormLabel>
+              <FormControl><Input placeholder={t('placeholderPayer')} {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -111,8 +117,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           name="date"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Date</FormLabel>
-              <FormControl><Input type="date" {...field} /></FormControl>
+              <FormLabel>{t('fieldDateTime')}</FormLabel>
+              <FormControl><Input type="datetime-local" {...field} /></FormControl>
               <FormMessage />
             </FormItem>
           )}
@@ -122,7 +128,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           name="reminderDays"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Reminder Days</FormLabel>
+              <FormLabel>{t('fieldReminderDays')}</FormLabel>
               <FormControl><Input type="number" min={1} {...field} /></FormControl>
               <FormMessage />
             </FormItem>
@@ -132,7 +138,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess }: Procedu
           <p className="text-sm text-destructive">{form.formState.errors.root.message}</p>
         )}
         <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-          {form.formState.isSubmitting ? 'Saving...' : 'Save'}
+          {form.formState.isSubmitting ? t('saving') : t('save')}
         </Button>
       </form>
     </Form>

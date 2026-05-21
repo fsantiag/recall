@@ -4,6 +4,7 @@ import './globals.css'
 import { PinGate } from '@/components/organisms/pin-gate'
 import { SerwistRegister } from '@/components/organisms/serwist-register'
 import { Nav } from '@/components/organisms/nav'
+import { LanguageProvider } from '@/components/organisms/language-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,13 +15,15 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="pt-BR">
       <body className={inter.className}>
-        <SerwistRegister />
-        <PinGate>
-          <div className="pb-16">{children}</div>
-          <Nav />
-        </PinGate>
+        <LanguageProvider>
+          <SerwistRegister />
+          <PinGate>
+            <div className="pb-16">{children}</div>
+            <Nav />
+          </PinGate>
+        </LanguageProvider>
       </body>
     </html>
   )

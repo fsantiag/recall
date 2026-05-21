@@ -5,11 +5,13 @@ import { useRouter, useParams } from 'next/navigation'
 import { getProcedure, deleteProcedure } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
 import { ProcedureForm } from '@/components/organisms/procedure-form'
+import { useTranslation } from '@/components/organisms/language-provider'
 import { Button } from '@/components/ui/button'
 
 export default function EditProcedurePage() {
   const params = useParams()
   const router = useRouter()
+  const { t } = useTranslation()
   const [procedure, setProcedure] = useState<Procedure | null>(null)
 
   useEffect(() => {
@@ -22,12 +24,12 @@ export default function EditProcedurePage() {
   }, [params.id, router])
 
   async function handleDelete() {
-    if (!procedure || !confirm('Delete this procedure?')) return
+    if (!procedure || !confirm(t('deleteConfirm'))) return
     try {
       await deleteProcedure(procedure.id)
       router.push('/')
     } catch {
-      alert('Failed to delete. Please try again.')
+      alert(t('deleteFailed'))
     }
   }
 
@@ -35,7 +37,7 @@ export default function EditProcedurePage() {
 
   return (
     <main className="container mx-auto px-4 py-6 max-w-2xl">
-      <h1 className="text-2xl font-bold mb-6">Edit Procedure</h1>
+      <h1 className="text-2xl font-bold mb-6">{t('editProcedureTitle')}</h1>
       <ProcedureForm
         procedureId={procedure.id}
         defaultValues={{
@@ -48,7 +50,7 @@ export default function EditProcedurePage() {
         onSuccess={() => router.push('/')}
       />
       <Button variant="destructive" className="w-full mt-4" onClick={handleDelete}>
-        Delete Procedure
+        {t('deleteProcedure')}
       </Button>
     </main>
   )

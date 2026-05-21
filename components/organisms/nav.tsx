@@ -3,17 +3,20 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Home, PlusCircle, Settings } from 'lucide-react'
-
-const links = [
-  { href: '/', label: 'Home', icon: Home },
-  { href: '/procedures/new', label: 'Add', icon: PlusCircle },
-  { href: '/settings', label: 'Settings', icon: Settings },
-]
+import { useTranslation } from '@/components/organisms/language-provider'
 
 export function Nav() {
   const pathname = usePathname()
+  const { t } = useTranslation()
+
+  const links = [
+    { href: '/', label: t('navHome'), icon: Home },
+    { href: '/procedures/new', label: t('navAdd'), icon: PlusCircle },
+    { href: '/settings', label: t('navSettings'), icon: Settings },
+  ]
+
   return (
-    <nav aria-label="Main navigation" className="fixed bottom-0 left-0 right-0 border-t bg-background flex justify-around py-2">
+    <nav aria-label={t('navAriaLabel')} className="fixed bottom-0 left-0 right-0 border-t bg-background flex justify-around py-2">
       {links.map(({ href, label, icon: Icon }) => (
         <Link
           key={href}

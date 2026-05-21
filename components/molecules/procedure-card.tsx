@@ -1,48 +1,46 @@
 'use client'
 
 import Link from 'next/link'
-import { CheckCircle2 } from 'lucide-react'
+import { CheckCircle2, RotateCcw } from 'lucide-react'
 import type { Procedure } from '@/lib/types'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
+import { useTranslation } from '@/components/organisms/language-provider'
 
 interface ProcedureCardProps {
   procedure: Procedure
-  onMarkPaid: (id: string) => void
+  onToggleStatus: (id: string) => void
 }
 
-export function ProcedureCard({ procedure: p, onMarkPaid }: ProcedureCardProps) {
+export function ProcedureCard({ procedure: p, onToggleStatus }: ProcedureCardProps) {
+  const { t } = useTranslation()
   return (
-    <Card>
+    <Card className="relative">
+      <Link href={`/procedures/${p.id}`} className="absolute inset-0" aria-label={p.name} />
       <CardContent className="pt-4">
         <div className="flex items-start justify-between gap-2">
           <div className="flex-1 min-w-0">
-            <Link
-              href={`/procedures/${p.id}`}
-              className="font-medium hover:underline truncate block"
-            >
-              {p.name}
-            </Link>
+            <p className="font-medium truncate">{p.name}</p>
             <p className="text-sm text-muted-foreground">{p.patientName}</p>
             <p className="text-sm text-muted-foreground">
-              {p.payer} · {new Date(p.date + 'T00:00:00').toLocaleDateString()}
+              {p.payer} · {new Date(p.date).toLocaleString([], { dateStyle: 'short', timeStyle: 'short' })}
             </p>
           </div>
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="relative flex items-center gap-2 shrink-0">
             <Badge variant={p.status === 'paid' ? 'secondary' : 'destructive'}>
-              {p.status === 'paid' ? 'Paid' : 'Pending'}
+              {p.status === 'paid' ? t('statusPaid') : t('statusPending')}
             </Badge>
-            {p.status === 'pending' && (
-              <Button
-                size="icon"
-                variant="ghost"
-                onClick={() => onMarkPaid(p.id)}
-                aria-label="Mark as paid"
-              >
-                <CheckCircle2 className="h-4 w-4" />
-              </Button>
-            )}
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={(e) => { e.preventDefault(); onToggleStatus(p.id) }}
+              aria-label={p.status === 'pending' ? t('markPaid') : t('markPending')}
+            >
+              {p.status === 'pending'
+                ? <CheckCircle2 className="h-4 w-4" />
+                : <RotateCcw className="h-4 w-4" />}
+            </Button>
           </div>
         </div>
       </CardContent>

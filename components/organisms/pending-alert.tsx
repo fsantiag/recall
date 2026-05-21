@@ -5,8 +5,10 @@ import { AlertTriangle } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { getOverdueProcedures } from '@/lib/procedures'
 import type { Procedure } from '@/lib/types'
+import { useTranslation } from '@/components/organisms/language-provider'
 
 export function PendingAlert() {
+  const { t } = useTranslation()
   const [overdue, setOverdue] = useState<Procedure[]>([])
 
   useEffect(() => {
@@ -18,11 +20,11 @@ export function PendingAlert() {
   return (
     <Alert variant="destructive" className="mb-4">
       <AlertTriangle className="h-4 w-4" />
-      <AlertTitle>Payment Reminder</AlertTitle>
+      <AlertTitle>{t('alertTitle')}</AlertTitle>
       <AlertDescription>
         {overdue.length === 1
-          ? '1 procedure is past its claim deadline.'
-          : `${overdue.length} procedures are past their claim deadline.`}
+          ? t('alertSingular')
+          : t('alertPlural', { count: overdue.length })}
       </AlertDescription>
     </Alert>
   )

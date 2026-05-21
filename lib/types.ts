@@ -1,4 +1,4 @@
-export type ClaimStatus = 'pending' | 'paid'
+export type ClaimStatus = 'pending' | 'paid' | 'snoozed'
 
 export interface Procedure {
   id: string
@@ -8,5 +8,6 @@ export interface Procedure {
   payer: string
   status: ClaimStatus
   reminderDays: number
-  createdAt: string   // ISO datetime
+  createdAt: string     // ISO datetime
+  snoozedUntil?: string // YYYY-MM-DD, only set when status === 'snoozed'
 }

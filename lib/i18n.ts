@@ -3,7 +3,28 @@ export type Language = 'en' | 'pt-BR'
 export const LANGUAGE_KEY = 'recall_language'
 export const DEFAULT_LANGUAGE: Language = 'pt-BR'
 
-const en = {
+export interface Translations {
+  pinSetupTitle: string; pinLockTitle: string; pinLabel: string; pinConfirmLabel: string
+  pinPlaceholder: string; pinConfirmPlaceholder: string; pinTooShort: string
+  pinMismatch: string; pinIncorrect: string; pinSetButton: string; pinUnlockButton: string
+  navHome: string; navAdd: string; navSettings: string; navAriaLabel: string
+  alertTitle: string; alertSingular: string; alertPlural: string
+  loading: string; empty: string; loadError: string
+  markPaid: string; markPending: string; statusPaid: string; statusPending: string
+  fieldProcedureName: string; fieldPatientName: string; fieldPayer: string
+  fieldDateTime: string; fieldReminderDays: string; saving: string; save: string
+  saveFailed: string; procedureNameRequired: string; patientNameRequired: string
+  payerRequired: string; dateRequired: string; reminderMinDays: string
+  placeholderProcedureName: string; placeholderPatientName: string; placeholderPayer: string
+  addProcedureTitle: string; editProcedureTitle: string; deleteProcedure: string
+  deleteConfirm: string; deleteFailed: string; settingsTitle: string
+  changePinTitle: string; currentPin: string; newPin: string; confirmNewPin: string
+  currentPinIncorrect: string; newPinTooShort: string; newPinMismatch: string
+  pinChanged: string; changePinButton: string; changePinFailed: string
+  languageLabel: string; languageEn: string; languagePtBR: string
+}
+
+const en: Translations = {
   // PIN Gate
   pinSetupTitle: 'Set up your PIN',
   pinLockTitle: 'Enter your PIN',
@@ -72,9 +93,9 @@ const en = {
   languageLabel: 'Language',
   languageEn: 'English',
   languagePtBR: 'Português (Brasil)',
-} as const
+}
 
-const ptBR: typeof en = {
+const ptBR: Translations = {
   // PIN Gate
   pinSetupTitle: 'Configure seu PIN',
   pinLockTitle: 'Digite seu PIN',
@@ -145,6 +166,6 @@ const ptBR: typeof en = {
   languagePtBR: 'Português (Brasil)',
 }
 
-export const translations: Record<Language, typeof en> = { en, 'pt-BR': ptBR }
+export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }
 
-export type TranslationKey = keyof typeof en
+export type TranslationKey = keyof Translations

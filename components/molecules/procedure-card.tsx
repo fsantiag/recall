@@ -1,14 +1,13 @@
 'use client'
 import Link from 'next/link'
-import { CheckCircle2, RotateCcw } from 'lucide-react'
-import type { Procedure } from '@/lib/types'
-import { Button } from '@/components/ui/button'
+import type { Procedure, ClaimStatus } from '@/lib/types'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { procedureCache } from '@/lib/procedure-cache'
+import { StatusPicker } from '@/components/molecules/status-picker'
 
 interface ProcedureCardProps {
   procedure: Procedure
-  onToggleStatus: (id: string) => void
+  onChangeStatus: (id: string, status: ClaimStatus) => void
   dueTone?: 'danger' | 'brand' | 'sage' | 'neutral'
   dueLabel?: string
   showStatus?: boolean
@@ -23,7 +22,7 @@ const TONE_CLASSES: Record<string, string> = {
 
 export function ProcedureCard({
   procedure: p,
-  onToggleStatus,
+  onChangeStatus,
   dueTone = 'neutral',
   dueLabel,
   showStatus = true,
@@ -60,26 +59,14 @@ export function ProcedureCard({
         <p className="font-mono-rc text-[11.5px] text-ink-soft truncate">
           {p.payer} · {t('reminderOn')} {dueDateStr}
         </p>
-        <div className="relative flex items-center gap-2 shrink-0">
-          {showStatus && <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${
-            p.status === 'paid'
-              ? 'bg-sage-soft text-sage-deep'
-              : 'bg-surface-alt text-ink-muted'
-          }`}>
-            {p.status === 'paid' ? t('statusPaid') : t('statusPending')}
-          </span>}
-          <Button
-            size="icon"
-            variant="ghost"
-            className="h-8 w-8"
-            onClick={(e) => { e.preventDefault(); onToggleStatus(p.id) }}
-            aria-label={p.status === 'pending' ? t('markPaid') : t('markPending')}
-          >
-            {p.status === 'pending'
-              ? <CheckCircle2 className="h-4 w-4" />
-              : <RotateCcw className="h-4 w-4" />}
-          </Button>
-        </div>
+        {showStatus && (
+          <div className="relative shrink-0">
+            <StatusPicker
+              current={p.status}
+              onChange={(status) => onChangeStatus(p.id, status)}
+            />
+          </div>
+        )}
       </div>
     </div>
   )

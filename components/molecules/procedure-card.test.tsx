@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { screen } from '@testing-library/react'
+import { screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { renderWithProviders } from '@/lib/test-utils'
 import { ProcedureCard } from './procedure-card'
@@ -20,24 +20,26 @@ const PROC = {
 describe('ProcedureCard', () => {
   it('renders patient name and payer', () => {
     renderWithProviders(
-      <ProcedureCard procedure={PROC} onToggleStatus={vi.fn()} />
+      <ProcedureCard procedure={PROC} onChangeStatus={vi.fn()} />
     )
     expect(screen.getByText('John Doe')).toBeInTheDocument()
     expect(screen.getByText(/Unimed/)).toBeInTheDocument()
   })
 
-  it('calls onToggleStatus when check button clicked', async () => {
-    const onToggle = vi.fn()
+  it('opens status picker and calls onChangeStatus on selection', async () => {
+    const onChangeStatus = vi.fn()
     renderWithProviders(
-      <ProcedureCard procedure={PROC} onToggleStatus={onToggle} />
+      <ProcedureCard procedure={PROC} onChangeStatus={onChangeStatus} />
     )
-    await userEvent.click(screen.getByRole('button', { name: /mark as paid/i }))
-    expect(onToggle).toHaveBeenCalledWith('1')
+    await userEvent.click(screen.getByRole('button', { name: /change status/i }))
+    await waitFor(() => screen.getByText('Paid'))
+    await userEvent.click(screen.getByText('Paid'))
+    expect(onChangeStatus).toHaveBeenCalledWith('1', 'paid')
   })
 
   it('renders location and honoraryType', () => {
     renderWithProviders(
-      <ProcedureCard procedure={PROC} onToggleStatus={vi.fn()} />
+      <ProcedureCard procedure={PROC} onChangeStatus={vi.fn()} />
     )
     expect(screen.getByText(/Hospital São Lucas/)).toBeInTheDocument()
     expect(screen.getByText(/Surgeon/)).toBeInTheDocument()
@@ -46,7 +48,7 @@ describe('ProcedureCard', () => {
   it('omits info row when location and honoraryType are empty', () => {
     const proc = { ...PROC, location: '', honoraryType: '' }
     renderWithProviders(
-      <ProcedureCard procedure={proc} onToggleStatus={vi.fn()} />
+      <ProcedureCard procedure={proc} onChangeStatus={vi.fn()} />
     )
     expect(screen.queryByText(/Hospital São Lucas/)).not.toBeInTheDocument()
     expect(screen.queryByText(/Surgeon/)).not.toBeInTheDocument()

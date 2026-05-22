@@ -1,9 +1,10 @@
 import type { NextConfig } from 'next'
+import path from 'path'
 import withSerwistInit from '@serwist/next'
 
 const withSerwist = withSerwistInit({
-  swSrc: 'app/sw.ts',
-  swDest: 'public/sw.js',
+  swSrc: path.resolve('app/sw.ts'),
+  swDest: path.resolve('public/sw.js'),
   disable: process.env.NODE_ENV === 'development',
 })
 

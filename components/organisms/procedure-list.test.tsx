@@ -68,6 +68,16 @@ describe('ProcedureList search', () => {
     })
   })
 
+  it('filters by localized month name', async () => {
+    renderWithProviders(<ProcedureList />)
+    const input = await screen.findByPlaceholderText(/search procedures/i)
+    await userEvent.type(input, 'may')
+    await waitFor(() => {
+      expect(screen.getByText('Appendectomy')).toBeInTheDocument()
+      expect(screen.getByText('Consultation')).toBeInTheDocument()
+    })
+  })
+
   it('shows no-results message when nothing matches', async () => {
     renderWithProviders(<ProcedureList />)
     const input = await screen.findByPlaceholderText(/search procedures/i)

@@ -12,14 +12,17 @@ function normalize(s: string) {
   return s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 }
 
-function matchesProcedure(p: Procedure, query: string): boolean {
+function matchesProcedure(p: Procedure, query: string, language: string): boolean {
   const q = normalize(query)
-  return [p.name, p.patientName, p.payer, p.status, p.date, p.location, p.honoraryType]
+  const localizedDate = new Date(p.date).toLocaleDateString(language, {
+    day: 'numeric', month: 'long', year: 'numeric',
+  })
+  return [p.name, p.patientName, p.payer, p.status, p.date, p.location, p.honoraryType, localizedDate]
     .some((field) => normalize(field ?? '').includes(q))
 }
 
 export function ProcedureList() {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const [procedures, setProcedures] = useState<Procedure[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -59,8 +62,8 @@ export function ProcedureList() {
   }
 
   const filtered = useMemo(
-    () => (query.trim() ? procedures.filter((p) => matchesProcedure(p, query)) : procedures),
-    [procedures, query]
+    () => (query.trim() ? procedures.filter((p) => matchesProcedure(p, query, language)) : procedures),
+    [procedures, query, language]
   )
 
   if (error) return <p className="text-destructive text-sm">{error}</p>

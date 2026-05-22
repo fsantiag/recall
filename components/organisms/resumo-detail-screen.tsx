@@ -85,7 +85,7 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
 
   return (
     <div className="min-h-screen pb-24">
-      <div className="px-5 pt-14 pb-3 bg-background flex items-center gap-3">
+      <div className="px-5 pt-[max(3.5rem,env(safe-area-inset-top))] pb-3 bg-background flex items-center gap-3">
         <button
           onClick={() => router.back()}
           aria-label="Back"

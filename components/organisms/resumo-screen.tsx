@@ -155,7 +155,7 @@ export function ResumoScreen() {
 
   return (
     <div className="min-h-screen pb-24">
-      <div className="px-5 pt-14 pb-3 bg-background">
+      <div className="px-5 pt-[max(3.5rem,env(safe-area-inset-top))] pb-3 bg-background">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <RecallMark size={28} />

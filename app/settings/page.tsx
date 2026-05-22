@@ -39,7 +39,7 @@ export default function SettingsPage() {
   ]
 
   return (
-    <main className="container mx-auto px-4 pt-14 pb-6 max-w-2xl space-y-6">
+    <main className="container mx-auto px-4 pt-[max(3.5rem,env(safe-area-inset-top))] pb-6 max-w-2xl space-y-6">
       <h1 className="text-[28px] font-semibold tracking-tight">{t('settingsTitle')}</h1>
 
       {/* Appearance */}

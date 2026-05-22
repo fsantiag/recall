@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus } from 'lucide-react'
+import { Plus, ChevronDown } from 'lucide-react'
 import { getSummaryGroups, getAllProcedures, type SummaryGroups } from '@/lib/procedures'
 import { SummaryCard } from '@/components/molecules/summary-card'
 import { RecallMark } from '@/components/brand/RecallMark'
@@ -10,6 +10,51 @@ import { useTranslation } from '@/components/organisms/language-provider'
 import { fireSummaryNotification } from '@/lib/notifications'
 import { toast } from 'sonner'
 import type { TranslationKey } from '@/lib/i18n'
+
+function PayerDropdown({ payers, value, onChange, allLabel }: {
+  payers: string[]
+  value: string | null
+  onChange: (v: string | null) => void
+  allLabel: string
+}) {
+  const [open, setOpen] = useState(false)
+  const ref = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    function onOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false)
+    }
+    if (open) document.addEventListener('mousedown', onOutside)
+    return () => document.removeEventListener('mousedown', onOutside)
+  }, [open])
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        onClick={() => setOpen(o => !o)}
+        className="flex items-center gap-1.5 text-[12px] font-medium rounded-full border border-border bg-card px-3 py-1.5 text-ink-muted"
+      >
+        {value ?? allLabel}
+        <ChevronDown className={`h-3 w-3 transition-transform duration-150 ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-1.5 min-w-[160px] rounded-[12px] border border-border bg-card shadow-lg z-50 overflow-hidden">
+          {[null, ...payers].map(payer => (
+            <button
+              key={payer ?? '__all__'}
+              onClick={() => { onChange(payer); setOpen(false) }}
+              className={`w-full text-left px-4 py-2.5 text-[13px] transition-colors
+                hover:bg-surface-alt
+                ${value === payer ? 'text-primary font-semibold' : 'text-foreground'}`}
+            >
+              {payer ?? allLabel}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function Onboarding({ t }: { t: (k: TranslationKey) => string }) {
   return (
@@ -111,16 +156,12 @@ export function ResumoScreen() {
             <span className="font-semibold text-[18px] tracking-tight">Recall</span>
           </div>
           {allPayers.length > 0 && (
-            <select
-              value={selectedPayer ?? ''}
-              onChange={e => setSelectedPayer(e.target.value || null)}
-              className="text-[12px] font-medium rounded-full border border-border bg-card px-3 py-1.5 text-ink-muted focus:outline-none focus:ring-2 focus:ring-ring/50"
-            >
-              <option value="">{t('resumoFilterAll')}</option>
-              {allPayers.map(payer => (
-                <option key={payer} value={payer}>{payer}</option>
-              ))}
-            </select>
+            <PayerDropdown
+              payers={allPayers}
+              value={selectedPayer}
+              onChange={setSelectedPayer}
+              allLabel={t('resumoFilterAll')}
+            />
           )}
         </div>
         {groups && (

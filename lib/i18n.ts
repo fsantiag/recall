@@ -13,10 +13,13 @@ export interface Translations {
   toastMarkedPaid: string; toastMarkedPending: string
   toastProcedureSaved: string; toastProcedureUpdated: string; toastProcedureDeleted: string
   fieldProcedureName: string; fieldPatientName: string; fieldPayer: string
+  fieldLocation: string; fieldHonoraryType: string
   fieldDateTime: string; fieldReminderDays: string; saving: string; save: string
   saveFailed: string; procedureNameRequired: string; patientNameRequired: string
   payerRequired: string; dateRequired: string; reminderMinDays: string
   placeholderProcedureName: string; placeholderPatientName: string; placeholderPayer: string
+  placeholderLocation: string; placeholderHonoraryType: string
+  locationRequired: string; honoraryTypeRequired: string
   addProcedureTitle: string; editProcedureTitle: string; deleteProcedure: string
   deleteConfirm: string; deleteFailed: string; settingsTitle: string
   languageLabel: string; languageEn: string; languagePtBR: string
@@ -94,6 +97,12 @@ const en: Translations = {
   placeholderProcedureName: 'e.g. Consultation',
   placeholderPatientName: 'e.g. John Doe',
   placeholderPayer: 'e.g. Insurance',
+  fieldLocation: 'Location',
+  fieldHonoraryType: 'Fee Type',
+  placeholderLocation: 'e.g. Hospital São Lucas',
+  placeholderHonoraryType: 'e.g. Surgeon',
+  locationRequired: 'Location is required',
+  honoraryTypeRequired: 'Fee type is required',
   // Pages
   addProcedureTitle: 'Add Procedure',
   editProcedureTitle: 'Edit Procedure',
@@ -176,6 +185,12 @@ const ptBR: Translations = {
   placeholderProcedureName: 'ex.: Consulta',
   placeholderPatientName: 'ex.: João Silva',
   placeholderPayer: 'ex.: Unimed',
+  fieldLocation: 'Local',
+  fieldHonoraryType: 'Tipo de Honorário',
+  placeholderLocation: 'ex.: Hospital São Lucas',
+  placeholderHonoraryType: 'ex.: Cirurgião',
+  locationRequired: 'Local é obrigatório',
+  honoraryTypeRequired: 'Tipo de honorário é obrigatório',
   // Pages
   addProcedureTitle: 'Adicionar Procedimento',
   editProcedureTitle: 'Editar Procedimento',

@@ -14,6 +14,8 @@ const BASE = {
   name: 'Consultation',
   patientName: 'John Doe',
   payer: 'Unimed',
+  location: 'Hospital A',
+  honoraryType: 'Cirurgião',
   status: 'pending' as const,
   reminderDays: 30,
 }

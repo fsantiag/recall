@@ -4,7 +4,7 @@ import { useFieldSuggestions, invalidateSuggestionsCache } from './use-field-sug
 import { addProcedure } from './procedures'
 import { resetDB } from './db'
 
-const BASE = { date: '2026-01-01T09:00', reminderDays: 7, status: 'pending' as const }
+const BASE = { date: '2026-01-01T09:00', reminderDays: 7, status: 'pending' as const, location: 'Hospital A', honoraryType: 'Cirurgião' }
 
 describe('useFieldSuggestions', () => {
   beforeEach(() => { resetDB(); invalidateSuggestionsCache() })

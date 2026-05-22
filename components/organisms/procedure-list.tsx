@@ -14,11 +14,15 @@ function normalize(s: string) {
 
 function matchesProcedure(p: Procedure, query: string, language: string): boolean {
   const q = normalize(query)
-  const localizedDate = new Date(p.date).toLocaleDateString(language, {
-    day: 'numeric', month: 'long', year: 'numeric',
-  })
-  return [p.name, p.patientName, p.payer, p.status, p.date, p.location, p.honoraryType, localizedDate]
-    .some((field) => normalize(field ?? '').includes(q))
+  const fmt = (d: Date) => d.toLocaleDateString(language, { day: 'numeric', month: 'long', year: 'numeric' })
+  const procedureDate = new Date(p.date)
+  const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
+  dueDate.setDate(dueDate.getDate() + p.reminderDays)
+  return [
+    p.name, p.patientName, p.payer, p.status, p.date,
+    p.location, p.honoraryType,
+    fmt(procedureDate), fmt(dueDate),
+  ].some((field) => normalize(field ?? '').includes(q))
 }
 
 export function ProcedureList() {

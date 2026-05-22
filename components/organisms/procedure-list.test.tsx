@@ -68,6 +68,19 @@ describe('ProcedureList search', () => {
     })
   })
 
+  it('filters by due date month when different from procedure date month', async () => {
+    // date = May, reminderDays = 40 → due date falls in June
+    await addProcedure({ ...BASE, name: 'MRI Scan', reminderDays: 40 })
+    renderWithProviders(<ProcedureList />)
+    const input = await screen.findByPlaceholderText(/search procedures/i)
+    await userEvent.type(input, 'june')
+    await waitFor(() => {
+      expect(screen.getByText('MRI Scan')).toBeInTheDocument()
+      expect(screen.queryByText('Appendectomy')).not.toBeInTheDocument()
+      expect(screen.queryByText('Consultation')).not.toBeInTheDocument()
+    })
+  })
+
   it('filters by localized month name', async () => {
     renderWithProviders(<ProcedureList />)
     const input = await screen.findByPlaceholderText(/search procedures/i)

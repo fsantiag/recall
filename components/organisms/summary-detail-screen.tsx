@@ -19,16 +19,16 @@ const CATEGORY_CONFIG: Record<Category, {
   emptyKey: TranslationKey
   extract: (g: SummaryGroups) => Procedure[]
 }> = {
-  'full-denial':    { labelKey: 'resumoFullDenial',    emptyKey: 'resumoEmptyFullDenial',    extract: g => g.fullDenial    },
-  'partial-denial': { labelKey: 'resumoPartialDenial', emptyKey: 'resumoEmptyPartialDenial', extract: g => g.partialDenial },
-  'overdue':        { labelKey: 'resumoOverdue',       emptyKey: 'resumoEmptyOverdue',       extract: g => g.overdue       },
-  'paid':           { labelKey: 'resumoPaid',          emptyKey: 'resumoEmptyPaid',          extract: g => g.paid          },
-  'pending':        { labelKey: 'resumoPending',       emptyKey: 'resumoEmptyPending',       extract: g => g.pending       },
+  'full-denial':    { labelKey: 'summaryFullDenial',    emptyKey: 'summaryEmptyFullDenial',    extract: g => g.fullDenial    },
+  'partial-denial': { labelKey: 'summaryPartialDenial', emptyKey: 'summaryEmptyPartialDenial', extract: g => g.partialDenial },
+  'overdue':        { labelKey: 'summaryOverdue',       emptyKey: 'summaryEmptyOverdue',       extract: g => g.overdue       },
+  'paid':           { labelKey: 'summaryPaid',          emptyKey: 'summaryEmptyPaid',          extract: g => g.paid          },
+  'pending':        { labelKey: 'summaryPending',       emptyKey: 'summaryEmptyPending',       extract: g => g.pending       },
 }
 
 interface Props { category: string; initialPayer: string | null }
 
-export function ResumoDetailScreen({ category, initialPayer }: Props) {
+export function SummaryDetailScreen({ category, initialPayer }: Props) {
   const { t, language } = useTranslation()
   const router = useRouter()
   const [procedures, setProcedures] = useState<Procedure[]>([])

@@ -29,15 +29,15 @@ export interface Translations {
   sectionOverdue: string; sectionToday: string; sectionThisWeek: string
   sectionUpcoming: string; sectionEmpty: string
   overdueLabel: string; dueTodayLabel: string; thisWeekLabel: string
-  // Resumo dashboard
-  navResume: string
-  resumoFullDenial: string; resumoPartialDenial: string
-  resumoOverdue: string; resumoPaid: string
-  resumoEmptyFullDenial: string; resumoEmptyPartialDenial: string
-  resumoEmptyOverdue: string; resumoEmptyPaid: string
-  resumoPending: string; resumoEmptyPending: string
-  resumoFilterAll: string
-  resumoTotalLabel: string
+  // Summary dashboard
+  navSummary: string
+  summaryFullDenial: string; summaryPartialDenial: string
+  summaryOverdue: string; summaryPaid: string
+  summaryEmptyFullDenial: string; summaryEmptyPartialDenial: string
+  summaryEmptyOverdue: string; summaryEmptyPaid: string
+  summaryPending: string; summaryEmptyPending: string
+  summaryFilterAll: string
+  summaryTotalLabel: string
   pdfDownload: string; pdfGeneratedOn: string; pdfAllPayers: string
   pdfColPatient: string; pdfColProcedure: string; pdfColLocation: string
   pdfColFeeType: string; pdfColPayer: string; pdfColDate: string; pdfColStatus: string
@@ -138,16 +138,16 @@ const en: Translations = {
   sectionOverdue: 'Overdue', sectionToday: 'Today', sectionThisWeek: 'This week',
   sectionUpcoming: 'Upcoming', sectionEmpty: 'No billing reminders due.',
   overdueLabel: 'Overdue', dueTodayLabel: 'Due today', thisWeekLabel: 'This week',
-  navResume: 'Summary',
-  resumoFullDenial: 'Full Denial', resumoPartialDenial: 'Partial Denial',
-  resumoOverdue: 'Overdue', resumoPaid: 'Paid',
-  resumoEmptyFullDenial: 'No full denials. Nice work.',
-  resumoEmptyPartialDenial: 'No partial denials.',
-  resumoEmptyOverdue: 'Nothing overdue.',
-  resumoEmptyPaid: 'No paid procedures yet.',
-  resumoPending: 'Pending', resumoEmptyPending: 'No pending procedures.',
-  resumoFilterAll: 'All',
-  resumoTotalLabel: 'procedures',
+  navSummary: 'Summary',
+  summaryFullDenial: 'Full Denial', summaryPartialDenial: 'Partial Denial',
+  summaryOverdue: 'Overdue', summaryPaid: 'Paid',
+  summaryEmptyFullDenial: 'No full denials. Nice work.',
+  summaryEmptyPartialDenial: 'No partial denials.',
+  summaryEmptyOverdue: 'Nothing overdue.',
+  summaryEmptyPaid: 'No paid procedures yet.',
+  summaryPending: 'Pending', summaryEmptyPending: 'No pending procedures.',
+  summaryFilterAll: 'All',
+  summaryTotalLabel: 'procedures',
   pdfDownload: 'Export PDF', pdfGeneratedOn: 'Generated on', pdfAllPayers: 'All payers',
   pdfColPatient: 'Patient', pdfColProcedure: 'Procedure', pdfColLocation: 'Location',
   pdfColFeeType: 'Fee Type', pdfColPayer: 'Payer', pdfColDate: 'Date', pdfColStatus: 'Status',
@@ -245,16 +245,16 @@ const ptBR: Translations = {
   sectionOverdue: 'Em atraso', sectionToday: 'Hoje', sectionThisWeek: 'Esta semana',
   sectionUpcoming: 'Próximos', sectionEmpty: 'Nenhum lembrete de cobrança pendente.',
   overdueLabel: 'Em atraso', dueTodayLabel: 'Vence hoje', thisWeekLabel: 'Esta semana',
-  navResume: 'Resumo',
-  resumoFullDenial: 'Glosa Completa', resumoPartialDenial: 'Glosa Parcial',
-  resumoOverdue: 'Em Atraso', resumoPaid: 'Pago',
-  resumoEmptyFullDenial: 'Nenhuma glosa completa. Ótimo trabalho.',
-  resumoEmptyPartialDenial: 'Nenhuma glosa parcial.',
-  resumoEmptyOverdue: 'Nada em atraso.',
-  resumoEmptyPaid: 'Nenhum procedimento pago ainda.',
-  resumoPending: 'Pendente', resumoEmptyPending: 'Nenhum procedimento pendente.',
-  resumoFilterAll: 'Todos',
-  resumoTotalLabel: 'procedimentos',
+  navSummary: 'Resumo',
+  summaryFullDenial: 'Glosa Completa', summaryPartialDenial: 'Glosa Parcial',
+  summaryOverdue: 'Em Atraso', summaryPaid: 'Pago',
+  summaryEmptyFullDenial: 'Nenhuma glosa completa. Ótimo trabalho.',
+  summaryEmptyPartialDenial: 'Nenhuma glosa parcial.',
+  summaryEmptyOverdue: 'Nada em atraso.',
+  summaryEmptyPaid: 'Nenhum procedimento pago ainda.',
+  summaryPending: 'Pendente', summaryEmptyPending: 'Nenhum procedimento pendente.',
+  summaryFilterAll: 'Todos',
+  summaryTotalLabel: 'procedimentos',
   pdfDownload: 'Exportar PDF', pdfGeneratedOn: 'Gerado em', pdfAllPayers: 'Todos os convênios',
   pdfColPatient: 'Paciente', pdfColProcedure: 'Procedimento', pdfColLocation: 'Local',
   pdfColFeeType: 'Tipo de Honorário', pdfColPayer: 'Convênio', pdfColDate: 'Data', pdfColStatus: 'Status',

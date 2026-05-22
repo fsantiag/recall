@@ -100,7 +100,7 @@ function Onboarding({ t }: { t: (k: TranslationKey) => string }) {
   )
 }
 
-export function ResumoScreen() {
+export function SummaryScreen() {
   const { t } = useTranslation()
   const tRef = useRef(t)
   useEffect(() => { tRef.current = t })
@@ -126,7 +126,7 @@ export function ResumoScreen() {
   }
 
   function routeFor(category: string) {
-    const base = `/resumo/${category}`
+    const base = `/summary/${category}`
     return selectedPayer ? `${base}?payer=${encodeURIComponent(selectedPayer)}` : base
   }
 
@@ -137,7 +137,7 @@ export function ResumoScreen() {
     const ct = tRef.current
     fireSummaryNotification(
       g.overdue.length,
-      `${g.overdue.length} ${ct('resumoOverdue')}`,
+      `${g.overdue.length} ${ct('summaryOverdue')}`,
     )
   }, [])
 
@@ -166,7 +166,7 @@ export function ResumoScreen() {
               payers={allPayers}
               value={selectedPayer}
               onChange={setSelectedPayer}
-              allLabel={t('resumoFilterAll')}
+              allLabel={t('summaryFilterAll')}
             />
           )}
         </div>
@@ -178,7 +178,7 @@ export function ResumoScreen() {
               ...groups.overdue,
               ...groups.paid,
               ...groups.pending,
-            ])} {t('resumoTotalLabel')}
+            ])} {t('summaryTotalLabel')}
           </p>
         )}
       </div>
@@ -186,32 +186,32 @@ export function ResumoScreen() {
       <div className="grid grid-cols-2 gap-3 px-5 py-4">
         <SummaryCard
           count={countFor(groups?.fullDenial ?? [])}
-          label={t('resumoFullDenial')}
+          label={t('summaryFullDenial')}
           tone="red"
           onClick={() => router.push(routeFor('full-denial'))}
         />
         <SummaryCard
           count={countFor(groups?.partialDenial ?? [])}
-          label={t('resumoPartialDenial')}
+          label={t('summaryPartialDenial')}
           tone="amber"
           onClick={() => router.push(routeFor('partial-denial'))}
         />
         <SummaryCard
           count={countFor(groups?.overdue ?? [])}
-          label={t('resumoOverdue')}
+          label={t('summaryOverdue')}
           tone="orange"
           onClick={() => router.push(routeFor('overdue'))}
         />
         <SummaryCard
           count={countFor(groups?.paid ?? [])}
-          label={t('resumoPaid')}
+          label={t('summaryPaid')}
           tone="green"
           onClick={() => router.push(routeFor('paid'))}
         />
         <div className="col-span-2">
           <SummaryCard
             count={countFor(groups?.pending ?? [])}
-            label={t('resumoPending')}
+            label={t('summaryPending')}
             tone="brand"
             onClick={() => router.push(routeFor('pending'))}
           />

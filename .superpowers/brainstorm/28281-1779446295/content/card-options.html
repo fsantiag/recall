@@ -1,0 +1,290 @@
+<style>
+  .preview-area {
+    padding: 16px 0;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #8e99a5;
+    margin-bottom: 12px;
+  }
+
+  /* Card mockup */
+  .rc-card {
+    background: white;
+    border: 1px solid #d6dce0;
+    border-radius: 14px;
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-family: 'Geist', system-ui, -apple-system, sans-serif;
+    max-width: 420px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  }
+  .card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+  }
+  .card-name {
+    font-weight: 600;
+    font-size: 16px;
+    color: #1c2333;
+    letter-spacing: -0.01em;
+  }
+  .card-patient {
+    font-size: 13px;
+    color: #677080;
+    margin-top: 2px;
+  }
+  .card-badge-neutral {
+    background: #eef1f4;
+    color: #677080;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .card-badge-brand {
+    background: #e3f0f4;
+    color: #2e6b7a;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .card-badge-danger {
+    background: #fde8e4;
+    color: #b94a30;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px dashed #d6dce0;
+  }
+  .card-meta {
+    font-family: 'Geist Mono', 'SF Mono', monospace;
+    font-size: 11.5px;
+    color: #8e99a5;
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .card-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .card-status-paid {
+    background: #e8f5ee;
+    color: #2d7a5a;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .card-status-pending {
+    background: #eef1f4;
+    color: #677080;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+  .card-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    border: none;
+    background: transparent;
+    color: #677080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 14px;
+  }
+
+  /* Middle row variant */
+  .card-info-row {
+    font-family: 'Geist Mono', 'SF Mono', monospace;
+    font-size: 11.5px;
+    color: #8e99a5;
+  }
+
+  /* Pill/chip variant */
+  .card-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  .chip {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #eef1f4;
+    color: #677080;
+  }
+
+  /* Search bar mockup */
+  .search-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    border: 1px solid #d6dce0;
+    border-radius: 10px;
+    padding: 8px 12px;
+    max-width: 420px;
+    margin-bottom: 16px;
+  }
+  .search-icon {
+    color: #8e99a5;
+    flex-shrink: 0;
+  }
+  .search-input-mock {
+    flex: 1;
+    font-size: 14px;
+    color: #1c2333;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: system-ui, sans-serif;
+  }
+  .search-input-mock::placeholder { color: #8e99a5; }
+  .search-clear {
+    color: #8e99a5;
+    flex-shrink: 0;
+    font-size: 14px;
+  }
+
+  .spacer { height: 24px; }
+  .divider { height: 1px; background: #eef1f4; margin: 24px 0; }
+</style>
+
+<h2>Card layout + search bar</h2>
+<p class="subtitle">How should Location and Honorary Type appear on procedure cards? Pick the layout you prefer.</p>
+
+<!-- Search bar preview (same in all options) -->
+<div class="preview-area">
+  <p class="section-label">Search bar (same for all options)</p>
+  <div class="search-bar">
+    <span class="search-icon">
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M10 6.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0ZM9.5 10.207l3.146 3.147-.707.707L8.793 10.9A4.5 4.5 0 1 1 9.5 10.207Z" fill="currentColor"/></svg>
+    </span>
+    <span class="search-input-mock">Search procedures…</span>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<div class="cards">
+
+  <!-- Option A: Inline in footer -->
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px;">
+      <p class="section-label" style="margin-bottom:10px">Option A — compact inline</p>
+      <div class="rc-card">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Appendectomy</div>
+            <div class="card-patient">João Silva</div>
+          </div>
+          <span class="card-badge-danger">Overdue</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">Unimed · Hospital São Lucas · Surgeon · Due 2 jun</div>
+          <div class="card-actions">
+            <span class="card-status-pending">Pending</span>
+            <button class="card-btn">✓</button>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#8e99a5;margin-top:10px;">All metadata on one line in footer. Gets long on small screens.</p>
+    </div>
+    <div class="card-body">
+      <h3>Compact inline</h3>
+      <p>Location and type join payer in the footer row. Clean but can truncate on narrow screens.</p>
+    </div>
+  </div>
+
+  <!-- Option B: Dedicated info row -->
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px;">
+      <p class="section-label" style="margin-bottom:10px">Option B — dedicated row (recommended)</p>
+      <div class="rc-card">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Appendectomy</div>
+            <div class="card-patient">João Silva</div>
+          </div>
+          <span class="card-badge-danger">Overdue</span>
+        </div>
+        <div class="card-info-row">Hospital São Lucas · Surgeon</div>
+        <div class="card-footer">
+          <div class="card-meta">Unimed · Due 2 jun</div>
+          <div class="card-actions">
+            <span class="card-status-pending">Pending</span>
+            <button class="card-btn">✓</button>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#8e99a5;margin-top:10px;">Location + type on their own row, payer + date stay in footer.</p>
+    </div>
+    <div class="card-body">
+      <h3>Dedicated row</h3>
+      <p>A second metadata line between the name block and the footer. Each piece of info has room to breathe.</p>
+    </div>
+  </div>
+
+  <!-- Option C: Pills/chips -->
+  <div class="card" data-choice="c" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 16px;">
+      <p class="section-label" style="margin-bottom:10px">Option C — tag chips</p>
+      <div class="rc-card">
+        <div class="card-top">
+          <div>
+            <div class="card-name">Appendectomy</div>
+            <div class="card-patient">João Silva</div>
+            <div class="card-chips">
+              <span class="chip">Hospital São Lucas</span>
+              <span class="chip">Surgeon</span>
+            </div>
+          </div>
+          <span class="card-badge-danger">Overdue</span>
+        </div>
+        <div class="card-footer">
+          <div class="card-meta">Unimed · Due 2 jun</div>
+          <div class="card-actions">
+            <span class="card-status-pending">Pending</span>
+            <button class="card-btn">✓</button>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:#8e99a5;margin-top:10px;">Location and type as pill badges inside the name block.</p>
+    </div>
+    <div class="card-body">
+      <h3>Tag chips</h3>
+      <p>Location and honorary type as small badge pills below the patient name. More visual weight, easier to scan at a glance.</p>
+    </div>
+  </div>
+
+</div>

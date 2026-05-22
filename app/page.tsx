@@ -1,5 +1,5 @@
-import { ResumoScreen } from '@/components/organisms/resumo-screen'
+import { SummaryScreen } from '@/components/organisms/summary-screen'
 
 export default function HomePage() {
-  return <ResumoScreen />
+  return <SummaryScreen />
 }

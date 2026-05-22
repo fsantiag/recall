@@ -76,6 +76,8 @@
   --rc-warn-soft:     oklch(0.96 0.05 85);
   --rc-danger:        oklch(0.58 0.135 25);
   --rc-danger-soft:   oklch(0.95 0.04 25);
+  --rc-orange:        oklch(0.65 0.145 50);
+  --rc-orange-soft:   oklch(0.95 0.05 55);
 
   /* shadcn vars mapped to RC tokens */
   --background:           var(--rc-bg);
@@ -133,6 +135,8 @@
   --rc-warn-soft:     oklch(0.32 0.055 75);
   --rc-danger:        oklch(0.74 0.115 25);
   --rc-danger-soft:   oklch(0.32 0.060 25);
+  --rc-orange:        oklch(0.78 0.13 50);
+  --rc-orange-soft:   oklch(0.30 0.06 50);
 }
 
 @layer base {
@@ -159,4 +163,8 @@
 .text-sage-deep { color: var(--rc-sage-deep); }
 .text-danger    { color: var(--rc-danger); }
 .text-warn      { color: var(--rc-warn); }
-.text-brand     { color: var(--rc-brand); }
+.text-brand      { color: var(--rc-brand); }
+.bg-orange-soft  { background-color: var(--rc-orange-soft); }
+.text-orange     { color: var(--rc-orange); }
+.bg-success-soft { background-color: var(--rc-success-soft); }
+.text-success    { color: var(--rc-success); }

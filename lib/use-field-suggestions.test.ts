@@ -15,6 +15,8 @@ describe('useFieldSuggestions', () => {
       expect(result.current.patientNames).toEqual([])
       expect(result.current.procedureNames).toEqual([])
       expect(result.current.payers).toEqual([])
+      expect(result.current.locations).toEqual([])
+      expect(result.current.honoraryTypes).toEqual([])
     })
   })
 
@@ -48,6 +50,28 @@ describe('useFieldSuggestions', () => {
     const { result } = renderHook(() => useFieldSuggestions())
     await waitFor(() => {
       expect(result.current.payers).toEqual(['Bradesco', 'Unimed'])
+    })
+  })
+
+  it('returns deduplicated sorted locations', async () => {
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', location: 'Hospital B' })
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', location: 'Hospital A' })
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', location: 'Hospital B' })
+
+    const { result } = renderHook(() => useFieldSuggestions())
+    await waitFor(() => {
+      expect(result.current.locations).toEqual(['Hospital A', 'Hospital B'])
+    })
+  })
+
+  it('returns deduplicated sorted honoraryTypes', async () => {
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', honoraryType: 'Anestesista' })
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', honoraryType: 'Cirurgião' })
+    await addProcedure({ ...BASE, name: 'C', patientName: 'Ana', payer: 'U', honoraryType: 'Anestesista' })
+
+    const { result } = renderHook(() => useFieldSuggestions())
+    await waitFor(() => {
+      expect(result.current.honoraryTypes).toEqual(['Anestesista', 'Cirurgião'])
     })
   })
 })

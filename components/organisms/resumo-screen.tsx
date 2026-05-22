@@ -2,7 +2,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Plus, ChevronDown } from 'lucide-react'
+import { Plus, ChevronDown, Loader2 } from 'lucide-react'
 import { getSummaryGroups, getAllProcedures, type SummaryGroups } from '@/lib/procedures'
 import { SummaryCard } from '@/components/molecules/summary-card'
 import { RecallMark } from '@/components/brand/RecallMark'
@@ -144,6 +144,12 @@ export function ResumoScreen() {
   useEffect(() => {
     load().catch(() => toast.error(tRef.current('loadError'))) // eslint-disable-line react-hooks/set-state-in-effect
   }, [load])
+
+  if (groups === null) return (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+    </div>
+  )
 
   if (noProcedures) return <Onboarding t={t} />
 

@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Search, X } from 'lucide-react'
+import { Search, X, Loader2 } from 'lucide-react'
 import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure, ClaimStatus } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
@@ -68,7 +68,7 @@ export function ProcedureList() {
   )
 
   if (error) return <p className="text-destructive text-sm">{error}</p>
-  if (loading) return <p className="text-muted-foreground text-sm">{t('loading')}</p>
+  if (loading) return <div className="flex justify-center pt-20"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>
 
   return (
     <div>

@@ -1,7 +1,7 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft, FileDown } from 'lucide-react'
+import { ChevronLeft, FileDown, Loader2 } from 'lucide-react'
 import { getSummaryGroups, updateProcedure } from '@/lib/procedures'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -32,6 +32,7 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
   const { t, language } = useTranslation()
   const router = useRouter()
   const [procedures, setProcedures] = useState<Procedure[]>([])
+  const [loading, setLoading] = useState(true)
 
   const config = CATEGORY_CONFIG[category as Category]
 
@@ -42,7 +43,9 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
   }, [category, config])
 
   useEffect(() => {
-    load().catch(() => toast.error(t('loadError')))
+    load()
+      .catch(() => toast.error(t('loadError')))
+      .finally(() => setLoading(false))
   }, [load, t])
 
   async function exportPDF() {
@@ -112,7 +115,11 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
         </div>
       </div>
 
-      {visible.length === 0 ? (
+      {loading ? (
+        <div className="flex justify-center pt-20">
+          <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+        </div>
+      ) : visible.length === 0 ? (
         <p className="px-5 pt-8 text-center text-ink-muted text-[15px]">
           {t(config.emptyKey)}
         </p>

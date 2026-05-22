@@ -5,7 +5,6 @@ import { TabNav } from '@/components/organisms/tab-nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
 import { ThemeProvider } from '@/components/organisms/theme-provider'
 import { InstallBanner } from '@/components/organisms/install-banner'
-import { PageTransition } from '@/components/organisms/page-transition'
 import { Toaster } from 'sonner'
 
 export const viewport: Viewport = {
@@ -33,7 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LanguageProvider>
             <SerwistRegister />
             <InstallBanner />
-            <PageTransition>{children}</PageTransition>
+            <div className="pb-20">{children}</div>
             <TabNav />
           </LanguageProvider>
         </ThemeProvider>

@@ -10,7 +10,7 @@ export interface Translations {
   alertTitle: string; alertSingular: string; alertPlural: string
   loading: string; empty: string; loadError: string
   markPaid: string; markPending: string; statusPaid: string; statusPending: string
-  statusPartiallyPaid: string; statusPartialDenial: string; statusFullDenial: string
+  statusPartialDenial: string; statusFullDenial: string
   changeStatus: string; toastStatusUpdated: string
   toastMarkedPaid: string; toastMarkedPending: string
   toastProcedureSaved: string; toastProcedureUpdated: string; toastProcedureDeleted: string
@@ -29,6 +29,13 @@ export interface Translations {
   sectionOverdue: string; sectionToday: string; sectionThisWeek: string
   sectionUpcoming: string; sectionEmpty: string
   overdueLabel: string; dueTodayLabel: string; thisWeekLabel: string
+  // Resumo dashboard
+  navResume: string
+  resumoFullDenial: string; resumoPartialDenial: string
+  resumoOverdue: string; resumoPaid: string
+  resumoEmptyFullDenial: string; resumoEmptyPartialDenial: string
+  resumoEmptyOverdue: string; resumoEmptyPaid: string
+  resumoFilterAll: string
   // Day chip picker
   remindInLabel: string; reminderDateLabel: string; daysLabel: string; reminderOn: string
   // Theme
@@ -80,7 +87,6 @@ const en: Translations = {
   markPending: 'Mark as pending',
   statusPaid: 'Paid',
   statusPending: 'Pending',
-  statusPartiallyPaid: 'Partially Paid',
   statusPartialDenial: 'Partial Denial',
   statusFullDenial: 'Full Denial',
   changeStatus: 'Change Status',
@@ -127,6 +133,14 @@ const en: Translations = {
   sectionOverdue: 'Overdue', sectionToday: 'Today', sectionThisWeek: 'This week',
   sectionUpcoming: 'Upcoming', sectionEmpty: 'No billing reminders due.',
   overdueLabel: 'Overdue', dueTodayLabel: 'Due today', thisWeekLabel: 'This week',
+  navResume: 'Summary',
+  resumoFullDenial: 'Full Denial', resumoPartialDenial: 'Partial Denial',
+  resumoOverdue: 'Overdue', resumoPaid: 'Paid',
+  resumoEmptyFullDenial: 'No full denials. Nice work.',
+  resumoEmptyPartialDenial: 'No partial denials.',
+  resumoEmptyOverdue: 'Nothing overdue.',
+  resumoEmptyPaid: 'No paid procedures yet.',
+  resumoFilterAll: 'All',
   remindInLabel: 'Due in', reminderDateLabel: 'Due date', daysLabel: 'days', reminderOn: 'Due',
   themeLabel: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
   notificationsLabel: 'Push notifications', notificationsEnable: 'Enable',
@@ -175,7 +189,6 @@ const ptBR: Translations = {
   markPending: 'Marcar como pendente',
   statusPaid: 'Pago',
   statusPending: 'Pendente',
-  statusPartiallyPaid: 'Parcialmente Pago',
   statusPartialDenial: 'Glosa Parcial',
   statusFullDenial: 'Glosa Completa',
   changeStatus: 'Alterar Status',
@@ -222,6 +235,14 @@ const ptBR: Translations = {
   sectionOverdue: 'Em atraso', sectionToday: 'Hoje', sectionThisWeek: 'Esta semana',
   sectionUpcoming: 'Próximos', sectionEmpty: 'Nenhum lembrete de cobrança pendente.',
   overdueLabel: 'Em atraso', dueTodayLabel: 'Vence hoje', thisWeekLabel: 'Esta semana',
+  navResume: 'Resumo',
+  resumoFullDenial: 'Glosa Completa', resumoPartialDenial: 'Glosa Parcial',
+  resumoOverdue: 'Em Atraso', resumoPaid: 'Pago',
+  resumoEmptyFullDenial: 'Nenhuma glosa completa. Ótimo trabalho.',
+  resumoEmptyPartialDenial: 'Nenhuma glosa parcial.',
+  resumoEmptyOverdue: 'Nada em atraso.',
+  resumoEmptyPaid: 'Nenhum procedimento pago ainda.',
+  resumoFilterAll: 'Todos',
   remindInLabel: 'Vence em', reminderDateLabel: 'Data de vencimento', daysLabel: 'dias', reminderOn: 'Vence',
   themeLabel: 'Aparência', themeSystem: 'Sistema', themeLight: 'Claro', themeDark: 'Escuro',
   notificationsLabel: 'Notificações push', notificationsEnable: 'Ativar',

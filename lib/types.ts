@@ -11,4 +11,7 @@ export interface Procedure {
   status: ClaimStatus
   reminderDays: number
   createdAt: string   // ISO datetime
+  updatedAt: string   // ISO datetime — last-write-wins sync key
+  deletedAt: string | null  // soft-delete tombstone; null = active
+  syncedAt: string | null   // null = dirty (needs push); matches updatedAt when clean
 }

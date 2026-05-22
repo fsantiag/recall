@@ -10,17 +10,41 @@ interface RecallDBSchema extends DBSchema {
 }
 
 const DB_NAME = 'recall-db'
-const DB_VERSION = 1
+const DB_VERSION = 3
 
 let dbPromise: Promise<IDBPDatabase<RecallDBSchema>> | null = null
 
 export function getDB(): Promise<IDBPDatabase<RecallDBSchema>> {
   if (!dbPromise) {
     dbPromise = openDB<RecallDBSchema>(DB_NAME, DB_VERSION, {
-      upgrade(db) {
-        const store = db.createObjectStore('procedures', { keyPath: 'id' })
-        store.createIndex('by-date', 'date')
-        store.createIndex('by-status', 'status')
+      upgrade(db, oldVersion, _newVersion, tx) {
+        if (oldVersion < 1) {
+          const store = db.createObjectStore('procedures', { keyPath: 'id' })
+          store.createIndex('by-date', 'date')
+          store.createIndex('by-status', 'status')
+        }
+        if (oldVersion >= 1 && oldVersion < 2) {
+          type V1Procedure = Omit<Procedure, 'updatedAt' | 'deletedAt' | 'syncedAt'>
+          ;(async () => {
+            let cursor = await tx.objectStore('procedures').openCursor()
+            while (cursor) {
+              const v1 = cursor.value as unknown as V1Procedure
+              await cursor.update({ ...v1, updatedAt: v1.createdAt, deletedAt: null, syncedAt: null } as Procedure)
+              cursor = await cursor.continue()
+            }
+          })()
+        }
+        if (oldVersion >= 2 && oldVersion < 3) {
+          type V2Procedure = Omit<Procedure, 'syncedAt'>
+          ;(async () => {
+            let cursor = await tx.objectStore('procedures').openCursor()
+            while (cursor) {
+              const v2 = cursor.value as unknown as V2Procedure
+              await cursor.update({ ...v2, syncedAt: null } as Procedure)
+              cursor = await cursor.continue()
+            }
+          })()
+        }
       },
     })
   }

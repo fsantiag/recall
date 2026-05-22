@@ -11,22 +11,29 @@ function localDateStr(d: Date): string {
 
 export async function getAllProcedures(): Promise<Procedure[]> {
   const db = await getDB()
-  return db.getAll('procedures')
+  const all = await db.getAll('procedures')
+  return all.filter(p => p.deletedAt === null)
 }
 
 export async function getProcedure(id: string): Promise<Procedure | undefined> {
   const db = await getDB()
-  return db.get('procedures', id)
+  const p = await db.get('procedures', id)
+  if (!p || p.deletedAt !== null) return undefined
+  return p
 }
 
 export async function addProcedure(
-  data: Omit<Procedure, 'id' | 'createdAt'>
+  data: Omit<Procedure, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'syncedAt'>
 ): Promise<Procedure> {
   const db = await getDB()
+  const now = new Date().toISOString()
   const procedure: Procedure = {
     ...data,
     id: crypto.randomUUID(),
-    createdAt: new Date().toISOString(),
+    createdAt: now,
+    updatedAt: now,
+    deletedAt: null,
+    syncedAt: null,
   }
   await db.add('procedures', procedure)
   return procedure
@@ -34,19 +41,22 @@ export async function addProcedure(
 
 export async function updateProcedure(
   id: string,
-  updates: Partial<Omit<Procedure, 'id' | 'createdAt'>>
+  updates: Partial<Omit<Procedure, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'syncedAt'>>
 ): Promise<Procedure> {
   const db = await getDB()
   const existing = await db.get('procedures', id)
-  if (!existing) throw new Error(`Procedure ${id} not found`)
-  const updated: Procedure = { ...existing, ...updates }
+  if (!existing || existing.deletedAt !== null) throw new Error(`Procedure ${id} not found`)
+  const updated: Procedure = { ...existing, ...updates, updatedAt: new Date().toISOString() }
   await db.put('procedures', updated)
   return updated
 }
 
 export async function deleteProcedure(id: string): Promise<void> {
   const db = await getDB()
-  await db.delete('procedures', id)
+  const existing = await db.get('procedures', id)
+  if (!existing || existing.deletedAt !== null) return
+  const now = new Date().toISOString()
+  await db.put('procedures', { ...existing, deletedAt: now, updatedAt: now })
 }
 
 export async function getOverdueProcedures(): Promise<Procedure[]> {

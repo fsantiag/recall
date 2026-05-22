@@ -159,6 +159,64 @@ describe('getDueProceduresGrouped', () => {
 
 })
 
+describe('sync fields', () => {
+  beforeEach(() => { resetDB() })
+
+  it('addProcedure sets updatedAt', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    expect(p.updatedAt).toBeDefined()
+  })
+
+  it('addProcedure sets deletedAt to null', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    expect(p.deletedAt).toBeNull()
+  })
+
+  it('updateProcedure bumps updatedAt', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    await new Promise(r => setTimeout(r, 10))
+    const updated = await updateProcedure(p.id, { status: 'paid' })
+    expect(updated.updatedAt > p.updatedAt).toBe(true)
+  })
+
+  it('deleteProcedure soft-deletes: excluded from getAllProcedures', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    await deleteProcedure(p.id)
+    expect(await getAllProcedures()).toHaveLength(0)
+  })
+
+  it('deleteProcedure soft-deletes: getProcedure returns undefined', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    await deleteProcedure(p.id)
+    expect(await getProcedure(p.id)).toBeUndefined()
+  })
+
+  it('deleteProcedure sets deletedAt and bumps updatedAt (tombstone is dirty for sync)', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    await new Promise(r => setTimeout(r, 10))
+    await deleteProcedure(p.id)
+    // raw DB access to inspect the tombstone
+    const { getDB } = await import('@/lib/db')
+    const db = await getDB()
+    const tombstone = await db.get('procedures', p.id)
+    expect(tombstone?.deletedAt).not.toBeNull()
+    expect(tombstone?.updatedAt).not.toBe(p.updatedAt)
+    expect(tombstone?.syncedAt).toBeNull() // dirty — needs to be pushed
+  })
+
+  it('deleteProcedure is idempotent on already-deleted record', async () => {
+    const p = await addProcedure({ ...BASE, date: '2026-01-01' })
+    await deleteProcedure(p.id)
+    const { getDB } = await import('@/lib/db')
+    const db = await getDB()
+    const first = await db.get('procedures', p.id)
+    await deleteProcedure(p.id) // second call — should no-op
+    const second = await db.get('procedures', p.id)
+    expect(second?.deletedAt).toBe(first?.deletedAt) // timestamp unchanged
+    expect(second?.updatedAt).toBe(first?.updatedAt)
+  })
+})
+
 describe('getSummaryGroups', () => {
   beforeEach(() => { resetDB() })
 

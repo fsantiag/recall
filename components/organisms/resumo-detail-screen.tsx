@@ -84,7 +84,7 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
   const visible = initialPayer ? procedures.filter(p => p.payer === initialPayer) : procedures
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-dvh pb-24">
       <div className="px-5 pt-[max(3.5rem,env(safe-area-inset-top))] pb-3 bg-background flex items-center gap-3">
         <button
           onClick={() => router.back()}

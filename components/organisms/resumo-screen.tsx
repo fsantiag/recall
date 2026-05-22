@@ -146,7 +146,7 @@ export function ResumoScreen() {
   }, [load])
 
   if (groups === null) return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-dvh">
       <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
     </div>
   )
@@ -154,7 +154,7 @@ export function ResumoScreen() {
   if (noProcedures) return <Onboarding t={t} />
 
   return (
-    <div className="min-h-screen pb-24">
+    <div className="min-h-dvh pb-24">
       <div className="px-5 pt-[max(3.5rem,env(safe-area-inset-top))] pb-3 bg-background">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2.5">

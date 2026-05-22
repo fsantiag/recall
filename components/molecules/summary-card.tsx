@@ -3,7 +3,7 @@
 interface SummaryCardProps {
   count: number
   label: string
-  tone: 'red' | 'amber' | 'orange' | 'green'
+  tone: 'red' | 'amber' | 'orange' | 'green' | 'brand'
   onClick: () => void
 }
 
@@ -12,6 +12,7 @@ const TONE_CLASSES: Record<SummaryCardProps['tone'], string> = {
   amber:  'bg-warn-soft text-warn',
   orange: 'bg-orange-soft text-orange',
   green:  'bg-success-soft text-success',
+  brand:  'bg-brand-50 text-brand',
 }
 
 export function SummaryCard({ count, label, tone, onClick }: SummaryCardProps) {

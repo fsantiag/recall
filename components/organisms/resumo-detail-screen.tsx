@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 import type { Procedure, ClaimStatus } from '@/lib/types'
 import type { TranslationKey } from '@/lib/i18n'
 
-type Category = 'full-denial' | 'partial-denial' | 'overdue' | 'paid'
+type Category = 'full-denial' | 'partial-denial' | 'overdue' | 'paid' | 'pending'
 
 type SummaryGroups = Awaited<ReturnType<typeof getSummaryGroups>>
 
@@ -22,6 +22,7 @@ const CATEGORY_CONFIG: Record<Category, {
   'partial-denial': { labelKey: 'resumoPartialDenial', emptyKey: 'resumoEmptyPartialDenial', extract: g => g.partialDenial },
   'overdue':        { labelKey: 'resumoOverdue',       emptyKey: 'resumoEmptyOverdue',       extract: g => g.overdue       },
   'paid':           { labelKey: 'resumoPaid',          emptyKey: 'resumoEmptyPaid',          extract: g => g.paid          },
+  'pending':        { labelKey: 'resumoPending',       emptyKey: 'resumoEmptyPending',       extract: g => g.pending       },
 }
 
 interface Props { category: string; initialPayer: string | null }

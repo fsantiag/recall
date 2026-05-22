@@ -71,6 +71,7 @@ export function ResumoScreen() {
       ...groups.partialDenial,
       ...groups.overdue,
       ...groups.paid,
+      ...groups.pending,
     ].map(p => p.payer))).sort()
   }, [groups])
 
@@ -149,6 +150,14 @@ export function ResumoScreen() {
           tone="green"
           onClick={() => router.push(routeFor('paid'))}
         />
+        <div className="col-span-2">
+          <SummaryCard
+            count={countFor(groups?.pending ?? [])}
+            label={t('resumoPending')}
+            tone="brand"
+            onClick={() => router.push(routeFor('pending'))}
+          />
+        </div>
       </div>
 
       <Link

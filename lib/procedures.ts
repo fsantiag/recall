@@ -100,6 +100,7 @@ export type SummaryGroups = {
   partialDenial: Procedure[]
   overdue: Procedure[]
   paid: Procedure[]
+  pending: Procedure[]
 }
 
 export async function getSummaryGroups(): Promise<SummaryGroups> {
@@ -108,7 +109,7 @@ export async function getSummaryGroups(): Promise<SummaryGroups> {
   today.setHours(0, 0, 0, 0)
   const todayStr = localDateStr(today)
 
-  const result: SummaryGroups = { fullDenial: [], partialDenial: [], overdue: [], paid: [] }
+  const result: SummaryGroups = { fullDenial: [], partialDenial: [], overdue: [], paid: [], pending: [] }
 
   for (const p of procedures) {
     if (p.status === 'full_denial') {
@@ -121,6 +122,7 @@ export async function getSummaryGroups(): Promise<SummaryGroups> {
       const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
       dueDate.setDate(dueDate.getDate() + p.reminderDays)
       if (localDateStr(dueDate) < todayStr) result.overdue.push(p)
+      else result.pending.push(p)
     }
   }
 

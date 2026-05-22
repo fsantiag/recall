@@ -186,9 +186,10 @@ describe('getSummaryGroups', () => {
     expect(g.paid).toHaveLength(0)
   })
 
-  it('excludes pending-not-overdue from all buckets', async () => {
+  it('puts pending-not-overdue in pending bucket', async () => {
     await addProcedure({ ...BASE, date: '2099-01-01', status: 'pending' as const, reminderDays: 1 })
     const g = await getSummaryGroups()
+    expect(g.pending).toHaveLength(1)
     expect(g.overdue).toHaveLength(0)
     expect(g.fullDenial).toHaveLength(0)
     expect(g.partialDenial).toHaveLength(0)
@@ -205,12 +206,14 @@ describe('getSummaryGroups', () => {
   })
 
   it('routes each status to its own bucket independently', async () => {
-    await addProcedure({ ...BASE, date: '2020-01-01', status: 'pending' as const,         reminderDays: 1 })
-    await addProcedure({ ...BASE, date: '2025-01-01', status: 'partial_denial' as const                  })
-    await addProcedure({ ...BASE, date: '2025-01-01', status: 'full_denial' as const                     })
-    await addProcedure({ ...BASE, date: '2025-01-01', status: 'paid' as const                            })
+    await addProcedure({ ...BASE, date: '2020-01-01', status: 'pending' as const,         reminderDays: 1  })
+    await addProcedure({ ...BASE, date: '2099-01-01', status: 'pending' as const,         reminderDays: 1  })
+    await addProcedure({ ...BASE, date: '2025-01-01', status: 'partial_denial' as const                   })
+    await addProcedure({ ...BASE, date: '2025-01-01', status: 'full_denial' as const                      })
+    await addProcedure({ ...BASE, date: '2025-01-01', status: 'paid' as const                             })
     const g = await getSummaryGroups()
     expect(g.overdue).toHaveLength(1)
+    expect(g.pending).toHaveLength(1)
     expect(g.partialDenial).toHaveLength(1)
     expect(g.fullDenial).toHaveLength(1)
     expect(g.paid).toHaveLength(1)

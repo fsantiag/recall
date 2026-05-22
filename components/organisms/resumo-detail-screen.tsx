@@ -57,7 +57,7 @@ export function ResumoDetailScreen({ category }: Props) {
   }
 
   const payers = Array.from(new Set(procedures.map(p => p.payer))).sort()
-  const showFilter = payers.length > 1
+  const showFilter = payers.length > 0
   const visible = selectedPayer ? procedures.filter(p => p.payer === selectedPayer) : procedures
 
   return (

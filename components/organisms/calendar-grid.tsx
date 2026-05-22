@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { getAllProcedures, updateProcedure } from '@/lib/procedures'
-import type { Procedure } from '@/lib/types'
+import type { Procedure, ClaimStatus } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { toast } from 'sonner'
@@ -59,13 +59,10 @@ export function CalendarGrid() {
     setSelectedDay(null)
   }
 
-  async function toggle(id: string) {
-    const p = procedures.find((x) => x.id === id)
-    if (!p) return
-    const newStatus = p.status === 'pending' ? 'paid' : 'pending'
+  async function changeStatus(id: string, newStatus: ClaimStatus) {
     try {
       await updateProcedure(id, { status: newStatus })
-      toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
+      toast.success(t('toastStatusUpdated'), { duration: 2000 })
       getAllProcedures().then(setProcedures).catch(() => {})
     } catch {
       toast.error(t('saveFailed'))
@@ -141,7 +138,7 @@ export function CalendarGrid() {
             })}
           </p>
           {selectedProcedures.map((p) => (
-            <ProcedureCard key={p.id} procedure={p} onToggleStatus={toggle} />
+            <ProcedureCard key={p.id} procedure={p} onChangeStatus={changeStatus} />
           ))}
         </div>
       )}

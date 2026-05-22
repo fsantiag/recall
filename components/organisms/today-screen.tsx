@@ -8,7 +8,7 @@ import {
   updateProcedure,
   type DueGroups,
 } from '@/lib/procedures'
-import type { Procedure } from '@/lib/types'
+import type { Procedure, ClaimStatus } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { RecallMark } from '@/components/brand/RecallMark'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -88,7 +88,7 @@ function CardGroup({
   procedures: Procedure[]
   tone: 'danger' | 'brand' | 'sage' | 'neutral'
   dueLabel: string
-  onToggle: (id: string) => void
+  onToggle: (id: string, status: ClaimStatus) => void
 }) {
   if (procedures.length === 0) return null
   return (
@@ -99,8 +99,8 @@ function CardGroup({
           procedure={p}
           dueTone={tone}
           dueLabel={dueLabel}
-          onToggleStatus={onToggle}
-          showStatus={false}
+          onChangeStatus={onToggle}
+          showStatus={true}
         />
       ))}
     </div>
@@ -130,16 +130,9 @@ export function TodayScreen() {
     load().catch(() => toast.error(tRef.current('loadError'))) // eslint-disable-line react-hooks/set-state-in-effect
   }, [load])
 
-  async function toggleStatus(id: string) {
-    const all = [
-      ...(groups?.overdue ?? []), ...(groups?.dueToday ?? []),
-      ...(groups?.thisWeek ?? []), ...(groups?.upcoming ?? []),
-    ]
-    const p = all.find((x) => x.id === id)
-    if (!p) return
-    const newStatus = p.status === 'pending' ? 'paid' : 'pending'
+  async function changeStatus(id: string, newStatus: ClaimStatus) {
     await updateProcedure(id, { status: newStatus })
-    toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
+    toast.success(t('toastStatusUpdated'), { duration: 2000 })
     load().catch(() => {})
   }
 
@@ -175,25 +168,25 @@ export function TodayScreen() {
           {groups.overdue.length > 0 && (
             <>
               <SectionLabel>{t('sectionOverdue')}</SectionLabel>
-              <CardGroup procedures={groups.overdue} tone="danger" dueLabel={t('overdueLabel')} onToggle={toggleStatus} />
+              <CardGroup procedures={groups.overdue} tone="danger" dueLabel={t('overdueLabel')} onToggle={changeStatus} />
             </>
           )}
           {groups.dueToday.length > 0 && (
             <>
               <SectionLabel>{t('sectionToday')}</SectionLabel>
-              <CardGroup procedures={groups.dueToday} tone="brand" dueLabel={t('dueTodayLabel')} onToggle={toggleStatus} />
+              <CardGroup procedures={groups.dueToday} tone="brand" dueLabel={t('dueTodayLabel')} onToggle={changeStatus} />
             </>
           )}
           {groups.thisWeek.length > 0 && (
             <>
               <SectionLabel>{t('sectionThisWeek')}</SectionLabel>
-              <CardGroup procedures={groups.thisWeek} tone="sage" dueLabel={t('thisWeekLabel')} onToggle={toggleStatus} />
+              <CardGroup procedures={groups.thisWeek} tone="sage" dueLabel={t('thisWeekLabel')} onToggle={changeStatus} />
             </>
           )}
           {groups.upcoming.length > 0 && (
             <>
               <SectionLabel>{t('sectionUpcoming')}</SectionLabel>
-              <CardGroup procedures={groups.upcoming} tone="neutral" dueLabel="" onToggle={toggleStatus} />
+              <CardGroup procedures={groups.upcoming} tone="neutral" dueLabel="" onToggle={changeStatus} />
             </>
           )}
         </>

@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Search, X } from 'lucide-react'
 import { getAllProcedures, updateProcedure } from '@/lib/procedures'
-import type { Procedure } from '@/lib/types'
+import type { Procedure, ClaimStatus } from '@/lib/types'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { toast } from 'sonner'
@@ -52,14 +52,11 @@ export function ProcedureList() {
     setQuery('')
   }
 
-  async function toggleStatus(id: string) {
-    const procedure = procedures.find((p) => p.id === id)
-    if (!procedure) return
-    const newStatus = procedure.status === 'pending' ? 'paid' : 'pending'
+  async function changeStatus(id: string, newStatus: ClaimStatus) {
     try {
       await updateProcedure(id, { status: newStatus })
       setProcedures((prev) => prev.map((p) => (p.id === id ? { ...p, status: newStatus } : p)))
-      toast.success(t(newStatus === 'paid' ? 'toastMarkedPaid' : 'toastMarkedPending'), { duration: 2000 })
+      toast.success(t('toastStatusUpdated'), { duration: 2000 })
     } catch {
       toast.error(t('saveFailed'))
     }
@@ -105,7 +102,7 @@ export function ProcedureList() {
         <ul className="space-y-3">
           {filtered.map((p) => (
             <li key={p.id}>
-              <ProcedureCard procedure={p} onToggleStatus={toggleStatus} />
+              <ProcedureCard procedure={p} onChangeStatus={changeStatus} />
             </li>
           ))}
         </ul>

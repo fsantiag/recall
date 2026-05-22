@@ -22,6 +22,8 @@ type FormValues = {
   name: string
   patientName: string
   payer: string
+  location: string
+  honoraryType: string
   date: string
   reminderDays: number
 }
@@ -84,6 +86,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
     name:         z.string().min(1, t('procedureNameRequired')).max(200),
     patientName:  z.string().min(1, t('patientNameRequired')).max(200),
     payer:        z.string().min(1, t('payerRequired')).max(100),
+    location:     z.string().min(1, t('locationRequired')).max(200),
+    honoraryType: z.string().min(1, t('honoraryTypeRequired')).max(100),
     date:         z.string().min(1, t('dateRequired')),
     reminderDays: z.number().min(1, t('reminderMinDays')).max(365),
   }), [t])
@@ -94,6 +98,8 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
       name:         defaultValues?.name ?? '',
       patientName:  defaultValues?.patientName ?? '',
       payer:        defaultValues?.payer ?? '',
+      location:     defaultValues?.location ?? '',
+      honoraryType: defaultValues?.honoraryType ?? '',
       date:         defaultValues?.date ??
         new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16),
       reminderDays: defaultValues?.reminderDays ?? 7,
@@ -105,7 +111,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
   const [customMode, setCustomMode] = useState(
     () => !DAY_PRESETS.includes(defaultValues?.reminderDays ?? 7)
   )
-  const { patientNames, procedureNames, payers } = useFieldSuggestions()
+  const { patientNames, procedureNames, payers, locations, honoraryTypes } = useFieldSuggestions()
 
   const reminderDate = (() => {
     if (!date) return ''
@@ -136,7 +142,7 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
   }
 
   async function goToStep3() {
-    const ok = await form.trigger(['name', 'payer', 'date', 'reminderDays'])
+    const ok = await form.trigger(['name', 'honoraryType', 'payer', 'location', 'date', 'reminderDays'])
     if (ok) setStep(3)
   }
 
@@ -201,6 +207,22 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
                 <FormMessage />
               </FormItem>
             )} />
+            <FormField control={form.control} name="honoraryType" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldHonoraryType')}</FormLabel>
+                <FormControl>
+                  <Input
+                    list={field.value.length >= 3 ? 'datalist-honorary-types' : undefined}
+                    placeholder={t('placeholderHonoraryType')}
+                    {...field}
+                  />
+                </FormControl>
+                <datalist id="datalist-honorary-types">
+                  {honoraryTypes.map(n => <option key={n} value={n} />)}
+                </datalist>
+                <FormMessage />
+              </FormItem>
+            )} />
             <FormField control={form.control} name="payer" render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('fieldPayer')}</FormLabel>
@@ -213,6 +235,22 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
                 </FormControl>
                 <datalist id="datalist-payers">
                   {payers.map(n => <option key={n} value={n} />)}
+                </datalist>
+                <FormMessage />
+              </FormItem>
+            )} />
+            <FormField control={form.control} name="location" render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('fieldLocation')}</FormLabel>
+                <FormControl>
+                  <Input
+                    list={field.value.length >= 3 ? 'datalist-locations' : undefined}
+                    placeholder={t('placeholderLocation')}
+                    {...field}
+                  />
+                </FormControl>
+                <datalist id="datalist-locations">
+                  {locations.map(n => <option key={n} value={n} />)}
                 </datalist>
                 <FormMessage />
               </FormItem>
@@ -305,11 +343,13 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
             <h2 className="text-[22px] font-semibold tracking-tight">{t('reviewTitle')}</h2>
             <div className="rounded-[14px] border bg-card divide-y">
               {([
-                [t('fieldPatientName'), form.getValues('patientName'), false],
-                [t('fieldProcedureName'), form.getValues('name'), false],
-                [t('fieldPayer'), form.getValues('payer'), false],
-                [t('fieldDateTime'), form.getValues('date'), true],
-                [t('fieldReminderDays'), `${reminderDays}d · ${reminderDate}`, true],
+                [t('fieldPatientName'),   form.getValues('patientName'),              false],
+                [t('fieldProcedureName'), form.getValues('name'),                     false],
+                [t('fieldHonoraryType'),  form.getValues('honoraryType'),             false],
+                [t('fieldPayer'),         form.getValues('payer'),                    false],
+                [t('fieldLocation'),      form.getValues('location'),                 false],
+                [t('fieldDateTime'),      form.getValues('date'),                     true],
+                [t('fieldReminderDays'),  `${reminderDays}d · ${reminderDate}`,       true],
               ] as [string, string, boolean][]).map(([label, value, mono]) => (
                 <div key={label} className="flex items-center justify-between px-4 py-3">
                   <span className="text-[13px] text-ink-muted">{label}</span>

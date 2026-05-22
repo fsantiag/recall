@@ -16,6 +16,36 @@ describe('ProcedureForm', () => {
     expect(screen.queryByLabelText(/procedure name/i)).not.toBeInTheDocument()
   })
 
+  it('shows validation error on step 2 when location is empty', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+    await user.type(screen.getByLabelText(/patient name/i), 'Jane Doe')
+    await user.click(screen.getByRole('button', { name: /save/i }))
+    await screen.findByLabelText(/procedure name/i)
+    await user.type(screen.getByLabelText(/procedure name/i), 'Consultation')
+    await user.type(screen.getByLabelText(/fee type/i), 'Cirurgião')
+    await user.type(screen.getByLabelText(/payer/i), 'Unimed')
+    // location left empty
+    fireEvent.change(screen.getByLabelText(/date & time/i), { target: { value: '2026-01-15T09:00' } })
+    await user.click(screen.getByRole('button', { name: /save/i }))
+    await screen.findByText(/location is required/i)
+  })
+
+  it('shows validation error on step 2 when fee type is empty', async () => {
+    const user = userEvent.setup()
+    renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
+    await user.type(screen.getByLabelText(/patient name/i), 'Jane Doe')
+    await user.click(screen.getByRole('button', { name: /save/i }))
+    await screen.findByLabelText(/procedure name/i)
+    await user.type(screen.getByLabelText(/procedure name/i), 'Consultation')
+    // honoraryType left empty
+    await user.type(screen.getByLabelText(/payer/i), 'Unimed')
+    await user.type(screen.getByLabelText(/location/i), 'Hospital São Lucas')
+    fireEvent.change(screen.getByLabelText(/date & time/i), { target: { value: '2026-01-15T09:00' } })
+    await user.click(screen.getByRole('button', { name: /save/i }))
+    await screen.findByText(/fee type is required/i)
+  })
+
   it('shows validation error on step 1 when patient name empty', async () => {
     const user = userEvent.setup()
     renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
@@ -100,7 +130,7 @@ describe('ProcedureForm', () => {
       expect(input).not.toHaveAttribute('list')
     })
 
-    it('renders procedureName and payer datalists on step 2', async () => {
+    it('renders procedureName, payer, location, and honoraryType datalists on step 2', async () => {
       const user = userEvent.setup()
       renderWithProviders(<ProcedureForm onSuccess={vi.fn()} />)
       await user.type(screen.getByLabelText(/patient name/i), 'Jane')
@@ -108,6 +138,8 @@ describe('ProcedureForm', () => {
       await screen.findByLabelText(/procedure name/i)
       expect(document.getElementById('datalist-procedure-names')).toBeInTheDocument()
       expect(document.getElementById('datalist-payers')).toBeInTheDocument()
+      expect(document.getElementById('datalist-honorary-types')).toBeInTheDocument()
+      expect(document.getElementById('datalist-locations')).toBeInTheDocument()
     })
   })
 
@@ -123,8 +155,10 @@ describe('ProcedureForm', () => {
     // Step 2: procedure details
     await screen.findByLabelText(/procedure name/i)
     await user.type(screen.getByLabelText(/procedure name/i), 'Consultation')
+    await user.type(screen.getByLabelText(/fee type/i), 'Cirurgião')
     await user.type(screen.getByLabelText(/payer/i), 'Unimed')
-    fireEvent.change(screen.getByLabelText(/date/i), { target: { value: '2026-01-15T09:00' } })
+    await user.type(screen.getByLabelText(/location/i), 'Hospital São Lucas')
+    fireEvent.change(screen.getByLabelText(/date & time/i), { target: { value: '2026-01-15T09:00' } })
     await user.click(screen.getByRole('button', { name: /save/i }))
 
     // Step 3: review — click final save

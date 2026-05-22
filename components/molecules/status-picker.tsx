@@ -4,6 +4,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sh
 import type { ClaimStatus } from '@/lib/types'
 import { useTranslation } from '@/components/organisms/language-provider'
 import type { TranslationKey } from '@/lib/i18n'
+import { haptic } from '@/lib/haptics'
 
 const STATUSES: ClaimStatus[] = ['pending', 'partial_denial', 'full_denial', 'paid']
 
@@ -33,7 +34,7 @@ export function StatusPicker({ current, onChange }: StatusPickerProps) {
   return (
     <>
       <button
-        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setOpen(true) }}
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); haptic('light'); setOpen(true) }}
         className={`inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-medium ${STATUS_BADGE_CLASSES[current]}`}
         aria-label={t('changeStatus')}
       >
@@ -48,7 +49,7 @@ export function StatusPicker({ current, onChange }: StatusPickerProps) {
             {STATUSES.map((s) => (
               <button
                 key={s}
-                onClick={() => { onChange(s); setOpen(false) }}
+                onClick={() => { haptic('medium'); onChange(s); setOpen(false) }}
                 className={`flex items-center w-full rounded-[12px] px-4 py-3 text-left text-[15px] font-medium transition-opacity ${STATUS_BADGE_CLASSES[s]} ${s === current ? 'ring-2 ring-current/40' : 'opacity-80 hover:opacity-100'}`}
               >
                 {t(STATUS_LABEL_KEYS[s])}

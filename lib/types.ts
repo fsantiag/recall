@@ -1,4 +1,4 @@
-export type ClaimStatus = 'pending' | 'paid' | 'partially_paid' | 'partial_denial' | 'full_denial'
+export type ClaimStatus = 'pending' | 'paid' | 'partial_denial' | 'full_denial'
 
 export interface Procedure {
   id: string

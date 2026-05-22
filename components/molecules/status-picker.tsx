@@ -5,11 +5,10 @@ import type { ClaimStatus } from '@/lib/types'
 import { useTranslation } from '@/components/organisms/language-provider'
 import type { TranslationKey } from '@/lib/i18n'
 
-const STATUSES: ClaimStatus[] = ['pending', 'partially_paid', 'partial_denial', 'full_denial', 'paid']
+const STATUSES: ClaimStatus[] = ['pending', 'partial_denial', 'full_denial', 'paid']
 
 export const STATUS_BADGE_CLASSES: Record<ClaimStatus, string> = {
   pending:        'bg-surface-alt text-ink-muted',
-  partially_paid: 'bg-amber-100 text-amber-700',
   partial_denial: 'bg-orange-100 text-orange-700',
   full_denial:    'bg-danger-soft text-danger',
   paid:           'bg-sage-soft text-sage-deep',
@@ -17,7 +16,6 @@ export const STATUS_BADGE_CLASSES: Record<ClaimStatus, string> = {
 
 export const STATUS_LABEL_KEYS: Record<ClaimStatus, TranslationKey> = {
   pending:        'statusPending',
-  partially_paid: 'statusPartiallyPaid',
   partial_denial: 'statusPartialDenial',
   full_denial:    'statusFullDenial',
   paid:           'statusPaid',

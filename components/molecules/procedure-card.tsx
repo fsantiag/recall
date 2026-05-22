@@ -51,6 +51,11 @@ export function ProcedureCard({
           </span>
         )}
       </div>
+      {(p.location || p.honoraryType) && (
+        <p className="font-mono-rc text-[11.5px] text-ink-soft">
+          {[p.location, p.honoraryType].filter(Boolean).join(' · ')}
+        </p>
+      )}
       <div className="flex items-center justify-between pt-2.5 border-t border-dashed">
         <p className="font-mono-rc text-[11.5px] text-ink-soft truncate">
           {p.payer} · {t('reminderOn')} {dueDateStr}

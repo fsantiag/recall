@@ -9,6 +9,8 @@ const PROC = {
   name: 'Consultation',
   patientName: 'John Doe',
   payer: 'Unimed',
+  location: 'Hospital São Lucas',
+  honoraryType: 'Surgeon',
   date: '2026-05-01T10:00',
   status: 'pending' as const,
   reminderDays: 7,
@@ -31,5 +33,22 @@ describe('ProcedureCard', () => {
     )
     await userEvent.click(screen.getByRole('button', { name: /mark as paid/i }))
     expect(onToggle).toHaveBeenCalledWith('1')
+  })
+
+  it('renders location and honoraryType', () => {
+    renderWithProviders(
+      <ProcedureCard procedure={PROC} onToggleStatus={vi.fn()} />
+    )
+    expect(screen.getByText(/Hospital São Lucas/)).toBeInTheDocument()
+    expect(screen.getByText(/Surgeon/)).toBeInTheDocument()
+  })
+
+  it('omits info row when location and honoraryType are empty', () => {
+    const proc = { ...PROC, location: '', honoraryType: '' }
+    renderWithProviders(
+      <ProcedureCard procedure={proc} onToggleStatus={vi.fn()} />
+    )
+    expect(screen.queryByText(/Hospital São Lucas/)).not.toBeInTheDocument()
+    expect(screen.queryByText(/Surgeon/)).not.toBeInTheDocument()
   })
 })

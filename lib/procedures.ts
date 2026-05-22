@@ -95,3 +95,36 @@ export async function getDueProceduresGrouped(): Promise<DueGroups> {
   return result
 }
 
+export type SummaryGroups = {
+  fullDenial: Procedure[]
+  partialDenial: Procedure[]
+  overdue: Procedure[]
+  paid: Procedure[]
+}
+
+export async function getSummaryGroups(): Promise<SummaryGroups> {
+  const procedures = await getAllProcedures()
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const todayStr = localDateStr(today)
+
+  const result: SummaryGroups = { fullDenial: [], partialDenial: [], overdue: [], paid: [] }
+
+  for (const p of procedures) {
+    if (p.status === 'full_denial') {
+      result.fullDenial.push(p)
+    } else if (p.status === 'partial_denial') {
+      result.partialDenial.push(p)
+    } else if (p.status === 'paid') {
+      result.paid.push(p)
+    } else if (p.status === 'pending') {
+      const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
+      dueDate.setDate(dueDate.getDate() + p.reminderDays)
+      if (localDateStr(dueDate) < todayStr) result.overdue.push(p)
+    }
+  }
+
+  result.paid.sort((a, b) => b.date.localeCompare(a.date))
+  return result
+}
+

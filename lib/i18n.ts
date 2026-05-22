@@ -38,6 +38,9 @@ export interface Translations {
   resumoPending: string; resumoEmptyPending: string
   resumoFilterAll: string
   resumoTotalLabel: string
+  pdfDownload: string; pdfGeneratedOn: string; pdfAllPayers: string
+  pdfColPatient: string; pdfColProcedure: string; pdfColLocation: string
+  pdfColFeeType: string; pdfColPayer: string; pdfColDate: string; pdfColStatus: string
   // Day chip picker
   remindInLabel: string; reminderDateLabel: string; daysLabel: string; reminderOn: string
   // Theme
@@ -145,6 +148,9 @@ const en: Translations = {
   resumoPending: 'Pending', resumoEmptyPending: 'No pending procedures.',
   resumoFilterAll: 'All',
   resumoTotalLabel: 'procedures',
+  pdfDownload: 'Export PDF', pdfGeneratedOn: 'Generated on', pdfAllPayers: 'All payers',
+  pdfColPatient: 'Patient', pdfColProcedure: 'Procedure', pdfColLocation: 'Location',
+  pdfColFeeType: 'Fee Type', pdfColPayer: 'Payer', pdfColDate: 'Date', pdfColStatus: 'Status',
   remindInLabel: 'Due in', reminderDateLabel: 'Due date', daysLabel: 'days', reminderOn: 'Due',
   themeLabel: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
   notificationsLabel: 'Push notifications', notificationsEnable: 'Enable',
@@ -249,6 +255,9 @@ const ptBR: Translations = {
   resumoPending: 'Pendente', resumoEmptyPending: 'Nenhum procedimento pendente.',
   resumoFilterAll: 'Todos',
   resumoTotalLabel: 'procedimentos',
+  pdfDownload: 'Exportar PDF', pdfGeneratedOn: 'Gerado em', pdfAllPayers: 'Todos os convênios',
+  pdfColPatient: 'Paciente', pdfColProcedure: 'Procedimento', pdfColLocation: 'Local',
+  pdfColFeeType: 'Tipo de Honorário', pdfColPayer: 'Convênio', pdfColDate: 'Data', pdfColStatus: 'Status',
   remindInLabel: 'Vence em', reminderDateLabel: 'Data de vencimento', daysLabel: 'dias', reminderOn: 'Vence',
   themeLabel: 'Aparência', themeSystem: 'Sistema', themeLight: 'Claro', themeDark: 'Escuro',
   notificationsLabel: 'Notificações push', notificationsEnable: 'Ativar',

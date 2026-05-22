@@ -1,10 +1,11 @@
 'use client'
 import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ChevronLeft } from 'lucide-react'
+import { ChevronLeft, FileDown } from 'lucide-react'
 import { getSummaryGroups, updateProcedure } from '@/lib/procedures'
 import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
+import { generateProceduresPDF } from '@/lib/pdf'
 import { toast } from 'sonner'
 import type { Procedure, ClaimStatus } from '@/lib/types'
 import type { TranslationKey } from '@/lib/i18n'
@@ -28,7 +29,7 @@ const CATEGORY_CONFIG: Record<Category, {
 interface Props { category: string; initialPayer: string | null }
 
 export function ResumoDetailScreen({ category, initialPayer }: Props) {
-  const { t } = useTranslation()
+  const { t, language } = useTranslation()
   const router = useRouter()
   const [procedures, setProcedures] = useState<Procedure[]>([])
 
@@ -43,6 +44,28 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
   useEffect(() => {
     load().catch(() => toast.error(t('loadError')))
   }, [load, t])
+
+  async function exportPDF() {
+    await generateProceduresPDF(visible, initialPayer, language, {
+      title: t(config.labelKey),
+      generatedOnLabel: t('pdfGeneratedOn'),
+      payerLabel: t('pdfColPayer'),
+      allPayersLabel: t('pdfAllPayers'),
+      colPatient: t('pdfColPatient'),
+      colProcedure: t('pdfColProcedure'),
+      colLocation: t('pdfColLocation'),
+      colFeeType: t('pdfColFeeType'),
+      colPayer: t('pdfColPayer'),
+      colDate: t('pdfColDate'),
+      colStatus: t('pdfColStatus'),
+      statusLabels: {
+        pending:         t('statusPending'),
+        paid:            t('statusPaid'),
+        partial_denial:  t('statusPartialDenial'),
+        full_denial:     t('statusFullDenial'),
+      },
+    })
+  }
 
   async function changeStatus(id: string, newStatus: ClaimStatus) {
     await updateProcedure(id, { status: newStatus })
@@ -70,11 +93,23 @@ export function ResumoDetailScreen({ category, initialPayer }: Props) {
         <span className="font-semibold text-[18px] tracking-tight">
           {t(config.labelKey)}
         </span>
-        {initialPayer && (
-          <span className="ml-auto text-[12px] font-medium px-2.5 py-1 rounded-full bg-surface-alt text-ink-muted">
-            {initialPayer}
-          </span>
-        )}
+        <div className="ml-auto flex items-center gap-2">
+          {initialPayer && (
+            <span className="text-[12px] font-medium px-2.5 py-1 rounded-full bg-surface-alt text-ink-muted">
+              {initialPayer}
+            </span>
+          )}
+          {visible.length > 0 && (
+            <button
+              onClick={exportPDF}
+              aria-label={t('pdfDownload')}
+              title={t('pdfDownload')}
+              className="flex items-center justify-center w-9 h-9 rounded-full bg-surface-alt text-ink-muted active:scale-95 transition-transform"
+            >
+              <FileDown className="h-4 w-4" />
+            </button>
+          )}
+        </div>
       </div>
 
       {visible.length === 0 ? (

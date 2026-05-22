@@ -92,6 +92,30 @@ describe('getOverdueProcedures', () => {
     await addProcedure({ ...BASE, date: today, reminderDays: 30 })
     expect(await getOverdueProcedures()).toHaveLength(0)
   })
+
+  it('returns partially_paid procedures past their reminder threshold', async () => {
+    const past = new Date()
+    past.setDate(past.getDate() - 10)
+    const p = await addProcedure({
+      ...BASE,
+      date: past.toISOString().split('T')[0],
+      reminderDays: 1,
+    })
+    await updateProcedure(p.id, { status: 'partially_paid' })
+    expect(await getOverdueProcedures()).toHaveLength(1)
+  })
+
+  it('returns full_denial procedures past their reminder threshold', async () => {
+    const past = new Date()
+    past.setDate(past.getDate() - 10)
+    const p = await addProcedure({
+      ...BASE,
+      date: past.toISOString().split('T')[0],
+      reminderDays: 1,
+    })
+    await updateProcedure(p.id, { status: 'full_denial' })
+    expect(await getOverdueProcedures()).toHaveLength(1)
+  })
 })
 
 describe('getDueProceduresGrouped', () => {
@@ -121,6 +145,15 @@ describe('getDueProceduresGrouped', () => {
     await updateProcedure(p.id, { status: 'paid' })
     const groups = await getDueProceduresGrouped()
     expect(groups.overdue).toHaveLength(0)
+  })
+
+  it('includes partial_denial procedures in overdue group', async () => {
+    const past = new Date()
+    past.setDate(past.getDate() - 5)
+    const p = await addProcedure({ ...BASE, date: past.toISOString().slice(0, 16), reminderDays: 1 })
+    await updateProcedure(p.id, { status: 'partial_denial' })
+    const groups = await getDueProceduresGrouped()
+    expect(groups.overdue).toHaveLength(1)
   })
 
 })

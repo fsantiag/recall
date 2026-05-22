@@ -55,7 +55,7 @@ export async function getOverdueProcedures(): Promise<Procedure[]> {
   today.setHours(0, 0, 0, 0)
   const todayStr = today.toISOString().split('T')[0]
   return procedures.filter((p) => {
-    if (p.status !== 'pending') return false
+    if (p.status === 'paid') return false
     const dueDate = new Date(p.date.slice(0, 10) + 'T00:00:00')
     dueDate.setDate(dueDate.getDate() + p.reminderDays)
     return dueDate.toISOString().split('T')[0] < todayStr

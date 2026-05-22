@@ -1,5 +1,5 @@
 'use client'
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Plus } from 'lucide-react'
@@ -62,6 +62,27 @@ export function ResumoScreen() {
   const router = useRouter()
   const [groups, setGroups] = useState<SummaryGroups | null>(null)
   const [noProcedures, setNoProcedures] = useState(false)
+  const [selectedPayer, setSelectedPayer] = useState<string | null>(null)
+
+  const allPayers = useMemo(() => {
+    if (!groups) return []
+    return Array.from(new Set([
+      ...groups.fullDenial,
+      ...groups.partialDenial,
+      ...groups.overdue,
+      ...groups.paid,
+    ].map(p => p.payer))).sort()
+  }, [groups])
+
+  function countFor(procedures: { payer: string }[]) {
+    if (!selectedPayer) return procedures.length
+    return procedures.filter(p => p.payer === selectedPayer).length
+  }
+
+  function routeFor(category: string) {
+    const base = `/resumo/${category}`
+    return selectedPayer ? `${base}?payer=${encodeURIComponent(selectedPayer)}` : base
+  }
 
   const load = useCallback(async () => {
     const [g, all] = await Promise.all([getSummaryGroups(), getAllProcedures()])
@@ -83,36 +104,50 @@ export function ResumoScreen() {
   return (
     <div className="min-h-screen pb-24">
       <div className="px-5 pt-14 pb-3 bg-background">
-        <div className="flex items-center gap-2.5">
-          <RecallMark size={28} />
-          <span className="font-semibold text-[18px] tracking-tight">Recall</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <RecallMark size={28} />
+            <span className="font-semibold text-[18px] tracking-tight">Recall</span>
+          </div>
+          {allPayers.length > 0 && (
+            <select
+              value={selectedPayer ?? ''}
+              onChange={e => setSelectedPayer(e.target.value || null)}
+              className="text-[12px] font-medium rounded-full border border-border bg-card px-3 py-1.5 text-ink-muted focus:outline-none focus:ring-2 focus:ring-ring/50"
+            >
+              <option value="">{t('resumoFilterAll')}</option>
+              {allPayers.map(payer => (
+                <option key={payer} value={payer}>{payer}</option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-3 px-5 py-4">
         <SummaryCard
-          count={groups?.fullDenial.length ?? 0}
+          count={countFor(groups?.fullDenial ?? [])}
           label={t('resumoFullDenial')}
           tone="red"
-          onClick={() => router.push('/resumo/full-denial')}
+          onClick={() => router.push(routeFor('full-denial'))}
         />
         <SummaryCard
-          count={groups?.partialDenial.length ?? 0}
+          count={countFor(groups?.partialDenial ?? [])}
           label={t('resumoPartialDenial')}
           tone="amber"
-          onClick={() => router.push('/resumo/partial-denial')}
+          onClick={() => router.push(routeFor('partial-denial'))}
         />
         <SummaryCard
-          count={groups?.overdue.length ?? 0}
+          count={countFor(groups?.overdue ?? [])}
           label={t('resumoOverdue')}
           tone="orange"
-          onClick={() => router.push('/resumo/overdue')}
+          onClick={() => router.push(routeFor('overdue'))}
         />
         <SummaryCard
-          count={groups?.paid.length ?? 0}
+          count={countFor(groups?.paid ?? [])}
           label={t('resumoPaid')}
           tone="green"
-          onClick={() => router.push('/resumo/paid')}
+          onClick={() => router.push(routeFor('paid'))}
         />
       </div>
 

@@ -24,13 +24,12 @@ const CATEGORY_CONFIG: Record<Category, {
   'paid':           { labelKey: 'resumoPaid',          emptyKey: 'resumoEmptyPaid',          extract: g => g.paid          },
 }
 
-interface Props { category: string }
+interface Props { category: string; initialPayer: string | null }
 
-export function ResumoDetailScreen({ category }: Props) {
+export function ResumoDetailScreen({ category, initialPayer }: Props) {
   const { t } = useTranslation()
   const router = useRouter()
   const [procedures, setProcedures] = useState<Procedure[]>([])
-  const [selectedPayer, setSelectedPayer] = useState<string | null>(null)
 
   const config = CATEGORY_CONFIG[category as Category]
 
@@ -38,7 +37,6 @@ export function ResumoDetailScreen({ category }: Props) {
     const groups = await getSummaryGroups()
     if (!config) return
     setProcedures(config.extract(groups))
-    setSelectedPayer(null)
   }, [category, config])
 
   useEffect(() => {
@@ -56,9 +54,7 @@ export function ResumoDetailScreen({ category }: Props) {
     return null
   }
 
-  const payers = Array.from(new Set(procedures.map(p => p.payer))).sort()
-  const showFilter = payers.length > 0
-  const visible = selectedPayer ? procedures.filter(p => p.payer === selectedPayer) : procedures
+  const visible = initialPayer ? procedures.filter(p => p.payer === initialPayer) : procedures
 
   return (
     <div className="min-h-screen pb-24">
@@ -73,33 +69,12 @@ export function ResumoDetailScreen({ category }: Props) {
         <span className="font-semibold text-[18px] tracking-tight">
           {t(config.labelKey)}
         </span>
+        {initialPayer && (
+          <span className="ml-auto text-[12px] font-medium px-2.5 py-1 rounded-full bg-surface-alt text-ink-muted">
+            {initialPayer}
+          </span>
+        )}
       </div>
-
-      {showFilter && (
-        <div className="flex gap-2 px-5 pb-3 overflow-x-auto">
-          <button
-            onClick={() => setSelectedPayer(null)}
-            className={`shrink-0 px-3 py-1.5 rounded-full text-[13px] font-medium border transition-colors
-              ${selectedPayer === null
-                ? 'bg-primary text-primary-foreground border-primary'
-                : 'bg-card text-ink-muted border-border'}`}
-          >
-            {t('resumoFilterAll')}
-          </button>
-          {payers.map(payer => (
-            <button
-              key={payer}
-              onClick={() => setSelectedPayer(payer === selectedPayer ? null : payer)}
-              className={`shrink-0 px-3 py-1.5 rounded-full text-[13px] font-medium border transition-colors
-                ${selectedPayer === payer
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-card text-ink-muted border-border'}`}
-            >
-              {payer}
-            </button>
-          ))}
-        </div>
-      )}
 
       {visible.length === 0 ? (
         <p className="px-5 pt-8 text-center text-ink-muted text-[15px]">

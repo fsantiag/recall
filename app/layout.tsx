@@ -5,6 +5,7 @@ import { TabNav } from '@/components/organisms/tab-nav'
 import { LanguageProvider } from '@/components/organisms/language-provider'
 import { ThemeProvider } from '@/components/organisms/theme-provider'
 import { InstallBanner } from '@/components/organisms/install-banner'
+import { PageTransition } from '@/components/organisms/page-transition'
 import { Toaster } from 'sonner'
 
 export const metadata: Metadata = {
@@ -21,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <LanguageProvider>
             <SerwistRegister />
             <InstallBanner />
-            <div className="pb-20">{children}</div>
+            <PageTransition>{children}</PageTransition>
             <TabNav />
           </LanguageProvider>
         </ThemeProvider>

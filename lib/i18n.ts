@@ -50,6 +50,9 @@ export interface Translations {
   installSettingsTitle: string; installSettingsIosHint: string
   // Reminder picker
   customLabel: string
+  // Search
+  searchPlaceholder: string
+  searchNoResults: string
 }
 
 const en: Translations = {
@@ -138,6 +141,8 @@ const en: Translations = {
   installSettingsTitle: 'Install App',
   installSettingsIosHint: "To install, tap Share in Safari then 'Add to Home Screen'.",
   customLabel: 'Custom',
+  searchPlaceholder: 'Search procedures…',
+  searchNoResults: 'No results for "{query}"',
 }
 
 const ptBR: Translations = {
@@ -226,6 +231,8 @@ const ptBR: Translations = {
   installSettingsTitle: 'Instalar aplicativo',
   installSettingsIosHint: "Para instalar, toque em Compartilhar no Safari e depois 'Adicionar à Tela de Início'.",
   customLabel: 'Personalizado',
+  searchPlaceholder: 'Buscar procedimentos…',
+  searchNoResults: 'Nenhum resultado para "{query}"',
 }
 
 export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }

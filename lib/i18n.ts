@@ -10,6 +10,8 @@ export interface Translations {
   alertTitle: string; alertSingular: string; alertPlural: string
   loading: string; empty: string; loadError: string
   markPaid: string; markPending: string; statusPaid: string; statusPending: string
+  statusPartiallyPaid: string; statusPartialDenial: string; statusFullDenial: string
+  changeStatus: string; toastStatusUpdated: string
   toastMarkedPaid: string; toastMarkedPending: string
   toastProcedureSaved: string; toastProcedureUpdated: string; toastProcedureDeleted: string
   fieldProcedureName: string; fieldPatientName: string; fieldPayer: string
@@ -78,6 +80,11 @@ const en: Translations = {
   markPending: 'Mark as pending',
   statusPaid: 'Paid',
   statusPending: 'Pending',
+  statusPartiallyPaid: 'Partially Paid',
+  statusPartialDenial: 'Partial Denial',
+  statusFullDenial: 'Full Denial',
+  changeStatus: 'Change Status',
+  toastStatusUpdated: 'Status updated',
   toastMarkedPaid: 'Marked as paid',
   toastMarkedPending: 'Marked as pending',
   toastProcedureSaved: 'Procedure saved',
@@ -168,6 +175,11 @@ const ptBR: Translations = {
   markPending: 'Marcar como pendente',
   statusPaid: 'Pago',
   statusPending: 'Pendente',
+  statusPartiallyPaid: 'Parcialmente Pago',
+  statusPartialDenial: 'Glosa Parcial',
+  statusFullDenial: 'Glosa Completa',
+  changeStatus: 'Alterar Status',
+  toastStatusUpdated: 'Status atualizado',
   toastMarkedPaid: 'Marcado como pago',
   toastMarkedPending: 'Marcado como pendente',
   toastProcedureSaved: 'Procedimento salvo',

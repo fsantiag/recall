@@ -159,6 +159,11 @@
   }
 }
 
+@keyframes page-enter {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
 /* RC utility classes not covered by shadcn */
 .font-mono-rc  { font-family: var(--font-geist-mono), ui-monospace, monospace; }
 .text-ink-muted { color: var(--rc-ink-muted); }

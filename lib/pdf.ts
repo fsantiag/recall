@@ -24,7 +24,7 @@ export async function generateProceduresPDF(
   const { default: jsPDF } = await import('jspdf')
   const { default: autoTable } = await import('jspdf-autotable')
 
-  const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' })
+  const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' })
   const pageW = doc.internal.pageSize.width
   const margin = 14
   const dateStr = new Date().toLocaleDateString(language, {
@@ -83,15 +83,7 @@ export async function generateProceduresPDF(
       fontSize: 8,
     },
     alternateRowStyles: { fillColor: [245, 248, 250] },
-    columnStyles: {
-      0: { cellWidth: 38 },  // patient
-      1: { cellWidth: 50 },  // procedure
-      2: { cellWidth: 38 },  // location
-      3: { cellWidth: 30 },  // fee type
-      4: { cellWidth: 35 },  // payer
-      5: { cellWidth: 22 },  // date
-      6: { cellWidth: 28 },  // status
-    },
+    tableWidth: 'auto',
     didDrawPage: (data) => {
       const pageCount = doc.getNumberOfPages()
       const current = doc.getCurrentPageInfo().pageNumber

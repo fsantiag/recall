@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import { SerwistRegister } from '@/components/organisms/serwist-register'
 import { TabNav } from '@/components/organisms/tab-nav'
@@ -8,9 +8,20 @@ import { InstallBanner } from '@/components/organisms/install-banner'
 import { PageTransition } from '@/components/organisms/page-transition'
 import { Toaster } from 'sonner'
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#005860',
+}
+
 export const metadata: Metadata = {
   title: 'Recall',
   description: 'Medical billing tracker for doctors',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

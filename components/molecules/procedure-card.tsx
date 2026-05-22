@@ -37,7 +37,7 @@ export function ProcedureCard({
   })
 
   return (
-    <div className="relative rounded-[14px] border bg-card p-3.5 flex flex-col gap-2.5">
+    <div className="relative rounded-[14px] border bg-card p-3.5 flex flex-col gap-2.5 active:scale-[0.98] transition-transform duration-75">
       <Link href={`/procedures/${p.id}`} className="absolute inset-0 rounded-[14px]" aria-label={p.name} onClick={() => procedureCache.set(p)} />
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 min-w-0">

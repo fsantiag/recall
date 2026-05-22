@@ -1,5 +1,5 @@
-import { TodayScreen } from '@/components/organisms/today-screen'
+import { ResumoScreen } from '@/components/organisms/resumo-screen'
 
 export default function HomePage() {
-  return <TodayScreen />
+  return <ResumoScreen />
 }

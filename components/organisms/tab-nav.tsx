@@ -1,12 +1,12 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Bell, List, CalendarDays, Settings } from 'lucide-react'
+import { LayoutDashboard, List, CalendarDays, Settings } from 'lucide-react'
 import { useTranslation } from '@/components/organisms/language-provider'
 import type { TranslationKey } from '@/lib/i18n'
 
 const TABS: { href: string; labelKey: TranslationKey; icon: React.ElementType }[] = [
-  { href: '/',           labelKey: 'navToday',    icon: Bell },
+  { href: '/',           labelKey: 'navResume',   icon: LayoutDashboard },
   { href: '/procedures', labelKey: 'navAll',      icon: List },
   { href: '/calendar',   labelKey: 'navCalendar', icon: CalendarDays },
   { href: '/settings',   labelKey: 'navSettings', icon: Settings },

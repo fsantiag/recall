@@ -37,6 +37,7 @@ export interface Translations {
   resumoEmptyOverdue: string; resumoEmptyPaid: string
   resumoPending: string; resumoEmptyPending: string
   resumoFilterAll: string
+  resumoTotalLabel: string
   // Day chip picker
   remindInLabel: string; reminderDateLabel: string; daysLabel: string; reminderOn: string
   // Theme
@@ -143,6 +144,7 @@ const en: Translations = {
   resumoEmptyPaid: 'No paid procedures yet.',
   resumoPending: 'Pending', resumoEmptyPending: 'No pending procedures.',
   resumoFilterAll: 'All',
+  resumoTotalLabel: 'procedures',
   remindInLabel: 'Due in', reminderDateLabel: 'Due date', daysLabel: 'days', reminderOn: 'Due',
   themeLabel: 'Appearance', themeSystem: 'System', themeLight: 'Light', themeDark: 'Dark',
   notificationsLabel: 'Push notifications', notificationsEnable: 'Enable',
@@ -246,6 +248,7 @@ const ptBR: Translations = {
   resumoEmptyPaid: 'Nenhum procedimento pago ainda.',
   resumoPending: 'Pendente', resumoEmptyPending: 'Nenhum procedimento pendente.',
   resumoFilterAll: 'Todos',
+  resumoTotalLabel: 'procedimentos',
   remindInLabel: 'Vence em', reminderDateLabel: 'Data de vencimento', daysLabel: 'dias', reminderOn: 'Vence',
   themeLabel: 'Aparência', themeSystem: 'Sistema', themeLight: 'Claro', themeDark: 'Escuro',
   notificationsLabel: 'Notificações push', notificationsEnable: 'Ativar',

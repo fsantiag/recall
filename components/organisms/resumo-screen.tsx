@@ -123,6 +123,17 @@ export function ResumoScreen() {
             </select>
           )}
         </div>
+        {groups && (
+          <p className="text-[13px] text-ink-muted mt-1 tracking-tight">
+            {countFor([
+              ...groups.fullDenial,
+              ...groups.partialDenial,
+              ...groups.overdue,
+              ...groups.paid,
+              ...groups.pending,
+            ])} {t('resumoTotalLabel')}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-2 gap-3 px-5 py-4">

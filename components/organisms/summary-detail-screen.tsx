@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ChevronLeft, FileDown, Loader2 } from 'lucide-react'
 import { getSummaryGroups, updateProcedure } from '@/lib/procedures'
-import { ProcedureCardRow } from '@/components/molecules/procedure-card-row'
+import { ProcedureCard } from '@/components/molecules/procedure-card'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { generateProceduresPDF } from '@/lib/pdf'
 import { toast } from 'sonner'
@@ -126,7 +126,7 @@ export function SummaryDetailScreen({ category, initialPayer }: Props) {
       ) : (
         <div className="px-5 flex flex-col gap-2.5">
           {visible.map(p => (
-            <ProcedureCardRow
+            <ProcedureCard
               key={p.id}
               procedure={p}
               onChangeStatus={changeStatus}

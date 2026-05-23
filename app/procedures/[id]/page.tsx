@@ -63,6 +63,7 @@ export default function EditProcedurePage() {
           date: procedure.date,
           reminderDays: procedure.reminderDays,
         }}
+        notes={procedure.notes}
         onSuccess={() => router.push('/')}
         onDelete={handleDelete}
       />

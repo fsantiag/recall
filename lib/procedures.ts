@@ -1,5 +1,5 @@
 import { getDB } from './db'
-import type { Procedure } from './types'
+import type { Note, Procedure } from './types'
 
 function localDateStr(d: Date): string {
   return [
@@ -23,13 +23,14 @@ export async function getProcedure(id: string): Promise<Procedure | undefined> {
 }
 
 export async function addProcedure(
-  data: Omit<Procedure, 'id' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'syncedAt'>
+  data: Omit<Procedure, 'id' | 'notes' | 'createdAt' | 'updatedAt' | 'deletedAt' | 'syncedAt'>
 ): Promise<Procedure> {
   const db = await getDB()
   const now = new Date().toISOString()
   const procedure: Procedure = {
     ...data,
     id: crypto.randomUUID(),
+    notes: [],
     createdAt: now,
     updatedAt: now,
     deletedAt: null,
@@ -138,5 +139,31 @@ export async function getSummaryGroups(): Promise<SummaryGroups> {
 
   result.paid.sort((a, b) => b.date.localeCompare(a.date))
   return result
+}
+
+// Note operations — swap these two functions for fetch() calls when a backend is introduced
+
+export async function addNote(procedureId: string, text: string): Promise<Note> {
+  const db = await getDB()
+  const existing = await db.get('procedures', procedureId)
+  if (!existing || existing.deletedAt !== null) throw new Error(`Procedure ${procedureId} not found`)
+  const note: Note = { id: crypto.randomUUID(), text: text.trim(), createdAt: new Date().toISOString() }
+  await db.put('procedures', {
+    ...existing,
+    notes: [...(existing.notes ?? []), note],
+    updatedAt: new Date().toISOString(),
+  })
+  return note
+}
+
+export async function deleteNote(procedureId: string, noteId: string): Promise<void> {
+  const db = await getDB()
+  const existing = await db.get('procedures', procedureId)
+  if (!existing || existing.deletedAt !== null) throw new Error(`Procedure ${procedureId} not found`)
+  await db.put('procedures', {
+    ...existing,
+    notes: (existing.notes ?? []).filter(n => n.id !== noteId),
+    updatedAt: new Date().toISOString(),
+  })
 }
 

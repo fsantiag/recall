@@ -67,6 +67,15 @@ export interface Translations {
   // Search
   searchPlaceholder: string
   searchNoResults: string
+  // Notes
+  notesTitle: string
+  notesEmpty: string
+  notesAddPlaceholder: string
+  notesAdd: string
+  notesDeleteConfirm: string
+  toastNoteAdded: string
+  toastNoteDeleted: string
+  notesLogLabel: string
 }
 
 const en: Translations = {
@@ -174,6 +183,14 @@ const en: Translations = {
   customLabel: 'Custom',
   searchPlaceholder: 'Search procedures…',
   searchNoResults: 'No results for "{query}"',
+  notesTitle: 'Notes',
+  notesEmpty: 'No notes yet.',
+  notesAddPlaceholder: 'Write a note…',
+  notesAdd: 'Add note',
+  notesDeleteConfirm: 'Delete this note?',
+  toastNoteAdded: 'Note added',
+  toastNoteDeleted: 'Note deleted',
+  notesLogLabel: 'Notes',
 }
 
 const ptBR: Translations = {
@@ -281,6 +298,14 @@ const ptBR: Translations = {
   customLabel: 'Personalizado',
   searchPlaceholder: 'Buscar procedimentos…',
   searchNoResults: 'Nenhum resultado para "{query}"',
+  notesTitle: 'Notas',
+  notesEmpty: 'Nenhuma nota ainda.',
+  notesAddPlaceholder: 'Escreva uma nota…',
+  notesAdd: 'Adicionar nota',
+  notesDeleteConfirm: 'Excluir esta nota?',
+  toastNoteAdded: 'Nota adicionada',
+  toastNoteDeleted: 'Nota excluída',
+  notesLogLabel: 'Notas',
 }
 
 export const translations: Record<Language, Translations> = { en, 'pt-BR': ptBR }

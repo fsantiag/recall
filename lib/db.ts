@@ -10,7 +10,7 @@ interface RecallDBSchema extends DBSchema {
 }
 
 const DB_NAME = 'recall-db'
-const DB_VERSION = 3
+const DB_VERSION = 4
 
 let dbPromise: Promise<IDBPDatabase<RecallDBSchema>> | null = null
 
@@ -41,6 +41,17 @@ export function getDB(): Promise<IDBPDatabase<RecallDBSchema>> {
             while (cursor) {
               const v2 = cursor.value as unknown as V2Procedure
               await cursor.update({ ...v2, syncedAt: null } as Procedure)
+              cursor = await cursor.continue()
+            }
+          })()
+        }
+        if (oldVersion >= 3 && oldVersion < 4) {
+          type V3Procedure = Omit<Procedure, 'notes'>
+          ;(async () => {
+            let cursor = await tx.objectStore('procedures').openCursor()
+            while (cursor) {
+              const v3 = cursor.value as unknown as V3Procedure
+              await cursor.update({ ...v3, notes: [] } as Procedure)
               cursor = await cursor.continue()
             }
           })()

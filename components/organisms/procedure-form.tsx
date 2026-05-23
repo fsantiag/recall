@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { addProcedure, updateProcedure } from '@/lib/procedures'
+import type { Note } from '@/lib/types'
 import { toast } from 'sonner'
 import { useFieldSuggestions, invalidateSuggestionsCache } from '@/lib/use-field-suggestions'
 import { useTranslation } from '@/components/organisms/language-provider'
@@ -31,6 +32,7 @@ type FormValues = {
 interface ProcedureFormProps {
   defaultValues?: Partial<FormValues>
   procedureId?: string
+  notes?: Note[]
   onSuccess: () => void
   onDelete?: () => void
 }
@@ -78,8 +80,15 @@ function ProgressBar({ step }: { step: number }) {
   )
 }
 
-export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete }: ProcedureFormProps) {
+export function ProcedureForm({ defaultValues, procedureId, notes, onSuccess, onDelete }: ProcedureFormProps) {
   const { t, language } = useTranslation()
+
+  function formatNoteDate(iso: string) {
+    return new Date(iso).toLocaleString(language, {
+      month: 'short', day: 'numeric', year: 'numeric',
+      hour: '2-digit', minute: '2-digit',
+    })
+  }
   const [step, setStep] = useState(1)
 
   const schema = useMemo(() => z.object({
@@ -170,6 +179,28 @@ export function ProcedureForm({ defaultValues, procedureId, onSuccess, onDelete 
                 <FormMessage />
               </FormItem>
             )} />
+            {notes && notes.length > 0 && (
+              <div className="space-y-2 pt-1">
+                <p className="text-[11px] font-medium uppercase tracking-widest text-ink-muted">
+                  {t('notesLogLabel')}
+                </p>
+                <div className="space-y-2">
+                  {[...notes]
+                    .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
+                    .map(note => (
+                      <div key={note.id} className="rounded-[10px] bg-surface-alt px-3 py-2.5">
+                        <p className="font-mono-rc text-[10px] text-ink-muted mb-0.5">
+                          {formatNoteDate(note.createdAt)}
+                        </p>
+                        <p className="text-[13px] text-ink-muted leading-snug whitespace-pre-wrap">
+                          {note.text}
+                        </p>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+
             <Button type="button" className="w-full" size="lg" onClick={goToStep2}>
               {t('save')} →
             </Button>

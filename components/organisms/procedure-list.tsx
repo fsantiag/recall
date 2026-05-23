@@ -4,7 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { Search, X, Loader2 } from 'lucide-react'
 import { getAllProcedures, updateProcedure } from '@/lib/procedures'
 import type { Procedure, ClaimStatus } from '@/lib/types'
-import { ProcedureCard } from '@/components/molecules/procedure-card'
+import { ProcedureCardRow } from '@/components/molecules/procedure-card-row'
 import { useTranslation } from '@/components/organisms/language-provider'
 import { toast } from 'sonner'
 
@@ -102,7 +102,7 @@ export function ProcedureList() {
         <ul className="space-y-3">
           {filtered.map((p) => (
             <li key={p.id}>
-              <ProcedureCard procedure={p} onChangeStatus={changeStatus} />
+              <ProcedureCardRow procedure={p} onChangeStatus={changeStatus} />
             </li>
           ))}
         </ul>

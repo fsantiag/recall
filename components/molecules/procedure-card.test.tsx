@@ -14,7 +14,11 @@ const PROC = {
   date: '2026-05-01T10:00',
   status: 'pending' as const,
   reminderDays: 7,
+  notes: [],
   createdAt: '2026-05-01T10:00:00Z',
+  updatedAt: '2026-05-01T10:00:00Z',
+  deletedAt: null,
+  syncedAt: null,
 }
 
 describe('ProcedureCard', () => {
